@@ -25,7 +25,7 @@ export interface Cell {
   number?: number;
 }
 
-// Sample puzzle with proper coordinates
+// Sample puzzle with proper intersections
 const samplePuzzle = {
   size: 5,
   clues: [
@@ -76,7 +76,7 @@ const samplePuzzle = {
       solution: 'RELAX',
     },
 
-    // Down
+    // Down - intersecting properly
     {
       number: 2,
       text: 'Sign of life',
@@ -84,7 +84,7 @@ const samplePuzzle = {
       startRow: 0,
       startCol: 0,
       length: 5,
-      solution: 'PULSE',
+      solution: 'PULSE', // P intersects with PUB, S intersects with PSAKI, L intersects with CLUBS, E intersects with RELAX
     },
     {
       number: 3,
@@ -93,7 +93,7 @@ const samplePuzzle = {
       startRow: 0,
       startCol: 1,
       length: 5,
-      solution: 'USUAL',
+      solution: 'USUAL', // U intersects with PUB, S intersects with PSAKI, S intersects with USA, L intersects with CLUBS, A intersects with RELAX
     },
     {
       number: 5,
@@ -102,25 +102,25 @@ const samplePuzzle = {
       startRow: 0,
       startCol: 2,
       length: 5,
-      solution: 'BABKA',
+      solution: 'BABKA', // B intersects with PUB, A intersects with PSAKI, A intersects with USA, U intersects with CLUBS, X intersects with RELAX
     },
     {
       number: 7,
-      text: 'Skill practiced on dummies, for short',
+      text: 'Frozen water',
       direction: 'down' as const,
       startRow: 1,
       startCol: 3,
-      length: 4,
-      solution: 'KALE',
+      length: 3,
+      solution: 'ICE', // I intersects with PSAKI, B intersects with CLUBS, (no intersection with RELAX needed - only 3 letters)
     },
     {
       number: 10,
-      text: 'Age at which Tiger Woods made his first hole-in-one',
+      text: 'Number after five',
       direction: 'down' as const,
-      startRow: 1,
+      startRow: 0,
       startCol: 4,
-      length: 4,
-      solution: 'SIXX',
+      length: 3,
+      solution: 'SIX', // No intersection needed at top row, I intersects with PSAKI, S intersects with CLUBS
     },
   ],
 };
