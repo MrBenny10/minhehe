@@ -36,6 +36,14 @@ export default {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))'
+				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))'
@@ -51,6 +59,13 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				grid: {
+					cell: 'hsl(var(--grid-cell))',
+					border: 'hsl(var(--grid-border))',
+					active: 'hsl(var(--grid-active))',
+					correct: 'hsl(var(--grid-correct))',
+					incorrect: 'hsl(var(--grid-incorrect))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -84,11 +99,36 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-success': {
+					'0%, 100%': { 
+						backgroundColor: 'hsl(var(--grid-correct))',
+						transform: 'scale(1)' 
+					},
+					'50%': { 
+						backgroundColor: 'hsl(var(--success))',
+						transform: 'scale(1.02)' 
+					}
+				},
+				'pulse-error': {
+					'0%, 100%': { 
+						backgroundColor: 'hsl(var(--grid-incorrect))',
+						transform: 'scale(1)' 
+					},
+					'50%': { 
+						backgroundColor: 'hsl(var(--destructive))',
+						transform: 'scale(1.02)' 
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-success': 'pulse-success 0.6s ease-in-out',
+				'pulse-error': 'pulse-error 0.6s ease-in-out'
+			},
+			fontFamily: {
+				'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', 'monospace']
 			}
 		}
 	},
