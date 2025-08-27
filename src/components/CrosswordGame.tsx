@@ -25,102 +25,66 @@ export interface Cell {
   number?: number;
 }
 
-// Sample puzzle with proper intersections
+// Simple working crossword with proper intersections
 const samplePuzzle = {
   size: 5,
   clues: [
-    // Across
+    // Across clues
     {
       number: 1,
-      text: 'Place to pour a pint',
+      text: 'Opposite of down',
       direction: 'across' as const,
       startRow: 0,
-      startCol: 0,
-      length: 3,
-      solution: 'PUB',
+      startCol: 1,
+      length: 2,
+      solution: 'UP',
     },
     {
-      number: 4,
-      text: 'Host of the 2028 Olympics, for short',
+      number: 3,
+      text: 'Past tense of eat',
+      direction: 'across' as const,
+      startRow: 1,
+      startCol: 0,
+      length: 3,
+      solution: 'ATE',
+    },
+    {
+      number: 5,
+      text: 'Male child',
       direction: 'across' as const,
       startRow: 2,
       startCol: 1,
       length: 3,
-      solution: 'USA',
-    },
-    {
-      number: 6,
-      text: 'Black suit',
-      direction: 'across' as const,
-      startRow: 3,
-      startCol: 0,
-      length: 5,
-      solution: 'CLUBS',
-    },
-    {
-      number: 8,
-      text: 'Political commentator Jen',
-      direction: 'across' as const,
-      startRow: 1,
-      startCol: 0,
-      length: 5,
-      solution: 'PSAKI',
-    },
-    {
-      number: 9,
-      text: "Kick one's feet up",
-      direction: 'across' as const,
-      startRow: 4,
-      startCol: 0,
-      length: 5,
-      solution: 'RELAX',
+      solution: 'SON',
     },
 
-    // Down - intersecting properly
+    // Down clues
     {
-      number: 2,
-      text: 'Sign of life',
-      direction: 'down' as const,
-      startRow: 0,
-      startCol: 0,
-      length: 5,
-      solution: 'PULSE', // P intersects with PUB, S intersects with PSAKI, L intersects with CLUBS, E intersects with RELAX
-    },
-    {
-      number: 3,
-      text: 'Regular patron\'s order, with "the"',
+      number: 1,
+      text: 'Employ',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
-      length: 5,
-      solution: 'USUAL', // U intersects with PUB, S intersects with PSAKI, S intersects with USA, L intersects with CLUBS, A intersects with RELAX
+      length: 3,
+      solution: 'USE', // U from UP, S from SON
     },
     {
-      number: 5,
-      text: 'Loaf with a chocolate swirl',
+      number: 2,
+      text: 'Leg joint',
       direction: 'down' as const,
       startRow: 0,
       startCol: 2,
-      length: 5,
-      solution: 'BABKA', // B intersects with PUB, A intersects with PSAKI, A intersects with USA, U intersects with CLUBS, X intersects with RELAX
+      length: 3,
+      solution: 'PEN', // P from UP, E from ATE, N from SON
     },
     {
-      number: 7,
-      text: 'Frozen water',
+      number: 4,
+      text: 'Large body of water',
       direction: 'down' as const,
       startRow: 1,
-      startCol: 3,
-      length: 3,
-      solution: 'ICE', // I intersects with PSAKI, B intersects with CLUBS, (no intersection with RELAX needed - only 3 letters)
-    },
-    {
-      number: 10,
-      text: 'Number after five',
-      direction: 'down' as const,
-      startRow: 0,
-      startCol: 4,
-      length: 3,
-      solution: 'SIX', // No intersection needed at top row, I intersects with PSAKI, S intersects with CLUBS
+      startCol: 0,
+      length: 2,
+      solution: 'AS', // A from ATE, S extends down
     },
   ],
 };
