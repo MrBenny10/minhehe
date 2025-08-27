@@ -133,13 +133,18 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                 id={`cell-${cell.id}`}
                 type="text"
                 value={cell.value}
-                onChange={() => {}} // Handled by keyDown
+                onChange={(e) => {
+                  const value = e.target.value.slice(-1); // Only take the last character
+                  if (value.match(/[a-zA-Z]/) || value === '') {
+                    onCellUpdate(cell.id, value);
+                  }
+                }}
                 onKeyDown={(e) => handleKeyDown(e, cell)}
                 onClick={() => handleCellClick(cell)}
                 className={cn(
                   "w-12 h-12 text-center text-lg font-mono font-bold border-2 rounded-sm",
                   "focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200",
-                  "cursor-pointer select-none",
+                  "cursor-pointer select-none uppercase",
                   {
                     "bg-grid-cell border-grid-border text-foreground": status === 'active',
                     "bg-grid-active border-primary": isSelected && status === 'active',
@@ -150,7 +155,6 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                 )}
                 maxLength={1}
                 disabled={!gameStarted}
-                readOnly
               />
             </div>
           );

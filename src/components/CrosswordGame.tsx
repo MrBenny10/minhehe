@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import confetti from 'canvas-confetti';
 import { CrosswordGrid } from './CrosswordGrid';
 import { CluesPanel } from './CluesPanel';
 import { GameTimer } from './GameTimer';
 import { GameControls } from './GameControls';
+import { CompletionModal } from './CompletionModal';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
@@ -50,6 +52,8 @@ export const CrosswordGame: React.FC = () => {
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [completionTime, setCompletionTime] = useState(0);
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [showingErrors, setShowingErrors] = useState(false);
   const { toast } = useToast();
@@ -102,6 +106,7 @@ export const CrosswordGame: React.FC = () => {
   const startGame = useCallback(() => {
     setGameStarted(true);
     setGameCompleted(false);
+    setShowCompletionModal(false);
     setTimeElapsed(0);
     setShowingErrors(false);
     // Reset all cell values
@@ -120,10 +125,54 @@ export const CrosswordGame: React.FC = () => {
     });
 
     if (allCorrect && cells.some(cell => !cell.isBlocked && cell.value !== '')) {
+      setCompletionTime(timeElapsed);
       setGameCompleted(true);
       setGameStarted(false);
+      setShowCompletionModal(true);
+      
+      // Trigger confetti celebration
+      const duration = 3000;
+      const animationEnd = Date.now() + duration;
+      
+      const randomInRange = (min: number, max: number) => {
+        return Math.random() * (max - min) + min;
+      };
+      
+      const confettiInterval = setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+        
+        if (timeLeft <= 0) {
+          clearInterval(confettiInterval);
+          return;
+        }
+        
+        const particleCount = 50 * (timeLeft / duration);
+        
+        confetti({
+          particleCount: Math.floor(particleCount),
+          startVelocity: 30,
+          spread: 360,
+          origin: {
+            x: randomInRange(0.1, 0.3),
+            y: Math.random() - 0.2
+          },
+          colors: ['#8b5cf6', '#a855f7', '#c084fc', '#e879f9', '#f0abfc']
+        });
+        
+        confetti({
+          particleCount: Math.floor(particleCount),
+          startVelocity: 30,
+          spread: 360,
+          origin: {
+            x: randomInRange(0.7, 0.9),
+            y: Math.random() - 0.2
+          },
+          colors: ['#8b5cf6', '#a855f7', '#c084fc', '#e879f9', '#f0abfc']
+        });
+      }, 250);
+      
       toast({
-        title: "Congratulations!",
+        title: "🎉 Congratulations!",
         description: `You completed the crossword in ${Math.floor(timeElapsed / 60)}:${(timeElapsed % 60).toString().padStart(2, '0')}!`,
         variant: "default"
       });
@@ -147,7 +196,7 @@ export const CrosswordGame: React.FC = () => {
   }, [gameStarted, gameCompleted]);
 
   return (
-    <div className="min-h-screen bg-background p-4">
+    <div className="min-h-screen bg-background p-4 animate-fade-in">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">Mini Crossword</h1>
@@ -193,6 +242,13 @@ export const CrosswordGame: React.FC = () => {
             <CluesPanel clues={samplePuzzle.clues} />
           </div>
         </div>
+
+        <CompletionModal 
+          isOpen={showCompletionModal}
+          onClose={() => setShowCompletionModal(false)}
+          completionTime={completionTime}
+          onNewGame={startGame}
+        />
       </div>
     </div>
   );
