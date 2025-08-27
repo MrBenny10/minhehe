@@ -25,66 +25,102 @@ export interface Cell {
   number?: number;
 }
 
-// Simple working crossword with proper intersections
+// Your crossword with proper intersections
 const samplePuzzle = {
   size: 5,
   clues: [
     // Across clues
     {
       number: 1,
-      text: 'Opposite of down',
+      text: 'Place to pour a pint',
       direction: 'across' as const,
       startRow: 0,
-      startCol: 1,
-      length: 2,
-      solution: 'UP',
+      startCol: 0,
+      length: 3,
+      solution: 'PUB',
     },
     {
-      number: 3,
-      text: 'Past tense of eat',
+      number: 4,
+      text: 'Host of the 2028 Olympics, for short',
+      direction: 'across' as const,
+      startRow: 2,
+      startCol: 2,
+      length: 3,
+      solution: 'USA',
+    },
+    {
+      number: 6,
+      text: 'Black suit',
+      direction: 'across' as const,
+      startRow: 3,
+      startCol: 0,
+      length: 5,
+      solution: 'CLUBS',
+    },
+    {
+      number: 8,
+      text: 'Political commentator Jen',
       direction: 'across' as const,
       startRow: 1,
       startCol: 0,
-      length: 3,
-      solution: 'ATE',
+      length: 5,
+      solution: 'PSAKI',
     },
     {
-      number: 5,
-      text: 'Male child',
+      number: 9,
+      text: "Kick one's feet up",
       direction: 'across' as const,
-      startRow: 2,
-      startCol: 1,
-      length: 3,
-      solution: 'SON',
+      startRow: 4,
+      startCol: 0,
+      length: 5,
+      solution: 'RELAX',
     },
 
     // Down clues
     {
-      number: 1,
-      text: 'Employ',
+      number: 2,
+      text: 'Sign of life',
+      direction: 'down' as const,
+      startRow: 0,
+      startCol: 0,
+      length: 5,
+      solution: 'PULSE', // P(PUB), S(PSAKI), L(CLUBS), E(RELAX) + U between
+    },
+    {
+      number: 3,
+      text: 'Regular patron\'s order, with "the"',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
-      length: 3,
-      solution: 'USE', // U from UP, S from SON
+      length: 5,
+      solution: 'USUAL', // U(PUB), S(PSAKI), A(intersect), L(CLUBS), A(RELAX)
     },
     {
-      number: 2,
-      text: 'Leg joint',
+      number: 5,
+      text: 'Loaf with a chocolate swirl',
       direction: 'down' as const,
       startRow: 0,
       startCol: 2,
-      length: 3,
-      solution: 'PEN', // P from UP, E from ATE, N from SON
+      length: 5,
+      solution: 'BABKA', // B(PUB), A(PSAKI), B(intersect), U(CLUBS), A(RELAX)
     },
     {
-      number: 4,
-      text: 'Large body of water',
+      number: 7,
+      text: 'Skill practiced on dummies, for short',
       direction: 'down' as const,
       startRow: 1,
-      startCol: 0,
-      length: 2,
-      solution: 'AS', // A from ATE, S extends down
+      startCol: 3,
+      length: 3,
+      solution: 'CPR', // K(PSAKI), B(CLUBS), L(RELAX)
+    },
+    {
+      number: 10,
+      text: 'Age at which Tiger Woods made his first hole-in-one',
+      direction: 'down' as const,
+      startRow: 1,
+      startCol: 4,
+      length: 3,
+      solution: 'SIX', // I(PSAKI), S(CLUBS), X(RELAX)
     },
   ],
 };
