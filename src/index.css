@@ -45,7 +45,7 @@ All colors MUST be HSL.
     --grid-cell: 0 0% 100%;
     --grid-border: 226 15% 25%;
     --grid-active: 262 83% 95%;
-    --grid-correct: 142 71% 90%;
+    --grid-correct: 142 71% 45%;
     --grid-incorrect: 0 84% 90%;
 
     --radius: 0.5rem;

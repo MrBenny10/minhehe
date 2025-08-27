@@ -148,7 +148,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                   {
                     "bg-grid-cell border-grid-border text-foreground": status === 'active',
                     "bg-grid-active border-primary": isSelected && status === 'active',
-                    "bg-grid-correct border-success text-success-foreground": status === 'correct',
+                    "bg-grid-correct border-grid-correct text-white": status === 'correct',
                     "bg-grid-incorrect border-destructive text-destructive-foreground animate-pulse-error": status === 'incorrect',
                     "bg-muted border-muted text-muted-foreground cursor-not-allowed": status === 'inactive',
                   }
