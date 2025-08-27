@@ -117,7 +117,7 @@ const samplePuzzle = {
       number: 10,
       text: 'Age at which Tiger Woods made his first hole-in-one',
       direction: 'down' as const,
-      startRow: 1,
+      startRow: 2,
       startCol: 4,
       length: 3,
       solution: 'SIX',
