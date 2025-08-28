@@ -127,18 +127,18 @@ export const CrosswordGame: React.FC = () => {
       );
       
       if (isComplete && !gameCompleted) {
-        // Use setTimeout to ensure state updates happen in correct order
+        // Stop timer immediately
+        setGameCompleted(true);
+        setCompletionTime(timeElapsed);
+        
+        // Trigger confetti after a brief delay to ensure state is updated
         setTimeout(() => {
-          setGameCompleted(true);
-          setCompletionTime(timeElapsed);
-          
-          // Trigger confetti
           confetti({
             particleCount: 100,
             spread: 70,
             origin: { y: 0.6 }
           });
-        }, 0);
+        }, 100);
       }
       
       return newCells;
