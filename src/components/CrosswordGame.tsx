@@ -89,7 +89,7 @@ const samplePuzzle: Puzzle = {
       text: 'Prize named for Alfred (5)',
       direction: 'down',
       startRow: 0,
-      startCol: 2,
+      startCol: 5,
       length: 5,
       solution: 'NOBEL',
     },
