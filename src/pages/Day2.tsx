@@ -252,7 +252,7 @@ const Day2: React.FC = () => {
   return (
     <div className="h-screen bg-gradient-to-br from-background via-background to-muted overflow-hidden">
       {/* Navigation */}
-      <div className="fixed top-2 left-2 z-50 flex gap-2">
+      <div className="fixed top-4 left-4 z-[60] flex gap-2">
         <Link to="/">
           <Button variant="outline" size="sm">Day 1</Button>
         </Link>
