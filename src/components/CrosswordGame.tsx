@@ -34,7 +34,7 @@ export interface Puzzle {
 }
 
 const samplePuzzle: Puzzle = {
-  size: 9,
+  size: 12,
   clues: [
     // Across
     {
@@ -59,8 +59,8 @@ const samplePuzzle: Puzzle = {
       number: 6,
       text: "Traditional buffet (7)",
       direction: 'across',
-      startRow: 4,
-      startCol: 1,
+      startRow: 6,
+      startCol: 0,
       length: 7,
       solution: 'SMORGAS',
     },
@@ -68,8 +68,8 @@ const samplePuzzle: Puzzle = {
       number: 8,
       text: 'Swedish university city (7)',
       direction: 'across',
-      startRow: 6,
-      startCol: 1,
+      startRow: 9,
+      startCol: 0,
       length: 7,
       solution: 'UPPSALA',
     },
@@ -80,7 +80,7 @@ const samplePuzzle: Puzzle = {
       text: "Swedish ideal of 'just right' (5)",
       direction: 'down',
       startRow: 0,
-      startCol: 2, // intersects at 'O' in VOLVO
+      startCol: 2, // intersects O in VOLVO
       length: 5,
       solution: 'LAGOM',
     },
@@ -89,7 +89,7 @@ const samplePuzzle: Puzzle = {
       text: 'Prize named for Alfred (5)',
       direction: 'down',
       startRow: 0,
-      startCol: 3, // intersects at 'L' in VOLVO
+      startCol: 3, // intersects L in VOLVO
       length: 5,
       solution: 'NOBEL',
     },
@@ -98,7 +98,7 @@ const samplePuzzle: Puzzle = {
       text: 'Flat-pack furniture giant (4)',
       direction: 'down',
       startRow: 2,
-      startCol: 1,
+      startCol: 0, // intersects A in ABBA
       length: 4,
       solution: 'IKEA',
     },
@@ -106,13 +106,14 @@ const samplePuzzle: Puzzle = {
       number: 7,
       text: 'Swedish word for "cheers!" (4)',
       direction: 'down',
-      startRow: 4,
-      startCol: 7,
+      startRow: 6,
+      startCol: 6, // intersects final S in SMORGAS
       length: 4,
       solution: 'SKAL',
     },
   ],
 };
+
 
 
 
