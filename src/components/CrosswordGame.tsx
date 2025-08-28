@@ -28,66 +28,75 @@ export interface Cell {
   number?: number;
 }
 
-// Swedish-themed 5x5 crossword with proper intersections
+// Fun Swedish-themed 5x5 crossword with proper intersections
 const samplePuzzle = {
   size: 5,
   clues: [
     // Across clues
     {
       number: 1,
-      text: 'Bright star (3)',
+      text: 'Swedish furniture giant (4)',
       direction: 'across' as const,
       startRow: 0,
       startCol: 1,
-      length: 3,
-      solution: 'SUN',
-    },
-    {
-      number: 2,
-      text: 'Swedish furniture giant (4)',
-      direction: 'across' as const,
-      startRow: 1,
-      startCol: 0,
       length: 4,
       solution: 'IKEA',
     },
     {
-      number: 5,
-      text: 'Cold frozen water (3)',
+      number: 3,
+      text: 'What Swedes say "Cheers!" (4)',
       direction: 'across' as const,
-      startRow: 3,
+      startRow: 2,
+      startCol: 0,
+      length: 4,
+      solution: 'SKAL',
+    },
+    {
+      number: 5,
+      text: 'Viking boat (4)',
+      direction: 'across' as const,
+      startRow: 4,
       startCol: 1,
-      length: 3,
-      solution: 'ICE',
+      length: 4,
+      solution: 'SHIP',
     },
 
     // Down clues
     {
       number: 1,
-      text: 'Swedish word for cheers (4)',
+      text: 'Swedish fish candy (4)',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
       length: 4,
-      solution: 'SKAL', // S(shared with SUN), K(shared with IKEA), A, L
+      solution: 'FISH', // I(shared with IKEA), F, I, S(shared with SKAL)
     },
     {
-      number: 3,
-      text: 'Scandinavian country (6)',
+      number: 2,
+      text: 'Swedish car brand (4)',
       direction: 'down' as const,
       startRow: 0,
-      startCol: 3,
-      length: 5,
-      solution: 'NORSE', // N(shared with SUN), O, R, S, E
+      startCol: 2,
+      length: 4,
+      solution: 'SAAB', // K(shared with IKEA), S, A, A(shared with SKAL)
     },
     {
       number: 4,
+      text: 'Swedish word for "thank you" (4)',
+      direction: 'down' as const,
+      startRow: 0,
+      startCol: 4,
+      length: 4,
+      solution: 'TACK', // A(shared with IKEA), T, C, L(shared with SKAL)
+    },
+    {
+      number: 6,
       text: 'Creative work (3)',
       direction: 'down' as const,
-      startRow: 1,
+      startRow: 2,
       startCol: 3,
       length: 3,
-      solution: 'ART', // A(shared with IKEA), R, T
+      solution: 'ART', // L(shared with SKAL), R, H(shared with SHIP)
     },
   ],
 };
