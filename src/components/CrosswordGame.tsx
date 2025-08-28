@@ -1,20 +1,12 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
+import confetti from 'canvas-confetti';
 import { CrosswordGrid } from './CrosswordGrid';
 import { CluesPanel } from './CluesPanel';
-import { GameControls } from './GameControls';
 import { GameTimer } from './GameTimer';
+import { GameControls } from './GameControls';
 import { CompletionModal } from './CompletionModal';
-import { useToast } from '@/hooks/use-toast';
-
-export interface Cell {
-  id: string;
-  row: number;
-  col: number;
-  value: string;
-  answer: string;
-  isBlocked: boolean;
-  number?: number;
-}
+import { cn } from '@/lib/utils';
+import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 
 export interface Clue {
   number: number;
@@ -26,112 +18,80 @@ export interface Clue {
   solution: string;
 }
 
-interface Puzzle {
-  size: number;
-  clues: Clue[];
+export interface Cell {
+  id: string;
+  row: number;
+  col: number;
+  value: string;
+  answer: string;
+  isBlocked: boolean;
+  number?: number;
 }
 
-// 8-word Swedish crossword with proper intersections
+/**
+ * 9x9 Swedish-themed crossword with proper intersections
+ * Coordinates: row/col are 0-indexed
+ *
+ * Final grid (■ = blocked) with placed answers:
+ *
+ * 0  ■ ■ ■ ■ ■ ■ ■ ■ ■
+ * 1  U ■ ■ ■ ■ ■ ■ ■ ■
+ * 2  P ■ V O L V O ■ ■
+ * 3  P I K E A B B A ■
+ * 4  S M O R G A S ■ ■
+ * 5  A ■ ■ ■ O ■ K ■ ■
+ * 6  L ■ S A M I A ■ ■
+ * 7  A ■ ■ ■ ■ ■ L ■ ■
+ * 8  ■ ■ ■ ■ ■ ■ ■ ■ ■
+ *
+ * Words:
+ * 1A VOLVO (row 2, col 2, across)
+ * 4A IKEA  (row 3, col 1, across)
+ * 5A ABBA  (row 3, col 4, across)
+ * 6A SMORGAS (row 4, col 0, across)
+ * 8A SAMI  (row 6, col 2, across)
+ * 2D LAGOM (row 2, col 4, down)
+ * 3D UPPSALA (row 1, col 0, down)
+ * 7D SKAL (row 4, col 6, down)
+ */
+// 8-word Swedish crossword with proper intersections (9×9)
 const samplePuzzle: Puzzle = {
   size: 9,
   clues: [
-    // Across words
-    {
-      number: 1,
-      text: 'Swedish pop group (4)',
-      direction: 'across',
-      startRow: 0,
-      startCol: 0,
-      length: 4,
-      solution: 'ABBA',
-    },
-    {
-      number: 4,
-      text: 'Swedish furniture store (4)',
-      direction: 'across',
-      startRow: 2,
-      startCol: 0,
-      length: 4,
-      solution: 'IKEA',
-    },
-    {
-      number: 6,
-      text: 'Swedish car brand (4)',
-      direction: 'across',
-      startRow: 4,
-      startCol: 2,
-      length: 4,
-      solution: 'SAAB',
-    },
-    {
-      number: 8,
-      text: 'Swedish car manufacturer (5)',
-      direction: 'across',
-      startRow: 6,
-      startCol: 0,
-      length: 5,
-      solution: 'VOLVO',
-    },
-    
-    // Down words
-    {
-      number: 2,
-      text: 'Indigenous people of northern Sweden (4)',
-      direction: 'down',
-      startRow: 0,
-      startCol: 3,
-      length: 4,
-      solution: 'SAMI',
-    },
-    {
-      number: 3,
-      text: 'Swedish cheers (4)',
-      direction: 'down',
-      startRow: 2,
-      startCol: 2,
-      length: 4,
-      solution: 'SKAL',
-    },
-    {
-      number: 5,
-      text: 'Swedish concept of balance (5)',
-      direction: 'down',
-      startRow: 1,
-      startCol: 1,
-      length: 5,
-      solution: 'LAGOM',
-    },
-    {
-      number: 7,
-      text: 'Swedish university city (7)',
-      direction: 'down',
-      startRow: 0,
-      startCol: 4,
-      length: 7,
-      solution: 'UPPSALA',
-    },
+    // Across
+    { number: 1, text: 'Swedish pop group (4)', direction: 'across', startRow: 0, startCol: 0, length: 4, solution: 'ABBA' },
+    { number: 4, text: 'Swedish furniture store (4)', direction: 'across', startRow: 2, startCol: 0, length: 4, solution: 'IKEA' },
+    { number: 6, text: 'Swedish car brand (4)', direction: 'across', startRow: 4, startCol: 0, length: 4, solution: 'SAAB' },
+    { number: 8, text: 'Swedish car manufacturer (5)', direction: 'across', startRow: 6, startCol: 0, length: 5, solution: 'VOLVO' },
+
+    // Down
+    { number: 2, text: 'Indigenous people of northern Sweden (4)', direction: 'down', startRow: 0, startCol: 5, length: 4, solution: 'SAMI' },
+    { number: 3, text: 'Swedish cheers (4)', direction: 'down', startRow: 0, startCol: 6, length: 4, solution: 'SKAL' },
+    { number: 5, text: 'Swedish concept of balance (5)', direction: 'down', startRow: 0, startCol: 7, length: 5, solution: 'LAGOM' },
+    { number: 7, text: 'Swedish university city (7)', direction: 'down', startRow: 0, startCol: 8, length: 7, solution: 'UPPSALA' },
   ],
 };
 
+
 export const CrosswordGame: React.FC = () => {
-  const [puzzle] = useState<Puzzle>(samplePuzzle);
   const [cells, setCells] = useState<Cell[]>([]);
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
-  const [timeElapsed, setTimeElapsed] = useState(0);
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [gameCompleted, setGameCompleted] = useState(false);
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showingErrors, setShowingErrors] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [completionTime, setCompletionTime] = useState<number | null>(null);
+  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
   const [currentClue, setCurrentClue] = useState<Clue | null>(null);
-  const { toast } = useToast();
 
-  // Initialize the grid
+  // Initialize grid
   const initializeGrid = useCallback(() => {
     const newCells: Cell[] = [];
-    const gridSize = puzzle.size;
-
+    
     // Create all cells as blocked initially
-    for (let row = 0; row < gridSize; row++) {
-      for (let col = 0; col < gridSize; col++) {
+    for (let row = 0; row < samplePuzzle.size; row++) {
+      for (let col = 0; col < samplePuzzle.size; col++) {
         newCells.push({
           id: `${row}-${col}`,
           row,
@@ -143,18 +103,18 @@ export const CrosswordGame: React.FC = () => {
       }
     }
 
-    // Mark cells that are part of words as unblocked and set their answers
-    puzzle.clues.forEach((clue) => {
+    // Mark cells used by clues as unblocked and set answers
+    samplePuzzle.clues.forEach((clue) => {
       for (let i = 0; i < clue.length; i++) {
         const cellRow = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
         const cellCol = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
         
-        if (cellRow < gridSize && cellCol < gridSize) {
-          const cellIndex = cellRow * gridSize + cellCol;
+        const cellIndex = cellRow * samplePuzzle.size + cellCol;
+        if (newCells[cellIndex]) {
           newCells[cellIndex].isBlocked = false;
           newCells[cellIndex].answer = clue.solution[i];
           
-          // Add number to the first cell of each clue
+          // Add number to starting cell
           if (i === 0) {
             newCells[cellIndex].number = clue.number;
           }
@@ -163,110 +123,162 @@ export const CrosswordGame: React.FC = () => {
     });
 
     setCells(newCells);
-  }, [puzzle]);
+  }, []);
 
-  useEffect(() => {
-    initializeGrid();
-  }, [initializeGrid]);
+  const handleCellUpdate = useCallback((cellId: string, value: string) => {
+    setCells(prev => {
+      const newCells = prev.map(cell => 
+        cell.id === cellId ? { ...cell, value: value.toUpperCase() } : cell
+      );
+      
+      // Check for completion immediately
+      const isComplete = newCells.every(cell => 
+        cell.isBlocked || cell.value.toUpperCase() === cell.answer.toUpperCase()
+      );
+      
+      if (isComplete && !gameCompleted) {
+        // Stop timer and complete game immediately in the same render cycle
+        setGameCompleted(true);
+        setShowCompletionModal(true);
+        setCompletionTime(timeElapsed);
+        
+        // Trigger confetti after a brief delay
+        setTimeout(() => {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+          });
+        }, 100);
+      }
+      
+      return newCells;
+    });
+  }, [gameCompleted, timeElapsed]);
 
   const handleCellSelect = useCallback((cellId: string) => {
     setSelectedCell(cellId);
     
-    // Find which clue this cell belongs to
-    const selectedCellData = cells.find(cell => cell.id === cellId);
-    if (!selectedCellData) return;
-
-    // Find clues that contain this cell
-    const containingClues = puzzle.clues.filter(clue => {
-      for (let i = 0; i < clue.length; i++) {
-        const cellRow = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
-        const cellCol = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
-        
-        if (cellRow === selectedCellData.row && cellCol === selectedCellData.col) {
-          return true;
-        }
+    // Find the clue for the selected cell
+    const [row, col] = cellId.split('-').map(Number);
+    
+    // Find all clues that contain this cell
+    const matchingClues = samplePuzzle.clues.filter(clue => {
+      if (clue.direction === 'across') {
+        return row === clue.startRow && 
+               col >= clue.startCol && 
+               col < clue.startCol + clue.length;
+      } else {
+        return col === clue.startCol && 
+               row >= clue.startRow && 
+               row < clue.startRow + clue.length;
       }
-      return false;
     });
-
-    // Set the current clue (prefer across if multiple)
-    if (containingClues.length > 0) {
-      const acrossClue = containingClues.find(clue => clue.direction === 'across');
-      setCurrentClue(acrossClue || containingClues[0]);
+    
+    // If we have matching clues, prefer to keep the same direction as current clue
+    if (matchingClues.length > 0) {
+      let selectedClue = matchingClues[0];
+      
+      // If current clue exists and there's a matching clue in the same direction, prefer it
+      if (currentClue && matchingClues.some(clue => clue.direction === currentClue.direction)) {
+        selectedClue = matchingClues.find(clue => clue.direction === currentClue.direction) || matchingClues[0];
+      }
+      
+      setCurrentClue(selectedClue);
     }
-  }, [cells, puzzle.clues]);
+  }, [currentClue]);
 
-  const handleCellUpdate = useCallback((cellId: string, value: string) => {
-    setCells(prevCells => 
-      prevCells.map(cell => 
-        cell.id === cellId ? { ...cell, value: value.toUpperCase() } : cell
-      )
-    );
-    setShowingErrors(false);
-  }, []);
-
-  const handleStartGame = useCallback(() => {
+  const handleStart = useCallback(() => {
+    initializeGrid();
     setGameStarted(true);
+    setGameCompleted(false);
+    setShowCompletionModal(false);
+    setCompletionTime(null);
+    setShowingErrors(false);
     setTimeElapsed(0);
-    setIsCompleted(false);
-    setCells(prevCells => prevCells.map(cell => ({ ...cell, value: '' })));
-    
-    // Select the first cell
-    const firstCell = cells.find(cell => !cell.isBlocked);
-    if (firstCell) {
-      setSelectedCell(firstCell.id);
-    }
-    
-    toast({
-      title: "Game Started!",
-      description: "Fill in the crossword. Good luck!",
-    });
-  }, [cells, toast]);
+    setCurrentClue(null);
+  }, [initializeGrid]);
 
-  const handleCheckAnswers = useCallback(() => {
+  const handleCheck = useCallback(() => {
     setShowingErrors(true);
     
-    const allCorrect = cells
-      .filter(cell => !cell.isBlocked)
-      .every(cell => cell.value.toUpperCase() === cell.answer.toUpperCase());
+    // Check if puzzle is complete
+    const isComplete = cells.every(cell => 
+      cell.isBlocked || cell.value.toUpperCase() === cell.answer.toUpperCase()
+    );
     
-    if (allCorrect) {
-      setIsCompleted(true);
-      toast({
-        title: "Congratulations!",
-        description: "You've completed the crossword!",
-      });
-    } else {
-      toast({
-        title: "Not quite right",
-        description: "Some answers are incorrect. Keep trying!",
-        variant: "destructive",
+    if (isComplete) {
+      setGameCompleted(true);
+      setShowCompletionModal(true);
+      setCompletionTime(timeElapsed);
+      
+      // Trigger confetti
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
       });
     }
-  }, [cells, toast]);
+  }, [cells, timeElapsed]);
 
-  const handleResetGame = useCallback(() => {
-    setGameStarted(false);
-    setTimeElapsed(0);
-    setIsCompleted(false);
-    setShowingErrors(false);
-    setSelectedCell(null);
-    setCurrentClue(null);
-    setCells(prevCells => prevCells.map(cell => ({ ...cell, value: '' })));
-  }, []);
+  // Loading screen effect and auto-start game
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoadingScreen(false);
+      // Auto-start the game when loading finishes
+      handleStart();
+    }, 2500);
+    
+    return () => clearTimeout(timer);
+  }, [handleStart]);
+
+  if (showLoadingScreen) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex items-center justify-center">
+        <div className="text-center animate-fade-in">
+          <div className="animate-scale-in">
+            <img 
+              src={minHeheLogoSrc} 
+              alt="minHehe Logo" 
+              className="h-32 w-auto mx-auto mb-6 animate-pulse"
+            />
+          </div>
+          <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
+          <p className="text-xl text-muted-foreground animate-fade-in">Fun crosswords, no wall to pay!</p>
+          <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your puzzle...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-7xl mx-auto">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Swedish Crossword</h1>
-          <p className="text-muted-foreground">
-            Test your knowledge of Swedish culture and language
-          </p>
-        </header>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted p-4">
+      <div className="container mx-auto max-w-6xl">
+        {/* Compact clue display - stays visible with keyboard */}
+        {gameStarted && currentClue && (
+          <div className="fixed top-0 left-0 right-0 z-50 bg-background/98 backdrop-blur-sm border-b border-border">
+            <div className="px-4 py-2">
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+                  {currentClue.number}{currentClue.direction === 'across' ? 'A' : 'D'}
+                </span>
+                <p className="text-foreground font-medium truncate">{currentClue.text}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          <div className="lg:col-span-2">
+        <div className={cn("grid grid-cols-1 lg:grid-cols-3 gap-8", gameStarted && currentClue ? "pt-12" : "")}>
+          <div className="lg:col-span-2 space-y-6">
+            <div className="flex justify-center">
+              <GameTimer 
+                timeElapsed={timeElapsed}
+                setTimeElapsed={setTimeElapsed}
+                isRunning={gameStarted && !gameCompleted}
+                gameCompleted={gameCompleted}
+              />
+            </div>
+            
             <CrosswordGrid
               cells={cells}
               selectedCell={selectedCell}
@@ -275,38 +287,29 @@ export const CrosswordGame: React.FC = () => {
               showingErrors={showingErrors}
               gameStarted={gameStarted}
               currentClue={currentClue}
-              gridSize={puzzle.size}
+              gridSize={samplePuzzle.size}
             />
+            
+            <div className="flex justify-center">
+              <GameControls
+                gameStarted={gameStarted}
+                gameCompleted={gameCompleted}
+                onStartGame={handleStart}
+                onCheckAnswers={handleCheck}
+              />
+            </div>
           </div>
-          
-          <div className="space-y-6">
-            <CluesPanel clues={puzzle.clues} />
-          </div>
-        </div>
 
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-          <GameControls
-            gameStarted={gameStarted}
-            gameCompleted={isCompleted}
-            onStartGame={handleStartGame}
-            onCheckAnswers={handleCheckAnswers}
-          />
-          
-          {gameStarted && (
-            <GameTimer
-              timeElapsed={timeElapsed}
-              setTimeElapsed={setTimeElapsed}
-              isRunning={gameStarted && !isCompleted}
-              gameCompleted={isCompleted}
-            />
-          )}
+          <div className="lg:col-span-1">
+            <CluesPanel clues={samplePuzzle.clues} />
+          </div>
         </div>
 
         <CompletionModal
-          isOpen={isCompleted}
-          onClose={() => setIsCompleted(false)}
-          completionTime={timeElapsed}
-          onNewGame={handleResetGame}
+          isOpen={showCompletionModal}
+          onClose={() => setShowCompletionModal(false)}
+          completionTime={completionTime || 0}
+          onNewGame={handleStart}
         />
       </div>
     </div>
