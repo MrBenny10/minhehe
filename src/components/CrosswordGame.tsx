@@ -30,7 +30,7 @@ export interface Cell {
 
 // Swedish-themed 5x5 crossword - FULLY TESTED INTERSECTIONS
 const samplePuzzle = {
-  size: 8,
+  size: 7,
   clues: [
     // Across clues
     {
@@ -38,36 +38,36 @@ const samplePuzzle = {
       text: 'Swedish furniture giant (4)',
       direction: 'across' as const,
       startRow: 0,
-      startCol: 0,
+      startCol: 1,
       length: 4,
       solution: 'IKEA',
     },
     {
-      number: 5,
-      text: 'Capital of Sweden (9)',
+      number: 4,
+      text: 'Swedish word for cheers (4)',
       direction: 'across' as const,
       startRow: 2,
       startCol: 0,
-      length: 9,
-      solution: 'STOCKHOLM',
+      length: 4,
+      solution: 'SKAL',
+    },
+    {
+      number: 6,
+      text: 'Opposite of old (3)',
+      direction: 'across' as const,
+      startRow: 4,
+      startCol: 2,
+      length: 3,
+      solution: 'NEW',
     },
     {
       number: 7,
       text: 'Swedish university city (4)',
       direction: 'across' as const,
-      startRow: 4,
+      startRow: 6,
       startCol: 1,
       length: 4,
       solution: 'LUND',
-    },
-    {
-      number: 9,
-      text: 'Swedish chef and TV personality (5)',
-      direction: 'across' as const,
-      startRow: 6,
-      startCol: 2,
-      length: 5,
-      solution: 'OLIVER',
     },
 
     // Down clues
@@ -76,54 +76,36 @@ const samplePuzzle = {
       text: 'Cold northern region (3)',
       direction: 'down' as const,
       startRow: 0,
-      startCol: 0,
+      startCol: 1,
       length: 3,
-      solution: 'ICE',
+      solution: 'ICE', // I(from IKEA), C, E
     },
     {
       number: 2,
-      text: 'Swedish word for cheers (4)',
+      text: 'Large feline (4)',
       direction: 'down' as const,
       startRow: 0,
-      startCol: 1,
+      startCol: 2,
       length: 4,
-      solution: 'SKAL',
+      solution: 'LION', // From K(IKEA), K(SKAL), blank, L(LUND)
     },
     {
       number: 3,
       text: 'Past tense of eat (3)',
       direction: 'down' as const,
       startRow: 0,
-      startCol: 2,
-      length: 3,
-      solution: 'ATE',
-    },
-    {
-      number: 4,
-      text: 'Currency of many European countries (4)',
-      direction: 'down' as const,
-      startRow: 1,
-      startCol: 3,
-      length: 4,
-      solution: 'EURO',
-    },
-    {
-      number: 6,
-      text: 'Measurement of electrical resistance (3)',
-      direction: 'down' as const,
-      startRow: 3,
-      startCol: 6,
-      length: 3,
-      solution: 'OHM',
-    },
-    {
-      number: 8,
-      text: 'Opposite of old (3)',
-      direction: 'down' as const,
-      startRow: 4,
       startCol: 4,
       length: 3,
-      solution: 'NEW',
+      solution: 'ATE', // A(from IKEA), A(from SKAL), blank
+    },
+    {
+      number: 5,
+      text: 'Bird of prey (3)',
+      direction: 'down' as const,
+      startRow: 2,
+      startCol: 3,
+      length: 3,
+      solution: 'OWL', // L(from SKAL), W(from NEW), blank
     },
   ],
 };
