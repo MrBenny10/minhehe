@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import confetti from 'canvas-confetti';
 import { CrosswordGrid } from './CrosswordGrid';
 import { CluesPanel } from './CluesPanel';
 import { GameTimer } from './GameTimer';
@@ -42,12 +43,12 @@ const samplePuzzle = {
     },
     {
       number: 3,
-      text: 'Young sheep',
+      text: 'Swedish university city',
       direction: 'across' as const,
       startRow: 3,
       startCol: 1,
       length: 4,
-      solution: 'LAMB',
+      solution: 'LUND',
     },
 
     // Down clues
@@ -58,7 +59,7 @@ const samplePuzzle = {
       startRow: 0,
       startCol: 1,
       length: 4,
-      solution: 'SKAL', // S, K(from IKEA), A, L(from LAMB)
+      solution: 'SKAL', // S, K(from IKEA), A, L(from LUND)
     },
   ],
 };
@@ -71,6 +72,7 @@ export const CrosswordGame: React.FC = () => {
   const [showingErrors, setShowingErrors] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [completionTime, setCompletionTime] = useState<number | null>(null);
+  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
 
   // Initialize grid
   const initializeGrid = useCallback(() => {
@@ -138,8 +140,42 @@ export const CrosswordGame: React.FC = () => {
     if (isComplete) {
       setGameCompleted(true);
       setCompletionTime(timeElapsed);
+      
+      // Trigger confetti
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
     }
   }, [cells, timeElapsed]);
+
+  // Loading screen effect
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoadingScreen(false);
+    }, 2500);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showLoadingScreen) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex items-center justify-center">
+        <div className="text-center animate-fade-in">
+          <div className="animate-scale-in">
+            <img 
+              src={minHeheLogoSrc} 
+              alt="minHehe Logo" 
+              className="h-32 w-auto mx-auto mb-6 animate-pulse"
+            />
+          </div>
+          <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
+          <p className="text-xl text-muted-foreground animate-fade-in">Loading your crossword adventure...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted p-4">
@@ -166,6 +202,7 @@ export const CrosswordGame: React.FC = () => {
                 timeElapsed={timeElapsed}
                 setTimeElapsed={setTimeElapsed}
                 isRunning={gameStarted && !gameCompleted}
+                gameCompleted={gameCompleted}
               />
             </div>
             

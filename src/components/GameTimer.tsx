@@ -5,12 +5,14 @@ interface GameTimerProps {
   timeElapsed: number;
   setTimeElapsed: (time: number) => void;
   isRunning: boolean;
+  gameCompleted?: boolean;
 }
 
 export const GameTimer: React.FC<GameTimerProps> = ({
   timeElapsed,
   setTimeElapsed,
-  isRunning
+  isRunning,
+  gameCompleted = false
 }) => {
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -45,6 +47,9 @@ export const GameTimer: React.FC<GameTimerProps> = ({
       </div>
       {isRunning && (
         <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
+      )}
+      {gameCompleted && (
+        <div className="w-2 h-2 bg-primary rounded-full" />
       )}
     </div>
   );
