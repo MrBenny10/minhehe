@@ -80,7 +80,7 @@ const samplePuzzle: Puzzle = {
       text: "Swedish ideal of 'just right' (5)",
       direction: 'down',
       startRow: 0,
-      startCol: 3,
+      startCol: 2, // intersects at 'O' in VOLVO
       length: 5,
       solution: 'LAGOM',
     },
@@ -89,7 +89,7 @@ const samplePuzzle: Puzzle = {
       text: 'Prize named for Alfred (5)',
       direction: 'down',
       startRow: 0,
-      startCol: 2,
+      startCol: 3, // intersects at 'L' in VOLVO
       length: 5,
       solution: 'NOBEL',
     },
@@ -113,6 +113,7 @@ const samplePuzzle: Puzzle = {
     },
   ],
 };
+
 
 
 
