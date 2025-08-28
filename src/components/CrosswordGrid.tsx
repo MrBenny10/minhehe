@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Cell } from './CrosswordGame';
 import { cn } from '@/lib/utils';
 
@@ -23,6 +23,15 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   currentClue,
   gridSize = 5
 }) => {
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   // Helper function for auto-advance logic
   const autoAdvanceToNext = useCallback((cell: Cell) => {
     if (currentClue) {
@@ -83,52 +92,96 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   }, [cells, currentClue, onCellSelect]);
 
   const handleCellClick = useCallback((cell: Cell) => {
-    if (!cell.isBlocked) {
-      // Prevent mobile viewport jumping
-      if (window.innerWidth <= 768) {
-        // Create invisible overlay input for mobile
-        const overlay = document.createElement('input');
-        overlay.type = 'text';
-        overlay.style.position = 'fixed';
-        overlay.style.top = '-1000px';
-        overlay.style.left = '-1000px';
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-        overlay.maxLength = 1;
-        
-        document.body.appendChild(overlay);
-        overlay.focus();
-        
-        overlay.addEventListener('input', (e) => {
-          const value = (e.target as HTMLInputElement).value.slice(-1);
-          if (value.match(/[a-zA-Z]/) || value === '') {
-            onCellUpdate(cell.id, value);
-            if (value) autoAdvanceToNext(cell);
-          }
-        });
-        
-        overlay.addEventListener('keydown', (e) => {
-          if (e.key === 'Backspace') {
-            onCellUpdate(cell.id, '');
-          }
-        });
-        
-        // Clean up after a delay
-        setTimeout(() => {
-          if (overlay.parentNode) {
-            overlay.parentNode.removeChild(overlay);
-          }
-        }, 100);
-      }
-      
+    if (!cell.isBlocked && gameStarted) {
       // If cell is correct, auto-advance to next available cell instead of selecting it
       if (cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()) {
         autoAdvanceToNext(cell);
       } else {
         onCellSelect(cell.id);
+        
+        // Focus hidden input on mobile to capture keystrokes
+        if (isMobile && hiddenInputRef.current) {
+          hiddenInputRef.current.focus();
+        }
       }
     }
-  }, [onCellSelect, autoAdvanceToNext, onCellUpdate]);
+  }, [onCellSelect, autoAdvanceToNext, isMobile, gameStarted]);
+
+  const handleMobileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!selectedCell || !gameStarted) return;
+    
+    const value = e.target.value.slice(-1);
+    const selectedCellData = cells.find(c => c.id === selectedCell);
+    
+    if (selectedCellData && !selectedCellData.isBlocked) {
+      if (value.match(/[a-zA-Z]/) || value === '') {
+        onCellUpdate(selectedCell, value);
+        if (value) {
+          autoAdvanceToNext(selectedCellData);
+        }
+      }
+    }
+    
+    // Clear the hidden input
+    e.target.value = '';
+  }, [selectedCell, cells, onCellUpdate, autoAdvanceToNext, gameStarted]);
+
+  const handleMobileKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!selectedCell || !gameStarted) return;
+    
+    const selectedCellData = cells.find(c => c.id === selectedCell);
+    if (!selectedCellData || selectedCellData.isBlocked) return;
+
+    if (e.key === 'Backspace') {
+      e.preventDefault();
+      onCellUpdate(selectedCell, '');
+      
+      // Move to previous cell based on current clue direction
+      if (currentClue) {
+        if (currentClue.direction === 'across') {
+          const prevCol = selectedCellData.col - 1;
+          if (prevCol >= 0) {
+            const prevCell = cells.find(c => c.row === selectedCellData.row && c.col === prevCol && !c.isBlocked);
+            if (prevCell) onCellSelect(prevCell.id);
+          }
+        } else if (currentClue.direction === 'down') {
+          const prevRow = selectedCellData.row - 1;
+          if (prevRow >= 0) {
+            const prevCell = cells.find(c => c.row === prevRow && c.col === selectedCellData.col && !c.isBlocked);
+            if (prevCell) onCellSelect(prevCell.id);
+          }
+        }
+      }
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      const nextCol = selectedCellData.col + 1;
+      if (nextCol < 13) {
+        const nextCell = cells.find(c => c.row === selectedCellData.row && c.col === nextCol && !c.isBlocked);
+        if (nextCell) onCellSelect(nextCell.id);
+      }
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const prevCol = selectedCellData.col - 1;
+      if (prevCol >= 0) {
+        const prevCell = cells.find(c => c.row === selectedCellData.row && c.col === prevCol && !c.isBlocked);
+        if (prevCell) onCellSelect(prevCell.id);
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nextRow = selectedCellData.row + 1;
+      if (nextRow < 8) {
+        const nextCell = cells.find(c => c.row === nextRow && c.col === selectedCellData.col && !c.isBlocked);
+        if (nextCell) onCellSelect(nextCell.id);
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prevRow = selectedCellData.row - 1;
+      if (prevRow >= 0) {
+        const prevCell = cells.find(c => c.row === prevRow && c.col === selectedCellData.col && !c.isBlocked);
+        if (prevCell) onCellSelect(prevCell.id);
+      }
+    }
+  }, [selectedCell, cells, onCellUpdate, onCellSelect, gameStarted, currentClue]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent, cell: Cell) => {
     if (cell.isBlocked || !gameStarted) return;
@@ -223,10 +276,16 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     return 'active';
   };
 
-  // Auto-focus selected cell to show keyboard
+  // Auto-focus hidden input when cell is selected on mobile
   useEffect(() => {
-    if (selectedCell) {
-      // Small delay to ensure the DOM is ready
+    if (selectedCell && isMobile && hiddenInputRef.current && gameStarted) {
+      hiddenInputRef.current.focus();
+    }
+  }, [selectedCell, isMobile, gameStarted]);
+
+  // Auto-focus selected cell on desktop
+  useEffect(() => {
+    if (selectedCell && !isMobile) {
       setTimeout(() => {
         const cellElement = document.getElementById(`cell-${selectedCell}`);
         if (cellElement) {
@@ -234,10 +293,25 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         }
       }, 0);
     }
-  }, [selectedCell]);
+  }, [selectedCell, isMobile]);
 
   return (
     <div className="flex justify-center w-full h-full">
+      {/* Hidden input for mobile keystroke capture */}
+      {isMobile && (
+        <input
+          ref={hiddenInputRef}
+          type="text"
+          className="fixed -top-[1000px] -left-[1000px] opacity-0 pointer-events-none"
+          onChange={handleMobileInput}
+          onKeyDown={handleMobileKeyDown}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
+        />
+      )}
+      
       <div 
         className="grid gap-0.5 p-1 md:gap-1 md:p-2 bg-background border-2 border-grid-border rounded-lg"
         style={{ 
@@ -272,53 +346,76 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                   {cell.number}
                 </span>
               )}
-              <input
-                id={`cell-${cell.id}`}
-                type="text"
-                value={cell.value}
-                onChange={(e) => {
-                  // Prevent editing if cell is already correct
-                  if (cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()) {
-                    return;
-                  }
-                  const value = e.target.value.slice(-1); // Only take the last character
-                  if (value.match(/[a-zA-Z]/) || value === '') {
-                    onCellUpdate(cell.id, value);
-                  }
-                }}
-                onKeyDown={(e) => handleKeyDown(e, cell)}
-                onTouchStart={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleCellClick(cell);
-                }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleCellClick(cell);
-                }}
-                onFocus={(e) => {
-                  e.preventDefault();
-                  e.target.blur(); // Immediately blur to prevent mobile keyboard
-                  handleCellClick(cell);
-                }}
-                readOnly={cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()}
-                className={cn(
-                  "w-full h-full text-center text-[0.7rem] md:text-xs lg:text-sm font-mono font-bold border-2 rounded-sm",
-                  "focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200",
-                  "cursor-pointer select-none uppercase touch-manipulation",
-                  {
-                    "bg-grid-cell border-grid-border text-grid-text": status === 'active',
-                    "bg-grid-active border-primary": isSelected && status === 'active',
-                    "bg-grid-correct border-grid-correct text-white": status === 'correct',
-                    "bg-grid-incorrect border-destructive text-destructive-foreground animate-pulse-error": status === 'incorrect',
-                    "bg-muted border-muted text-muted-foreground cursor-not-allowed": status === 'inactive',
-                    "cursor-default": cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase(),
-                  }
-                )}
-                maxLength={1}
-                disabled={!gameStarted}
-              />
+              {isMobile ? (
+                // Mobile: Use div that looks like input but doesn't trigger keyboard
+                <div
+                  className={cn(
+                    "w-full h-full text-center text-[0.7rem] md:text-xs lg:text-sm font-mono font-bold border-2 rounded-sm",
+                    "cursor-pointer select-none uppercase touch-manipulation flex items-center justify-center",
+                    {
+                      "bg-grid-cell border-grid-border text-grid-text": status === 'active',
+                      "bg-grid-active border-primary": isSelected && status === 'active',
+                      "bg-grid-correct border-grid-correct text-white": status === 'correct',
+                      "bg-grid-incorrect border-destructive text-destructive-foreground animate-pulse-error": status === 'incorrect',
+                      "bg-muted border-muted text-muted-foreground cursor-not-allowed": status === 'inactive',
+                      "cursor-default": cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase(),
+                    }
+                  )}
+                  onTouchStart={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleCellClick(cell);
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleCellClick(cell);
+                  }}
+                >
+                  {cell.value}
+                </div>
+              ) : (
+                // Desktop: Use actual input
+                <input
+                  id={`cell-${cell.id}`}
+                  type="text"
+                  value={cell.value}
+                  onChange={(e) => {
+                    // Prevent editing if cell is already correct
+                    if (cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()) {
+                      return;
+                    }
+                    const value = e.target.value.slice(-1); // Only take the last character
+                    if (value.match(/[a-zA-Z]/) || value === '') {
+                      onCellUpdate(cell.id, value);
+                    }
+                  }}
+                  onKeyDown={(e) => handleKeyDown(e, cell)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleCellClick(cell);
+                  }}
+                  onFocus={(e) => {
+                    e.target.setSelectionRange(0, 0);
+                  }}
+                  readOnly={cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()}
+                  className={cn(
+                    "w-full h-full text-center text-[0.7rem] md:text-xs lg:text-sm font-mono font-bold border-2 rounded-sm",
+                    "focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200",
+                    "cursor-pointer select-none uppercase",
+                    {
+                      "bg-grid-cell border-grid-border text-grid-text": status === 'active',
+                      "bg-grid-active border-primary": isSelected && status === 'active',
+                      "bg-grid-correct border-grid-correct text-white": status === 'correct',
+                      "bg-grid-incorrect border-destructive text-destructive-foreground animate-pulse-error": status === 'incorrect',
+                      "bg-muted border-muted text-muted-foreground cursor-not-allowed": status === 'inactive',
+                      "cursor-default": cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase(),
+                    }
+                  )}
+                  maxLength={1}
+                  disabled={!gameStarted}
+                />
+              )}
             </div>
           );
         })}
