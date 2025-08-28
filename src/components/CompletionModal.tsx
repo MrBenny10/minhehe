@@ -45,7 +45,7 @@ export const CompletionModal: React.FC<CompletionModalProps> = ({
               {getPerformanceMessage(completionTime)}
             </p>
             <p className="text-muted-foreground">
-              You completed the mini crossword!
+              You conquered this minHehe puzzle!
             </p>
           </div>
 
