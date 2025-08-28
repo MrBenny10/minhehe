@@ -202,7 +202,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   return (
     <div className="flex justify-center w-full h-full">
       <div 
-        className="grid gap-0.5 p-1 md:gap-1 md:p-2 bg-background border-2 border-grid-border rounded-lg"
+        className="grid gap-0.5 p-1 md:gap-1 md:p-2 bg-background border-2 border-grid-border rounded-lg touch-none"
         style={{ 
           gridTemplateColumns: 'repeat(13, 1fr)',
           gridTemplateRows: 'repeat(8, 1fr)',
@@ -211,6 +211,8 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
           height: 'min(98vw * 8/13, 100vh - 120px)',
           aspectRatio: '13/8',
         }}
+        onTouchMove={(e) => e.preventDefault()}
+        onTouchStart={(e) => e.preventDefault()}
       >
         {cells.map((cell) => {
           const status = getCellStatus(cell);
