@@ -52,6 +52,30 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       
       if (nextCell) {
         onCellSelect(nextCell.id);
+      } else {
+        // Current word is complete, find the next incomplete word
+        const allClues = [
+          { number: 1, direction: 'across', startRow: 1, startCol: 0, length: 4 },
+          { number: 3, direction: 'across', startRow: 3, startCol: 1, length: 4 },
+          { number: 2, direction: 'down', startRow: 0, startCol: 1, length: 4 }
+        ];
+        
+        // Find a clue that has incomplete cells
+        for (const clue of allClues) {
+          if (clue.number === currentClue.number && clue.direction === currentClue.direction) continue;
+          
+          // Check if this clue has any incomplete cells
+          for (let i = 0; i < clue.length; i++) {
+            const checkRow = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
+            const checkCol = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
+            const checkCell = cells.find(c => c.row === checkRow && c.col === checkCol);
+            
+            if (checkCell && checkCell.value.toUpperCase() !== checkCell.answer.toUpperCase()) {
+              onCellSelect(checkCell.id);
+              return;
+            }
+          }
+        }
       }
     }
   }, [cells, currentClue, onCellSelect]);
