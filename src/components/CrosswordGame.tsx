@@ -42,8 +42,26 @@ const samplePuzzle = {
       length: 4,
       solution: 'IKEA',
     },
+    {
+      number: 4,
+      text: 'Swedish university city (4)',
+      direction: 'across' as const,
+      startRow: 3,
+      startCol: 1,
+      length: 4,
+      solution: 'LUND',
+    },
 
     // Down clues
+    {
+      number: 1,
+      text: 'Cold northern region (3)',
+      direction: 'down' as const,
+      startRow: 1,
+      startCol: 0,
+      length: 3,
+      solution: 'ICE', // I(from IKEA), C, E
+    },
     {
       number: 2,
       text: 'Swedish word for cheers (4)',
@@ -51,16 +69,34 @@ const samplePuzzle = {
       startRow: 0,
       startCol: 1,
       length: 4,
-      solution: 'SKAL', // S, K(from IKEA), A, L
+      solution: 'SKAL', // S, K(from IKEA), A(from LUND), L
     },
     {
       number: 3,
       text: 'Past tense of eat (3)',
       direction: 'down' as const,
       startRow: 1,
+      startCol: 2,
+      length: 3,
+      solution: 'ATE', // E(from IKEA), T, E
+    },
+    {
+      number: 5,
+      text: 'Visual works (3)',
+      direction: 'down' as const,
+      startRow: 1,
       startCol: 3,
       length: 3,
-      solution: 'ATE', // A(from IKEA), T, E
+      solution: 'ART', // A(from IKEA), R, T
+    },
+    {
+      number: 6,
+      text: 'Male offspring (3)',
+      direction: 'down' as const,
+      startRow: 2,
+      startCol: 4,
+      length: 3,
+      solution: 'SON', // N(from LUND), O, N
     },
   ],
 };
