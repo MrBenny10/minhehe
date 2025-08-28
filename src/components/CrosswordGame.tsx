@@ -28,6 +28,11 @@ export interface Cell {
   number?: number;
 }
 
+export interface Puzzle {
+  size: number;
+  clues: Clue[];
+}
+
 /**
  * 9x9 Swedish-themed crossword with proper intersections
  * Coordinates: row/col are 0-indexed
