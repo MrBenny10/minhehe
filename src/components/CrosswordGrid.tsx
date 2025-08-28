@@ -220,7 +220,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
             return (
               <div
                 key={cell.id}
-                className="aspect-square bg-foreground opacity-10 rounded-sm"
+                className="aspect-square bg-slate-900 dark:bg-slate-800 border border-slate-700 dark:border-slate-600 rounded-sm shadow-inner"
                 style={{ minWidth: '32px', minHeight: '32px' }}
               />
             );
