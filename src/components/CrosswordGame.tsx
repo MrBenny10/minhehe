@@ -33,41 +33,32 @@ const samplePuzzle = {
     // Across clues
     {
       number: 1,
-      text: 'Swedish car brand',
+      text: 'Swedish furniture store',
       direction: 'across' as const,
       startRow: 1,
       startCol: 0,
       length: 4,
-      solution: 'SAAB',
+      solution: 'IKEA',
     },
     {
       number: 3,
-      text: 'Famous Swedish pop group',
+      text: 'Young sheep',
       direction: 'across' as const,
       startRow: 3,
       startCol: 1,
       length: 4,
-      solution: 'ABBA',
+      solution: 'LAMB',
     },
 
     // Down clues
     {
       number: 2,
-      text: 'Swedish word for story',
+      text: 'Swedish word for cheers',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
       length: 4,
-      solution: 'SAGA', // S, A(from SAAB), G(intersect), A(from ABBA)
-    },
-    {
-      number: 4,
-      text: 'Letters from Swedish words',
-      direction: 'down' as const,
-      startRow: 1,
-      startCol: 2,
-      length: 3,
-      solution: 'ABB', // A(from SAAB), B(intersect), B(from ABBA)
+      solution: 'SKAL', // S, K(from IKEA), A, L(from LAMB)
     },
   ],
 };
