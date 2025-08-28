@@ -73,6 +73,7 @@ export const CrosswordGame: React.FC = () => {
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [completionTime, setCompletionTime] = useState<number | null>(null);
   const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+  const [currentClue, setCurrentClue] = useState<Clue | null>(null);
 
   // Initialize grid
   const initializeGrid = useCallback(() => {
@@ -115,10 +116,50 @@ export const CrosswordGame: React.FC = () => {
   }, []);
 
   const handleCellUpdate = useCallback((cellId: string, value: string) => {
-    setCells(prev => prev.map(cell => 
-      cell.id === cellId ? { ...cell, value: value.toUpperCase() } : cell
-    ));
-  }, []);
+    setCells(prev => {
+      const newCells = prev.map(cell => 
+        cell.id === cellId ? { ...cell, value: value.toUpperCase() } : cell
+      );
+      
+      // Auto-check for completion
+      setTimeout(() => {
+        const isComplete = newCells.every(cell => 
+          cell.isBlocked || cell.value.toUpperCase() === cell.answer.toUpperCase()
+        );
+        
+        if (isComplete && !gameCompleted) {
+          setGameCompleted(true);
+          setCompletionTime(timeElapsed);
+          
+          // Trigger confetti
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+          });
+        }
+      }, 100);
+      
+      return newCells;
+    });
+  }, [gameCompleted, timeElapsed]);
+
+  const handleCellSelect = useCallback((cellId: string) => {
+    setSelectedCell(cellId);
+    
+    // Find the clue for the selected cell
+    const [row, col] = cellId.split('-').map(Number);
+    const cellIndex = row * samplePuzzle.size + col;
+    const cell = cells[cellIndex];
+    
+    if (cell && cell.number) {
+      // Find the clue that starts with this number
+      const clue = samplePuzzle.clues.find(c => c.number === cell.number);
+      if (clue) {
+        setCurrentClue(clue);
+      }
+    }
+  }, [cells]);
 
   const handleStart = useCallback(() => {
     initializeGrid();
@@ -127,6 +168,7 @@ export const CrosswordGame: React.FC = () => {
     setCompletionTime(null);
     setShowingErrors(false);
     setTimeElapsed(0);
+    setCurrentClue(null);
   }, [initializeGrid]);
 
   const handleCheck = useCallback(() => {
@@ -209,7 +251,7 @@ export const CrosswordGame: React.FC = () => {
             <CrosswordGrid
               cells={cells}
               selectedCell={selectedCell}
-              onCellSelect={setSelectedCell}
+              onCellSelect={handleCellSelect}
               onCellUpdate={handleCellUpdate}
               showingErrors={showingErrors}
               gameStarted={gameStarted}
@@ -227,6 +269,22 @@ export const CrosswordGame: React.FC = () => {
             <CluesPanel clues={samplePuzzle.clues} />
           </div>
         </div>
+
+        {/* Fixed clue display at bottom */}
+        {gameStarted && currentClue && (
+          <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4 shadow-lg">
+            <div className="container mx-auto max-w-6xl">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded">
+                    {currentClue.number} {currentClue.direction}
+                  </span>
+                </div>
+                <p className="text-foreground font-medium">{currentClue.text}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         <CompletionModal
           isOpen={gameCompleted}
