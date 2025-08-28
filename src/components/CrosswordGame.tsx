@@ -152,17 +152,25 @@ export const CrosswordGame: React.FC = () => {
     
     // Find the clue for the selected cell
     const [row, col] = cellId.split('-').map(Number);
-    const cellIndex = row * samplePuzzle.size + col;
-    const cell = cells[cellIndex];
     
-    if (cell && cell.number) {
-      // Find the clue that starts with this number
-      const clue = samplePuzzle.clues.find(c => c.number === cell.number);
-      if (clue) {
-        setCurrentClue(clue);
+    // Find all clues that contain this cell
+    const matchingClues = samplePuzzle.clues.filter(clue => {
+      if (clue.direction === 'across') {
+        return row === clue.startRow && 
+               col >= clue.startCol && 
+               col < clue.startCol + clue.length;
+      } else {
+        return col === clue.startCol && 
+               row >= clue.startRow && 
+               row < clue.startRow + clue.length;
       }
+    });
+    
+    // If we have matching clues, use the first one (or implement logic to prefer across/down)
+    if (matchingClues.length > 0) {
+      setCurrentClue(matchingClues[0]);
     }
-  }, [cells]);
+  }, []);
 
   const handleStart = useCallback(() => {
     initializeGrid();
