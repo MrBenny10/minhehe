@@ -21,6 +21,41 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   gameStarted,
   currentClue
 }) => {
+  // Helper function for auto-advance logic
+  const autoAdvanceToNext = useCallback((cell: Cell) => {
+    if (currentClue) {
+      let nextCell = null;
+      
+      if (currentClue.direction === 'across') {
+        // Move right for across clues, skipping correct cells
+        let checkCol = cell.col + 1;
+        while (checkCol < 5) {
+          const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
+          if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
+            nextCell = candidateCell;
+            break;
+          }
+          checkCol++;
+        }
+      } else if (currentClue.direction === 'down') {
+        // Move down for down clues, skipping correct cells
+        let checkRow = cell.row + 1;
+        while (checkRow < 5) {
+          const candidateCell = cells.find(c => c.row === checkRow && c.col === cell.col && !c.isBlocked);
+          if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
+            nextCell = candidateCell;
+            break;
+          }
+          checkRow++;
+        }
+      }
+      
+      if (nextCell) {
+        onCellSelect(nextCell.id);
+      }
+    }
+  }, [cells, currentClue, onCellSelect]);
+
   const handleCellClick = useCallback((cell: Cell) => {
     if (!cell.isBlocked) {
       onCellSelect(cell.id);
@@ -30,78 +65,22 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   const handleKeyDown = useCallback((e: React.KeyboardEvent, cell: Cell) => {
     if (cell.isBlocked || !gameStarted) return;
 
+    // If cell is already correct, skip to next cell instead of allowing input
+    if (cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()) {
+      if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
+        e.preventDefault();
+        // Auto-advance to next available cell
+        autoAdvanceToNext(cell);
+        return;
+      }
+    }
+
     if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
       e.preventDefault();
       onCellUpdate(cell.id, e.key);
       
-      // Smart auto-advance based on current clue direction, skipping correct cells
-      if (currentClue) {
-        let nextCell = null;
-        
-        if (currentClue.direction === 'across') {
-          // Move right for across clues, skipping correct cells
-          let checkCol = cell.col + 1;
-          while (checkCol < 5) {
-            const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
-            if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
-              nextCell = candidateCell;
-              break;
-            }
-            checkCol++;
-          }
-        } else if (currentClue.direction === 'down') {
-          // Move down for down clues, skipping correct cells
-          let checkRow = cell.row + 1;
-          while (checkRow < 5) {
-            const candidateCell = cells.find(c => c.row === checkRow && c.col === cell.col && !c.isBlocked);
-            if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
-              nextCell = candidateCell;
-              break;
-            }
-            checkRow++;
-          }
-        }
-        
-        if (nextCell) {
-          onCellSelect(nextCell.id);
-        } else {
-          // We've reached the end of current word, find another word to continue with
-          // Find all available clues and pick the next one
-          const allClues = [
-            { number: 1, direction: 'across', startRow: 1, startCol: 0 },
-            { number: 3, direction: 'across', startRow: 3, startCol: 1 },
-            { number: 2, direction: 'down', startRow: 0, startCol: 1 }
-          ];
-          
-          // Find the next clue that's different from current
-          const currentIndex = allClues.findIndex(clue => 
-            clue.number === currentClue.number && clue.direction === currentClue.direction
-          );
-          
-          if (currentIndex !== -1) {
-            const nextClueIndex = (currentIndex + 1) % allClues.length;
-            const nextClue = allClues[nextClueIndex];
-            const nextStartCell = cells.find(c => 
-              c.row === nextClue.startRow && c.col === nextClue.startCol && !c.isBlocked
-            );
-            
-            if (nextStartCell) {
-              onCellSelect(nextStartCell.id);
-            }
-          }
-        }
-      } else {
-        // Default to moving right if no current clue context, skipping correct cells
-        let checkCol = cell.col + 1;
-        while (checkCol < 5) {
-          const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
-          if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
-            onCellSelect(candidateCell.id);
-            break;
-          }
-          checkCol++;
-        }
-      }
+      // Use the helper function for auto-advance
+      autoAdvanceToNext(cell);
     } else if (e.key === 'Backspace') {
       e.preventDefault();
       onCellUpdate(cell.id, '');
@@ -166,7 +145,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         if (prevCell) onCellSelect(prevCell.id);
       }
     }
-  }, [cells, onCellUpdate, onCellSelect, gameStarted, currentClue]);
+  }, [cells, onCellUpdate, onCellSelect, gameStarted, currentClue, autoAdvanceToNext]);
 
   const getCellStatus = (cell: Cell) => {
     if (cell.isBlocked) return 'blocked';
