@@ -4,6 +4,7 @@ import { CluesPanel } from './CluesPanel';
 import { GameTimer } from './GameTimer';
 import { GameControls } from './GameControls';
 import { CompletionModal } from './CompletionModal';
+import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 
 export interface Clue {
   number: number;
@@ -207,8 +208,18 @@ export const CrosswordGame: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted p-4">
       <div className="container mx-auto max-w-6xl">
         <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Mini Crossword</h1>
-          <p className="text-muted-foreground">Challenge yourself with our daily puzzle</p>
+          <div className="flex flex-col items-center space-y-4">
+            <img 
+              src={minHeheLogoSrc} 
+              alt="minHehe Logo" 
+              className="h-20 w-auto"
+            />
+            <div className="space-y-2">
+              <h1 className="text-4xl font-bold text-foreground">minHehe</h1>
+              <p className="text-lg text-muted-foreground font-medium">Fun crosswords for all, no paywall!</p>
+              <p className="text-sm text-muted-foreground">Challenge yourself with our daily puzzle</p>
+            </div>
+          </div>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
