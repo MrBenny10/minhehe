@@ -28,66 +28,66 @@ export interface Cell {
   number?: number;
 }
 
-// Simple 5x5 crossword with proper intersections
+// Swedish-themed 5x5 crossword with proper intersections
 const samplePuzzle = {
   size: 5,
   clues: [
     // Across clues
     {
       number: 1,
-      text: 'Hot beverage (3)',
+      text: 'Bright star (3)',
       direction: 'across' as const,
       startRow: 0,
-      startCol: 0,
+      startCol: 1,
       length: 3,
-      solution: 'TEA',
+      solution: 'SUN',
     },
     {
-      number: 4,
-      text: 'Large feline (3)',
+      number: 2,
+      text: 'Swedish furniture giant (4)',
       direction: 'across' as const,
-      startRow: 2,
+      startRow: 1,
       startCol: 0,
-      length: 3,
-      solution: 'CAT',
+      length: 4,
+      solution: 'IKEA',
     },
     {
-      number: 6,
-      text: 'Male offspring (3)',
+      number: 5,
+      text: 'Cold frozen water (3)',
       direction: 'across' as const,
-      startRow: 4,
-      startCol: 0,
+      startRow: 3,
+      startCol: 1,
       length: 3,
-      solution: 'SON',
+      solution: 'ICE',
     },
 
     // Down clues
     {
       number: 1,
-      text: 'Faucet (3)',
-      direction: 'down' as const,
-      startRow: 0,
-      startCol: 0,
-      length: 3,
-      solution: 'TAP', // T(shared with TEA), A(shared with CAT), P
-    },
-    {
-      number: 2,
-      text: 'Past tense of eat (3)',
+      text: 'Swedish word for cheers (4)',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
-      length: 3,
-      solution: 'EAT', // E(shared with TEA), A(shared with CAT), T
+      length: 4,
+      solution: 'SKAL', // S(shared with SUN), K(shared with IKEA), A, L
     },
     {
       number: 3,
-      text: 'Creative work (3)',
+      text: 'Scandinavian country (6)',
       direction: 'down' as const,
       startRow: 0,
-      startCol: 2,
+      startCol: 3,
+      length: 5,
+      solution: 'NORSE', // N(shared with SUN), O, R, S, E
+    },
+    {
+      number: 4,
+      text: 'Creative work (3)',
+      direction: 'down' as const,
+      startRow: 1,
+      startCol: 3,
       length: 3,
-      solution: 'ART', // A(shared with TEA), T(shared with CAT), T
+      solution: 'ART', // A(shared with IKEA), R, T
     },
   ],
 };
