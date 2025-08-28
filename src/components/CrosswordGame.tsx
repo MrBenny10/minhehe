@@ -210,7 +210,10 @@ export const CrosswordGame: React.FC = () => {
     setCompletionTime(null);
     setShowingErrors(false);
     setTimeElapsed(0);
-    setCurrentClue(null);
+    setCurrentClue(samplePuzzle.clues[0]); // Auto-select first clue
+    // Auto-select first cell of first clue
+    const firstClue = samplePuzzle.clues[0];
+    setSelectedCell(`${firstClue.startRow}-${firstClue.startCol}`);
   }, [initializeGrid]);
 
   const handleCheck = useCallback(() => {
