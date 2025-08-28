@@ -44,32 +44,32 @@ const samplePuzzle = {
     },
     {
       number: 3,
-      text: 'What Swedes say "Cheers!" (4)',
+      text: 'Swedish fish candy (4)',
       direction: 'across' as const,
       startRow: 2,
       startCol: 0,
       length: 4,
-      solution: 'SKAL',
+      solution: 'FISH',
     },
     {
       number: 5,
-      text: 'Viking boat (4)',
+      text: 'Swedish meatball seasoning (4)',
       direction: 'across' as const,
       startRow: 4,
       startCol: 1,
       length: 4,
-      solution: 'SHIP',
+      solution: 'DILL',
     },
 
     // Down clues
     {
       number: 1,
-      text: 'Swedish fish candy (4)',
+      text: 'Frozen water (3)',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
-      length: 4,
-      solution: 'FISH', // I(shared with IKEA), F, I, S(shared with SKAL)
+      length: 3,
+      solution: 'ICE', // I(shared with IKEA), C, E(shared with DILL)
     },
     {
       number: 2,
@@ -78,7 +78,7 @@ const samplePuzzle = {
       startRow: 0,
       startCol: 2,
       length: 4,
-      solution: 'SAAB', // K(shared with IKEA), S, A, A(shared with SKAL)
+      solution: 'SAAB', // K(shared with IKEA), A, A, I(shared with FISH)
     },
     {
       number: 4,
@@ -87,16 +87,16 @@ const samplePuzzle = {
       startRow: 0,
       startCol: 4,
       length: 4,
-      solution: 'TACK', // A(shared with IKEA), T, C, L(shared with SKAL)
+      solution: 'TACK', // A(shared with IKEA), C, K, H(shared with FISH)
     },
     {
       number: 6,
-      text: 'Creative work (3)',
+      text: 'What Swedes say for "cheers!" (4)',
       direction: 'down' as const,
-      startRow: 2,
+      startRow: 1,
       startCol: 3,
-      length: 3,
-      solution: 'ART', // L(shared with SKAL), R, H(shared with SHIP)
+      length: 4,
+      solution: 'SKAL', // E(shared with IKEA), K, A, L(shared with DILL)
     },
   ],
 };
