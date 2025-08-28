@@ -140,6 +140,7 @@ const samplePuzzle: Puzzle = {
   ],
 };
 
+
 export const CrosswordGame: React.FC = () => {
   const [cells, setCells] = useState<Cell[]>([]);
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
