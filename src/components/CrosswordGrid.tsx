@@ -57,10 +57,10 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       } else {
         // Current word is complete, find the next incomplete word
         const allClues = [
-          { number: 1, direction: 'across', startRow: 3, startCol: 1, length: 7 },
-          { number: 2, direction: 'down', startRow: 0, startCol: 4, length: 7 },
-          { number: 3, direction: 'down', startRow: 1, startCol: 2, length: 5 },
-          { number: 4, direction: 'down', startRow: 2, startCol: 6, length: 5 }
+          { number: 1, direction: 'across', startRow: 3, startCol: 0, length: 7 },
+          { number: 2, direction: 'down', startRow: 0, startCol: 3, length: 7 },
+          { number: 3, direction: 'down', startRow: 1, startCol: 1, length: 5 },
+          { number: 4, direction: 'down', startRow: 2, startCol: 5, length: 5 }
         ];
         
         // Find a clue that has incomplete cells
