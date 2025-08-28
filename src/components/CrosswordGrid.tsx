@@ -84,6 +84,43 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
 
   const handleCellClick = useCallback((cell: Cell) => {
     if (!cell.isBlocked) {
+      // Prevent mobile viewport jumping
+      if (window.innerWidth <= 768) {
+        // Create invisible overlay input for mobile
+        const overlay = document.createElement('input');
+        overlay.type = 'text';
+        overlay.style.position = 'fixed';
+        overlay.style.top = '-1000px';
+        overlay.style.left = '-1000px';
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        overlay.maxLength = 1;
+        
+        document.body.appendChild(overlay);
+        overlay.focus();
+        
+        overlay.addEventListener('input', (e) => {
+          const value = (e.target as HTMLInputElement).value.slice(-1);
+          if (value.match(/[a-zA-Z]/) || value === '') {
+            onCellUpdate(cell.id, value);
+            if (value) autoAdvanceToNext(cell);
+          }
+        });
+        
+        overlay.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace') {
+            onCellUpdate(cell.id, '');
+          }
+        });
+        
+        // Clean up after a delay
+        setTimeout(() => {
+          if (overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
+          }
+        }, 100);
+      }
+      
       // If cell is correct, auto-advance to next available cell instead of selecting it
       if (cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()) {
         autoAdvanceToNext(cell);
@@ -91,7 +128,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         onCellSelect(cell.id);
       }
     }
-  }, [onCellSelect, autoAdvanceToNext]);
+  }, [onCellSelect, autoAdvanceToNext, onCellUpdate]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent, cell: Cell) => {
     if (cell.isBlocked || !gameStarted) return;
@@ -252,14 +289,18 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                 onKeyDown={(e) => handleKeyDown(e, cell)}
                 onTouchStart={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   handleCellClick(cell);
                 }}
                 onClick={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   handleCellClick(cell);
                 }}
                 onFocus={(e) => {
-                  e.target.setSelectionRange(0, 0); // Prevent text selection
+                  e.preventDefault();
+                  e.target.blur(); // Immediately blur to prevent mobile keyboard
+                  handleCellClick(cell);
                 }}
                 readOnly={cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()}
                 className={cn(
