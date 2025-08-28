@@ -53,12 +53,12 @@ const samplePuzzle = {
     // Down clues
     {
       number: 2,
-      text: 'Swedish currency (first letter)',
+      text: 'Swedish word for story',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
       length: 4,
-      solution: 'KABA', // K, A(from SAAB), B(intersect), A(from ABBA)
+      solution: 'SAGA', // S, A(from SAAB), G(intersect), A(from ABBA)
     },
     {
       number: 4,
