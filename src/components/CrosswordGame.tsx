@@ -121,13 +121,14 @@ export const CrosswordGame: React.FC = () => {
         cell.id === cellId ? { ...cell, value: value.toUpperCase() } : cell
       );
       
-      // Auto-check for completion
-      setTimeout(() => {
-        const isComplete = newCells.every(cell => 
-          cell.isBlocked || cell.value.toUpperCase() === cell.answer.toUpperCase()
-        );
-        
-        if (isComplete && !gameCompleted) {
+      // Check for completion immediately
+      const isComplete = newCells.every(cell => 
+        cell.isBlocked || cell.value.toUpperCase() === cell.answer.toUpperCase()
+      );
+      
+      if (isComplete && !gameCompleted) {
+        // Use setTimeout to ensure state updates happen in correct order
+        setTimeout(() => {
           setGameCompleted(true);
           setCompletionTime(timeElapsed);
           
@@ -137,8 +138,8 @@ export const CrosswordGame: React.FC = () => {
             spread: 70,
             origin: { y: 0.6 }
           });
-        }
-      }, 100);
+        }, 0);
+      }
       
       return newCells;
     });
