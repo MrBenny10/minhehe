@@ -34,23 +34,19 @@ export interface Puzzle {
 }
 
 /**
- * 9x9 Swedish-themed crossword with clean intersections
- * (0-indexed; ■ = blocked)
+ * Fixed 9x9 Swedish-themed crossword
  *
- * Row0: ■ ■ V O L V O ■ N
- * Row1: ■ ■ ■ ■ ■ ■ ■ ■ O
- * Row2: ■ ■ ■ L ■ ■ I ■ B
- * Row3: A B B A ■ ■ K ■ E
- * Row4: ■ ■ ■ G ■ ■ E ■ L
- * Row5: ■ S M O R G A S ■
- * Row6: ■ ■ ■ M ■ ■ ■ K ■
- * Row7: ■ U P P S A L A ■
- * Row8: ■ ■ ■ ■ ■ ■ ■ L ■
+ * Row0: ■ V O L V O ■
+ * Row1: ■ ■ ■ ■ ■ N
+ * Row2: A B B A ■ O
+ * Row3: ■ ■ ■ G ■ B
+ * Row4: ■ S M O R G A S
+ * Row5: ■ ■ ■ M ■ E
+ * Row6: ■ U P P S A L A
+ * Row7: ■ ■ ■ ■ ■ L
  *
- * Across: 1A VOLVO, 4A ABBA, 6A SMORGAS, 8A UPPSALA
- * Down:   2D LAGOM, 3D NOBEL, 5D IKEA, 7D SKAL
- * Key crossings: LAGOM×ABBA at (3,3)=A; LAGOM×SMORGAS at (5,3)=O;
- *                IKEA×SMORGAS at (5,6)=A; SKAL×UPPSALA at (7,7)=A
+ * Across: VOLVO, ABBA, SMORGAS, UPPSALA
+ * Down:   LAGOM, NOBEL, IKEA, SKAL
  */
 const samplePuzzle: Puzzle = {
   size: 9,
@@ -60,28 +56,36 @@ const samplePuzzle: Puzzle = {
       number: 1,
       text: 'Swedish carmaker (5)',
       direction: 'across',
-      startRow: 0, startCol: 2, length: 5,
+      startRow: 0,
+      startCol: 1,
+      length: 5,
       solution: 'VOLVO',
     },
     {
       number: 4,
       text: 'Swedish pop group (4)',
       direction: 'across',
-      startRow: 3, startCol: 0, length: 4,
+      startRow: 2,
+      startCol: 0,
+      length: 4,
       solution: 'ABBA',
     },
     {
       number: 6,
       text: "Part of 'smorgasbord' (7)",
       direction: 'across',
-      startRow: 5, startCol: 1, length: 7,
+      startRow: 4,
+      startCol: 1,
+      length: 7,
       solution: 'SMORGAS',
     },
     {
       number: 8,
       text: 'University city in Sweden (7)',
       direction: 'across',
-      startRow: 7, startCol: 1, length: 7,
+      startRow: 6,
+      startCol: 1,
+      length: 7,
       solution: 'UPPSALA',
     },
 
@@ -90,34 +94,40 @@ const samplePuzzle: Puzzle = {
       number: 2,
       text: "Swedish ideal of 'just right' (5)",
       direction: 'down',
-      startRow: 2, startCol: 3, length: 5,
+      startRow: 0,
+      startCol: 3,
+      length: 5,
       solution: 'LAGOM',
     },
     {
       number: 3,
       text: 'Prize named for Alfred (5)',
       direction: 'down',
-      startRow: 0, startCol: 8, length: 5,
+      startRow: 0,
+      startCol: 6,
+      length: 5,
       solution: 'NOBEL',
     },
     {
       number: 5,
       text: 'Flat-pack furniture giant (4)',
       direction: 'down',
-      startRow: 2, startCol: 6, length: 4,
+      startRow: 2,
+      startCol: 5,
+      length: 4,
       solution: 'IKEA',
     },
     {
       number: 7,
       text: 'Swedish “cheers!” (4)',
       direction: 'down',
-      startRow: 5, startCol: 7, length: 4,
+      startRow: 4,
+      startCol: 7,
+      length: 4,
       solution: 'SKAL',
     },
   ],
 };
-
-
 
 export const CrosswordGame: React.FC = () => {
   const [cells, setCells] = useState<Cell[]>([]);
@@ -147,7 +157,6 @@ export const CrosswordGame: React.FC = () => {
       }
     }
 
-    // Place answers & clue numbers
     samplePuzzle.clues.forEach((clue) => {
       for (let i = 0; i < clue.length; i++) {
         const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
