@@ -30,7 +30,7 @@ export interface Cell {
 
 // Swedish-themed 5x5 crossword - FULLY TESTED INTERSECTIONS
 const samplePuzzle = {
-  size: 7,
+  size: 5,
   clues: [
     // Across clues
     {
@@ -38,65 +38,29 @@ const samplePuzzle = {
       text: 'Swedish furniture giant (4)',
       direction: 'across' as const,
       startRow: 1,
-      startCol: 1,
+      startCol: 0,
       length: 4,
       solution: 'IKEA',
-    },
-    {
-      number: 4,
-      text: 'Swedish word for cheers (4)',
-      direction: 'across' as const,
-      startRow: 3,
-      startCol: 3,
-      length: 4,
-      solution: 'SKAL',
-    },
-    {
-      number: 6,
-      text: 'Past tense of eat (3)',
-      direction: 'across' as const,
-      startRow: 5,
-      startCol: 1,
-      length: 3,
-      solution: 'ATE',
     },
 
     // Down clues
     {
-      number: 1,
-      text: 'Cold northern region (3)',
-      direction: 'down' as const,
-      startRow: 1,
-      startCol: 1,
-      length: 3,
-      solution: 'ICE', // I(from IKEA), C, E(from ATE)
-    },
-    {
       number: 2,
-      text: 'Large feline (4)',
+      text: 'Swedish word for cheers (4)',
       direction: 'down' as const,
-      startRow: 1,
-      startCol: 2,
+      startRow: 0,
+      startCol: 1,
       length: 4,
-      solution: 'LION', // K(from IKEA), then L, I, O, N down
+      solution: 'SKAL', // S, K(from IKEA), A, L
     },
     {
       number: 3,
-      text: 'Item of clothing (3)',
+      text: 'Past tense of eat (3)',
       direction: 'down' as const,
       startRow: 1,
-      startCol: 4,
+      startCol: 3,
       length: 3,
-      solution: 'HAT', // A(from IKEA), then H, A, T down  
-    },
-    {
-      number: 5,
-      text: 'Swedish university city (4)',
-      direction: 'down' as const,
-      startRow: 3,
-      startCol: 6,
-      length: 4,
-      solution: 'LUND', // L(from SKAL), then U, N, D down
+      solution: 'ATE', // A(from IKEA), T, E
     },
   ],
 };
