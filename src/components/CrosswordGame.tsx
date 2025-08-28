@@ -247,6 +247,18 @@ export const CrosswordGame: React.FC = () => {
                 gameCompleted={gameCompleted}
               />
             </div>
+
+            {/* Current clue display - above the grid for mobile visibility */}
+            {gameStarted && currentClue && (
+              <div className="bg-card border border-border rounded-lg p-4 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded">
+                    {currentClue.number} {currentClue.direction}
+                  </span>
+                  <p className="text-foreground font-medium">{currentClue.text}</p>
+                </div>
+              </div>
+            )}
             
             <CrosswordGrid
               cells={cells}
@@ -269,22 +281,6 @@ export const CrosswordGame: React.FC = () => {
             <CluesPanel clues={samplePuzzle.clues} />
           </div>
         </div>
-
-        {/* Fixed clue display at bottom */}
-        {gameStarted && currentClue && (
-          <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4 shadow-lg">
-            <div className="container mx-auto max-w-6xl">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded">
-                    {currentClue.number} {currentClue.direction}
-                  </span>
-                </div>
-                <p className="text-foreground font-medium">{currentClue.text}</p>
-              </div>
-            </div>
-          </div>
-        )}
 
         <CompletionModal
           isOpen={gameCompleted}
