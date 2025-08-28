@@ -29,74 +29,54 @@ export interface Cell {
 }
 
 // Fun Swedish-themed 5x5 crossword with proper intersections
+// Grid layout:
+//   0 1 2 3 4
+// 0 ■ S U N ■
+// 1 ■ K ■ O ■  
+// 2 ■ A L L ■
+// 3 ■ L ■ R ■
+// 4 ■ ■ ■ D ■
 const samplePuzzle = {
   size: 5,
   clues: [
     // Across clues
     {
       number: 1,
-      text: 'Swedish furniture giant (4)',
+      text: 'What lights up Sweden in summer (3)',
       direction: 'across' as const,
       startRow: 0,
       startCol: 1,
-      length: 4,
-      solution: 'IKEA',
+      length: 3,
+      solution: 'SUN',
     },
     {
       number: 3,
-      text: 'Swedish fish candy (4)',
+      text: 'Everything in Swedish (3)', 
       direction: 'across' as const,
       startRow: 2,
-      startCol: 0,
-      length: 4,
-      solution: 'FISH',
-    },
-    {
-      number: 5,
-      text: 'Swedish meatball seasoning (4)',
-      direction: 'across' as const,
-      startRow: 4,
       startCol: 1,
-      length: 4,
-      solution: 'DILL',
+      length: 3,
+      solution: 'ALL',
     },
 
     // Down clues
     {
       number: 1,
-      text: 'Frozen water (3)',
+      text: 'What Swedes say for "cheers!" (4)',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
-      length: 3,
-      solution: 'ICE', // I(shared with IKEA), C, E(shared with DILL)
+      length: 4,
+      solution: 'SKAL', // S(shared with SUN), K, A(shared with ALL), L
     },
     {
       number: 2,
-      text: 'Swedish car brand (4)',
+      text: 'Swedish word for "north" (4)',
       direction: 'down' as const,
       startRow: 0,
-      startCol: 2,
-      length: 4,
-      solution: 'SAAB', // K(shared with IKEA), A, A, I(shared with FISH)
-    },
-    {
-      number: 4,
-      text: 'Swedish word for "thank you" (4)',
-      direction: 'down' as const,
-      startRow: 0,
-      startCol: 4,
-      length: 4,
-      solution: 'TACK', // A(shared with IKEA), C, K, H(shared with FISH)
-    },
-    {
-      number: 6,
-      text: 'What Swedes say for "cheers!" (4)',
-      direction: 'down' as const,
-      startRow: 1,
       startCol: 3,
       length: 4,
-      solution: 'SKAL', // E(shared with IKEA), K, A, L(shared with DILL)
+      solution: 'NORD', // N(shared with SUN), O, R, D
     },
   ],
 };
