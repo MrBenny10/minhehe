@@ -37,7 +37,7 @@ const samplePuzzle = {
       number: 1,
       text: 'Swedish furniture giant (4)',
       direction: 'across' as const,
-      startRow: 0,
+      startRow: 1,
       startCol: 1,
       length: 4,
       solution: 'IKEA',
@@ -46,28 +46,19 @@ const samplePuzzle = {
       number: 4,
       text: 'Swedish word for cheers (4)',
       direction: 'across' as const,
-      startRow: 2,
-      startCol: 0,
+      startRow: 3,
+      startCol: 3,
       length: 4,
       solution: 'SKAL',
     },
     {
       number: 6,
-      text: 'Opposite of old (3)',
+      text: 'Past tense of eat (3)',
       direction: 'across' as const,
-      startRow: 4,
-      startCol: 2,
-      length: 3,
-      solution: 'NEW',
-    },
-    {
-      number: 7,
-      text: 'Swedish university city (4)',
-      direction: 'across' as const,
-      startRow: 6,
+      startRow: 5,
       startCol: 1,
-      length: 4,
-      solution: 'LUND',
+      length: 3,
+      solution: 'ATE',
     },
 
     // Down clues
@@ -75,37 +66,37 @@ const samplePuzzle = {
       number: 1,
       text: 'Cold northern region (3)',
       direction: 'down' as const,
-      startRow: 0,
+      startRow: 1,
       startCol: 1,
       length: 3,
-      solution: 'ICE', // I(from IKEA), C, E
+      solution: 'ICE', // I(from IKEA), C, E(from ATE)
     },
     {
       number: 2,
       text: 'Large feline (4)',
       direction: 'down' as const,
-      startRow: 0,
+      startRow: 1,
       startCol: 2,
       length: 4,
-      solution: 'LION', // From K(IKEA), K(SKAL), blank, L(LUND)
+      solution: 'LION', // K(from IKEA), then L, I, O, N down
     },
     {
       number: 3,
-      text: 'Past tense of eat (3)',
+      text: 'Item of clothing (3)',
       direction: 'down' as const,
-      startRow: 0,
+      startRow: 1,
       startCol: 4,
       length: 3,
-      solution: 'ATE', // A(from IKEA), A(from SKAL), blank
+      solution: 'HAT', // A(from IKEA), then H, A, T down  
     },
     {
       number: 5,
-      text: 'Bird of prey (3)',
+      text: 'Swedish university city (4)',
       direction: 'down' as const,
-      startRow: 2,
-      startCol: 3,
-      length: 3,
-      solution: 'OWL', // L(from SKAL), W(from NEW), blank
+      startRow: 3,
+      startCol: 6,
+      length: 4,
+      solution: 'LUND', // L(from SKAL), then U, N, D down
     },
   ],
 };
