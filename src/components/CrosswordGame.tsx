@@ -28,16 +28,20 @@ export interface Cell {
   number?: number;
 }
 
-// Challenging Swedish-themed 5x5 crossword with longer words
+// Challenging Swedish-themed 9x9 crossword with proper intersections
 // Grid layout:
-//   0 1 2 3 4
-// 0 A B B A ■
-// 1 ■ L ■ ■ ■
-// 2 V O L V O
-// 3 ■ R ■ ■ ■
-// 4 ■ N ■ ■ ■
+//   0 1 2 3 4 5 6 7 8
+// 0 ■ ■ A B B A ■ ■ ■
+// 1 ■ ■ ■ L ■ ■ ■ ■ ■
+// 2 S T O C K H O L M
+// 3 ■ ■ ■ K ■ ■ ■ ■ ■
+// 4 ■ I K E A ■ ■ ■ ■
+// 5 ■ ■ ■ ■ ■ ■ ■ ■ ■
+// 6 ■ ■ ■ ■ ■ ■ ■ ■ ■
+// 7 ■ ■ ■ ■ ■ ■ ■ ■ ■
+// 8 ■ ■ ■ ■ ■ ■ ■ ■ ■
 const samplePuzzle = {
-  size: 5,
+  size: 9,
   clues: [
     // Across clues
     {
@@ -45,47 +49,56 @@ const samplePuzzle = {
       text: 'Famous Swedish pop group that won Eurovision (4)',
       direction: 'across' as const,
       startRow: 0,
-      startCol: 0,
+      startCol: 2,
       length: 4,
       solution: 'ABBA',
     },
     {
-      number: 5,
-      text: 'Swedish car manufacturer from Gothenburg (5)',
+      number: 3,
+      text: 'Capital of Sweden (9)',
       direction: 'across' as const,
       startRow: 2,
       startCol: 0,
-      length: 5,
-      solution: 'VOLVO',
+      length: 9,
+      solution: 'STOCKHOLM',
+    },
+    {
+      number: 5,
+      text: 'Swedish furniture giant (4)',
+      direction: 'across' as const,
+      startRow: 4,
+      startCol: 1,
+      length: 4,
+      solution: 'IKEA',
     },
 
     // Down clues
     {
       number: 2,
-      text: 'Swedish word for "blue" (3)',
-      direction: 'down' as const,
-      startRow: 0,
-      startCol: 1,
-      length: 3,
-      solution: 'BLA', // B(ABBA), L, O(VOLVO)
-    },
-    {
-      number: 3,
-      text: 'Swedish word for "bread" (4)', 
-      direction: 'down' as const,
-      startRow: 0,
-      startCol: 2,
-      length: 3,
-      solution: 'BRO', // B(ABBA), ■, L(VOLVO)
-    },
-    {
-      number: 4,
-      text: 'Swedish word for "all" (4)',
+      text: 'Swedish car manufacturer (5)',
       direction: 'down' as const,
       startRow: 0,
       startCol: 3,
+      length: 5,
+      solution: 'VOLVO', // B(ABBA), L, C(STOCKHOLM), K, E(IKEA)
+    },
+    {
+      number: 4,
+      text: 'What Swedes say for "cheers!" (4)',
+      direction: 'down' as const,
+      startRow: 0,
+      startCol: 5,
       length: 3,
-      solution: 'ALL', // A(ABBA), ■, V(VOLVO)
+      solution: 'SKA', // A(ABBA), ■, H(STOCKHOLM)
+    },
+    {
+      number: 6,
+      text: 'Swedish word for "love" (4)',
+      direction: 'down' as const,
+      startRow: 2,
+      startCol: 8,
+      length: 3,
+      solution: 'KAR', // M(STOCKHOLM), ■, ■
     },
   ],
 };
@@ -304,6 +317,7 @@ export const CrosswordGame: React.FC = () => {
               showingErrors={showingErrors}
               gameStarted={gameStarted}
               currentClue={currentClue}
+              gridSize={samplePuzzle.size}
             />
             
             <div className="flex justify-center">

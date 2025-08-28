@@ -9,7 +9,8 @@ interface CrosswordGridProps {
   onCellUpdate: (id: string, value: string) => void;
   showingErrors: boolean;
   gameStarted: boolean;
-  currentClue?: any; // Add current clue to know direction
+  currentClue?: any;
+  gridSize?: number; // Add gridSize prop
 }
 
 export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
@@ -19,7 +20,8 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   onCellUpdate,
   showingErrors,
   gameStarted,
-  currentClue
+  currentClue,
+  gridSize = 9
 }) => {
   // Helper function for auto-advance logic
   const autoAdvanceToNext = useCallback((cell: Cell) => {
@@ -29,7 +31,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       if (currentClue.direction === 'across') {
         // Move right for across clues, skipping correct cells
         let checkCol = cell.col + 1;
-        while (checkCol < 5) {
+        while (checkCol < gridSize) {
           const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
           if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
             nextCell = candidateCell;
@@ -40,7 +42,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       } else if (currentClue.direction === 'down') {
         // Move down for down clues, skipping correct cells
         let checkRow = cell.row + 1;
-        while (checkRow < 5) {
+        while (checkRow < gridSize) {
           const candidateCell = cells.find(c => c.row === checkRow && c.col === cell.col && !c.isBlocked);
           if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
             nextCell = candidateCell;
@@ -148,7 +150,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
       const nextCol = cell.col + 1;
-      if (nextCol < 5) {
+      if (nextCol < gridSize) {
         const nextCell = cells.find(c => c.row === cell.row && c.col === nextCol && !c.isBlocked);
         if (nextCell) onCellSelect(nextCell.id);
       }
@@ -162,7 +164,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       const nextRow = cell.row + 1;
-      if (nextRow < 5) {
+      if (nextRow < gridSize) {
         const nextCell = cells.find(c => c.row === nextRow && c.col === cell.col && !c.isBlocked);
         if (nextCell) onCellSelect(nextCell.id);
       }
@@ -202,7 +204,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
 
   return (
     <div className="flex justify-center">
-      <div className="grid grid-cols-5 gap-1 p-4 bg-background border-2 border-grid-border rounded-lg">
+      <div className={`grid gap-1 p-4 bg-background border-2 border-grid-border rounded-lg`} style={{ gridTemplateColumns: `repeat(${gridSize}, minmax(0, 1fr))` }}>
         {cells.map((cell) => {
           const status = getCellStatus(cell);
           const isSelected = selectedCell === cell.id;
