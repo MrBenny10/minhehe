@@ -127,11 +127,11 @@ export const CrosswordGame: React.FC = () => {
       );
       
       if (isComplete && !gameCompleted) {
-        // Stop timer immediately
+        // Stop timer and complete game immediately in the same render cycle
         setGameCompleted(true);
         setCompletionTime(timeElapsed);
         
-        // Trigger confetti after a brief delay to ensure state is updated
+        // Trigger confetti after a brief delay
         setTimeout(() => {
           confetti({
             particleCount: 100,
