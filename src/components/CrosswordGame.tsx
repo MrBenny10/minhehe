@@ -25,7 +25,7 @@ export interface Cell {
   number?: number;
 }
 
-// Your crossword with proper intersections
+// Crossword with proper letter intersections
 const samplePuzzle = {
   size: 5,
   clues: [
@@ -43,28 +43,28 @@ const samplePuzzle = {
       number: 4,
       text: 'Host of the 2028 Olympics, for short',
       direction: 'across' as const,
-      startRow: 2,
-      startCol: 2,
+      startRow: 1,
+      startCol: 0,
       length: 3,
       solution: 'USA',
     },
     {
       number: 6,
+      text: 'Political commentator Jen',
+      direction: 'across' as const,
+      startRow: 2,
+      startCol: 1,
+      length: 5,
+      solution: 'PSAKI',
+    },
+    {
+      number: 8,
       text: 'Black suit',
       direction: 'across' as const,
       startRow: 3,
       startCol: 0,
       length: 5,
       solution: 'CLUBS',
-    },
-    {
-      number: 8,
-      text: 'Political commentator Jen',
-      direction: 'across' as const,
-      startRow: 1,
-      startCol: 0,
-      length: 5,
-      solution: 'PSAKI',
     },
     {
       number: 9,
@@ -84,7 +84,7 @@ const samplePuzzle = {
       startRow: 0,
       startCol: 0,
       length: 5,
-      solution: 'PULSE', // P(PUB), S(PSAKI), L(CLUBS), E(RELAX) + U between
+      solution: 'PULSE', // P(PUB), U(USA), L(CLUBS), E(RELAX), intersecting at column 0
     },
     {
       number: 3,
@@ -93,7 +93,7 @@ const samplePuzzle = {
       startRow: 0,
       startCol: 1,
       length: 5,
-      solution: 'USUAL', // U(PUB), S(PSAKI), A(intersect), L(CLUBS), A(RELAX)
+      solution: 'USUAL', // U(PUB), S(USA), U(CLUBS), A(intersects), L(RELAX)
     },
     {
       number: 5,
@@ -102,25 +102,25 @@ const samplePuzzle = {
       startRow: 0,
       startCol: 2,
       length: 5,
-      solution: 'BABKA', // B(PUB), A(PSAKI), B(intersect), U(CLUBS), A(RELAX)
+      solution: 'BABKA', // B(PUB), A(USA), B(intersects), K(intersects), A(RELAX)
     },
     {
       number: 7,
       text: 'Skill practiced on dummies, for short',
       direction: 'down' as const,
-      startRow: 1,
+      startRow: 2,
       startCol: 3,
       length: 3,
-      solution: 'CPR', // K(PSAKI), B(CLUBS), L(RELAX)
+      solution: 'CPR', // A(PSAKI), B(CLUBS), L(RELAX)
     },
     {
       number: 10,
       text: 'Age at which Tiger Woods made his first hole-in-one',
       direction: 'down' as const,
-      startRow: 1,
+      startRow: 2,
       startCol: 4,
       length: 3,
-      solution: 'SIX', // I(PSAKI), S(CLUBS), X(RELAX)
+      solution: 'SIX', // K(PSAKI), S(CLUBS), X(RELAX)
     },
   ],
 };
