@@ -250,6 +250,10 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                   }
                 }}
                 onKeyDown={(e) => handleKeyDown(e, cell)}
+                onTouchStart={(e) => {
+                  e.preventDefault();
+                  handleCellClick(cell);
+                }}
                 onClick={(e) => {
                   e.preventDefault();
                   handleCellClick(cell);
@@ -261,7 +265,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                 className={cn(
                   "w-full h-full text-center text-[0.7rem] md:text-xs lg:text-sm font-mono font-bold border-2 rounded-sm",
                   "focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200",
-                  "cursor-pointer select-none uppercase",
+                  "cursor-pointer select-none uppercase touch-manipulation",
                   {
                     "bg-grid-cell border-grid-border text-grid-text": status === 'active',
                     "bg-grid-active border-primary": isSelected && status === 'active',
