@@ -3,7 +3,7 @@ import { Clock } from 'lucide-react';
 
 interface GameTimerProps {
   timeElapsed: number;
-  setTimeElapsed: (time: number) => void;
+  setTimeElapsed: React.Dispatch<React.SetStateAction<number>>;
   isRunning: boolean;
   gameCompleted?: boolean;
 }
@@ -19,7 +19,7 @@ export const GameTimer: React.FC<GameTimerProps> = ({
     
     if (isRunning) {
       interval = setInterval(() => {
-        setTimeElapsed(timeElapsed + 1);
+        setTimeElapsed(prev => prev + 1);
       }, 1000);
     }
 
@@ -28,7 +28,7 @@ export const GameTimer: React.FC<GameTimerProps> = ({
         clearInterval(interval);
       }
     };
-  }, [isRunning, timeElapsed, setTimeElapsed]);
+  }, [isRunning, setTimeElapsed]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
