@@ -37,27 +37,20 @@ export interface Puzzle {
  * 9x9 Swedish-themed crossword with clean intersections
  * (0-indexed; ■ = blocked)
  *
- * Row0: A ■ V O L V O ■ ■
- * Row1: L ■ ■ ■ A ■ ■ ■ ■
- * Row2: A B B A G ■ I ■ ■
- * Row3: N ■ ■ ■ O ■ K ■ ■
- * Row4: D ■ ■ ■ M ■ E ■ ■
+ * Row0: ■ ■ V O L V O ■ N
+ * Row1: ■ ■ ■ ■ ■ ■ ■ ■ O
+ * Row2: ■ ■ ■ L ■ ■ I ■ B
+ * Row3: A B B A ■ ■ K ■ E
+ * Row4: ■ ■ ■ G ■ ■ E ■ L
  * Row5: ■ S M O R G A S ■
- * Row6: ■ ■ ■ ■ ■ ■ ■ K ■
+ * Row6: ■ ■ ■ M ■ ■ ■ K ■
  * Row7: ■ U P P S A L A ■
  * Row8: ■ ■ ■ ■ ■ ■ ■ L ■
  *
- * Across:
- * 1A VOLVO   (row 0, col 2)
- * 4A ABBA    (row 2, col 0)
- * 6A SMORGAS (row 5, col 1)
- * 8A UPPSALA (row 7, col 1)
- *
- * Down:
- * 2D LAGOM (row 0, col 4)
- * 3D ALAND (row 0, col 0)
- * 5D IKEA  (row 2, col 6)
- * 7D SKAL  (row 5, col 7)
+ * Across: 1A VOLVO, 4A ABBA, 6A SMORGAS, 8A UPPSALA
+ * Down:   2D LAGOM, 3D NOBEL, 5D IKEA, 7D SKAL
+ * Key crossings: LAGOM×ABBA at (3,3)=A; LAGOM×SMORGAS at (5,3)=O;
+ *                IKEA×SMORGAS at (5,6)=A; SKAL×UPPSALA at (7,7)=A
  */
 const samplePuzzle: Puzzle = {
   size: 9,
@@ -67,36 +60,28 @@ const samplePuzzle: Puzzle = {
       number: 1,
       text: 'Swedish carmaker (5)',
       direction: 'across',
-      startRow: 0,
-      startCol: 2,
-      length: 5,
+      startRow: 0, startCol: 2, length: 5,
       solution: 'VOLVO',
     },
     {
       number: 4,
       text: 'Swedish pop group (4)',
       direction: 'across',
-      startRow: 2,
-      startCol: 0,
-      length: 4,
+      startRow: 3, startCol: 0, length: 4,
       solution: 'ABBA',
     },
     {
       number: 6,
       text: "Part of 'smorgasbord' (7)",
       direction: 'across',
-      startRow: 5,
-      startCol: 1,
-      length: 7,
+      startRow: 5, startCol: 1, length: 7,
       solution: 'SMORGAS',
     },
     {
       number: 8,
-      text: 'University city north of Stockholm (7)',
+      text: 'University city in Sweden (7)',
       direction: 'across',
-      startRow: 7,
-      startCol: 1,
-      length: 7,
+      startRow: 7, startCol: 1, length: 7,
       solution: 'UPPSALA',
     },
 
@@ -105,40 +90,33 @@ const samplePuzzle: Puzzle = {
       number: 2,
       text: "Swedish ideal of 'just right' (5)",
       direction: 'down',
-      startRow: 0,
-      startCol: 4,
-      length: 5,
+      startRow: 2, startCol: 3, length: 5,
       solution: 'LAGOM',
     },
     {
       number: 3,
-      text: 'Baltic archipelago between Sweden and Finland (5)',
+      text: 'Prize named for Alfred (5)',
       direction: 'down',
-      startRow: 0,
-      startCol: 0,
-      length: 5,
-      solution: 'ALAND',
+      startRow: 0, startCol: 8, length: 5,
+      solution: 'NOBEL',
     },
     {
       number: 5,
       text: 'Flat-pack furniture giant (4)',
       direction: 'down',
-      startRow: 2,
-      startCol: 6,
-      length: 4,
+      startRow: 2, startCol: 6, length: 4,
       solution: 'IKEA',
     },
     {
       number: 7,
-      text: 'What Swedes say for "cheers!" (4)',
+      text: 'Swedish “cheers!” (4)',
       direction: 'down',
-      startRow: 5,
-      startCol: 7,
-      length: 4,
+      startRow: 5, startCol: 7, length: 4,
       solution: 'SKAL',
     },
   ],
 };
+
 
 
 export const CrosswordGame: React.FC = () => {
