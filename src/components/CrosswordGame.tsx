@@ -25,102 +25,102 @@ export interface Cell {
   number?: number;
 }
 
-// Crossword with proper intersections in a 7x7 grid
+// Crossword matching the correct layout
 const samplePuzzle = {
-  size: 7,
+  size: 9,
   clues: [
     // Across clues
     {
-      number: 1,
-      text: 'Place to pour a pint',
-      direction: 'across' as const,
-      startRow: 0,
-      startCol: 0,
-      length: 3,
-      solution: 'PUB',
-    },
-    {
-      number: 4,
-      text: 'Host of the 2028 Olympics, for short',
-      direction: 'across' as const,
-      startRow: 2,
-      startCol: 0,
-      length: 3,
-      solution: 'USA',
-    },
-    {
-      number: 6,
-      text: 'Political commentator Jen',
+      number: 3,
+      text: 'Sign of life',
       direction: 'across' as const,
       startRow: 1,
-      startCol: 2,
+      startCol: 1,
+      length: 5,
+      solution: 'PULSE',
+    },
+    {
+      number: 5,
+      text: 'Political commentator Jen',
+      direction: 'across' as const,
+      startRow: 3,
+      startCol: 4,
       length: 5,
       solution: 'PSAKI',
     },
     {
-      number: 8,
+      number: 6,
       text: 'Black suit',
       direction: 'across' as const,
-      startRow: 3,
-      startCol: 2,
+      startRow: 5,
+      startCol: 1,
       length: 5,
       solution: 'CLUBS',
     },
     {
-      number: 9,
+      number: 8,
       text: "Kick one's feet up",
       direction: 'across' as const,
-      startRow: 4,
-      startCol: 2,
+      startRow: 6,
+      startCol: 1,
       length: 5,
       solution: 'RELAX',
     },
 
     // Down clues
     {
-      number: 2,
-      text: 'Sign of life',
-      direction: 'down' as const,
-      startRow: 0,
-      startCol: 0,
-      length: 5,
-      solution: 'PULSE', // P(PUB), U(USA), L(CLUBS), S(intersects), E(RELAX)
-    },
-    {
-      number: 3,
-      text: 'Regular patron\'s order, with "the"',
-      direction: 'down' as const,
-      startRow: 0,
-      startCol: 1,
-      length: 5,
-      solution: 'USUAL', // U(PUB), S(PSAKI), U(USA), A(CLUBS), L(RELAX)
-    },
-    {
-      number: 5,
+      number: 1,
       text: 'Loaf with a chocolate swirl',
+      direction: 'down' as const,
+      startRow: 0,
+      startCol: 6,
+      length: 5,
+      solution: 'BABKA', // B, A, B, K, A down
+    },
+    {
+      number: 2,
+      text: 'Regular patron\'s order, with "the"',
       direction: 'down' as const,
       startRow: 0,
       startCol: 2,
       length: 5,
-      solution: 'BABKA', // B(PUB), A(intersects), B(USA), K(intersects), A(intersects)
+      solution: 'USUAL', // U, S, U, A, L down
+    },
+    {
+      number: 4,
+      text: 'Host of the 2028 Olympics, for short',
+      direction: 'down' as const,
+      startRow: 1,
+      startCol: 3,
+      length: 3,
+      solution: 'USA', // U, S, A down
+    },
+    {
+      number: 5,
+      text: 'Place to pour a pint',
+      direction: 'down' as const,
+      startRow: 3,
+      startCol: 4,
+      length: 3,
+      solution: 'PUB', // P, U, B down
     },
     {
       number: 7,
       text: 'Skill practiced on dummies, for short',
       direction: 'down' as const,
-      startRow: 1,
-      startCol: 4,
+      startRow: 5,
+      startCol: 1,
       length: 3,
-      solution: 'CPR', // A(PSAKI), U(CLUBS), L(RELAX)
+      solution: 'CPR', // C, P, R down
     },
     {
-      number: 10,
+      number: 7,
       text: 'Age at which Tiger Woods made his first hole-in-one',
       direction: 'down' as const,
-      startRow: 1,
-      startCol: 6,
+      startRow: 3,
+      startCol: 8,
       length: 3,
-      solution: 'SIX', // I(PSAKI), S(CLUBS), X(RELAX)
+      solution: 'SIX', // S, I, X down
     },
   ],
 };
