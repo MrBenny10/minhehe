@@ -205,10 +205,10 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   return (
     <div className="flex justify-center w-full overflow-x-auto">
       <div 
-        className="grid gap-0.5 sm:gap-1 p-2 sm:p-4 bg-background border-2 border-grid-border rounded-lg min-w-fit mx-auto"
+        className="grid gap-1 p-4 bg-background border-2 border-grid-border rounded-lg min-w-fit mx-auto"
         style={{ 
-          gridTemplateColumns: 'repeat(13, minmax(0, 1fr))',
-          gridTemplateRows: 'repeat(8, minmax(0, 1fr))',
+          gridTemplateColumns: 'repeat(13, 32px)',
+          gridTemplateRows: 'repeat(8, 32px)',
           maxWidth: 'min(90vw, 650px)',
         }}
       >
@@ -220,8 +220,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
             return (
               <div
                 key={cell.id}
-                className="aspect-square bg-slate-900 dark:bg-slate-800 border border-slate-700 dark:border-slate-600 rounded-sm shadow-inner"
-                style={{ minWidth: '32px', minHeight: '32px' }}
+                className="w-8 h-8 bg-slate-900 dark:bg-slate-800 border border-slate-700 dark:border-slate-600 rounded-sm shadow-inner"
               />
             );
           }
@@ -229,8 +228,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
           return (
             <div
               key={cell.id}
-              className="relative aspect-square"
-              style={{ minWidth: '32px', minHeight: '32px' }}
+              className="relative w-8 h-8"
             >
               {cell.number && (
                 <span className="absolute top-0 left-0 text-xs font-bold text-foreground z-10 ml-0.5 sm:ml-1 mt-0.5 leading-none">
