@@ -33,21 +33,6 @@ export interface Puzzle {
   clues: Clue[];
 }
 
-/**
- * Fixed 9x9 Swedish-themed crossword
- *
- * Row0: ■ V O L V O ■
- * Row1: ■ ■ ■ ■ ■ N
- * Row2: A B B A ■ O
- * Row3: ■ ■ ■ G ■ B
- * Row4: ■ S M O R G A S
- * Row5: ■ ■ ■ M ■ E
- * Row6: ■ U P P S A L A
- * Row7: ■ ■ ■ ■ ■ L
- *
- * Across: VOLVO, ABBA, SMORGAS, UPPSALA
- * Down:   LAGOM, NOBEL, IKEA, SKAL
- */
 const samplePuzzle: Puzzle = {
   size: 9,
   clues: [
@@ -94,7 +79,7 @@ const samplePuzzle: Puzzle = {
       number: 2,
       text: "Swedish ideal of 'just right' (5)",
       direction: 'down',
-      startRow: 0,
+      startRow: 2,
       startCol: 3,
       length: 5,
       solution: 'LAGOM',
@@ -103,8 +88,8 @@ const samplePuzzle: Puzzle = {
       number: 3,
       text: 'Prize named for Alfred (5)',
       direction: 'down',
-      startRow: 0,
-      startCol: 6,
+      startRow: 1,
+      startCol: 5,
       length: 5,
       solution: 'NOBEL',
     },
@@ -128,6 +113,7 @@ const samplePuzzle: Puzzle = {
     },
   ],
 };
+
 
 export const CrosswordGame: React.FC = () => {
   const [cells, setCells] = useState<Cell[]>([]);
