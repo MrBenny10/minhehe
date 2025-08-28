@@ -34,62 +34,35 @@ export interface Puzzle {
 }
 
 const samplePuzzle: Puzzle = {
-  size: 13, // 13 cols × 8 rows
+  size: 8, // 8 cols × 7 rows
   clues: [
     // Across
     {
-      number: 5,
+      number: 1,
       text: 'Traditional buffet, part of "smorgasbord" (7)',
       direction: 'across',
-      startRow: 4,
+      startRow: 3,
       startCol: 1,
       length: 7,
       solution: 'SMORGAS',
     },
-    {
-      number: 7,
-      text: 'Swedish word for "cheers!" (4)',
-      direction: 'across',
-      startRow: 4,
-      startCol: 9,
-      length: 4,
-      solution: 'SKAL',
-    },
-    {
-      number: 8,
-      text: 'Swedish pop group (4)',
-      direction: 'across',
-      startRow: 7,
-      startCol: 7,
-      length: 4,
-      solution: 'ABBA',
-    },
 
     // Down
     {
-      number: 1,
+      number: 2,
       text: 'Swedish university city (7)',
       direction: 'down',
-      startRow: 1,
-      startCol: 7,
+      startRow: 0,
+      startCol: 4,
       length: 7,
       solution: 'UPPSALA',
-    },
-    {
-      number: 2,
-      text: 'Prize named for Alfred (5)',
-      direction: 'down',
-      startRow: 0,
-      startCol: 12,
-      length: 5,
-      solution: 'NOBEL',
     },
     {
       number: 3,
       text: 'Swedish ideal of "just right" (5)',
       direction: 'down',
-      startRow: 2,
-      startCol: 5,
+      startRow: 1,
+      startCol: 2,
       length: 5,
       solution: 'LAGOM',
     },
@@ -97,19 +70,10 @@ const samplePuzzle: Puzzle = {
       number: 4,
       text: 'Swedish carmaker (5)',
       direction: 'down',
-      startRow: 3,
-      startCol: 3,
+      startRow: 2,
+      startCol: 6,
       length: 5,
       solution: 'VOLVO',
-    },
-    {
-      number: 6,
-      text: 'Flat-pack furniture giant (4)',
-      direction: 'down',
-      startRow: 3,
-      startCol: 10,
-      length: 4,
-      solution: 'IKEA',
     },
   ],
 };
@@ -134,8 +98,8 @@ export const CrosswordGame: React.FC = () => {
   // Initialize grid
   const initializeGrid = useCallback(() => {
     const newCells: Cell[] = [];
-    const cols = 13; // 13 columns
-    const rows = 8;  // 8 rows
+    const cols = 8; // 8 columns
+    const rows = 7;  // 7 rows
     
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
@@ -284,7 +248,7 @@ export const CrosswordGame: React.FC = () => {
               showingErrors={showingErrors}
               gameStarted={gameStarted}
               currentClue={currentClue}
-              gridSize={13}
+              gridSize={8}
             />
           </div>
         </div>
