@@ -34,21 +34,31 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       e.preventDefault();
       onCellUpdate(cell.id, e.key);
       
-      // Smart auto-advance based on current clue direction
+      // Smart auto-advance based on current clue direction, skipping correct cells
       if (currentClue) {
         let nextCell = null;
         
         if (currentClue.direction === 'across') {
-          // Move right for across clues
-          const nextCol = cell.col + 1;
-          if (nextCol < 5) {
-            nextCell = cells.find(c => c.row === cell.row && c.col === nextCol && !c.isBlocked);
+          // Move right for across clues, skipping correct cells
+          let checkCol = cell.col + 1;
+          while (checkCol < 5) {
+            const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
+            if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
+              nextCell = candidateCell;
+              break;
+            }
+            checkCol++;
           }
         } else if (currentClue.direction === 'down') {
-          // Move down for down clues
-          const nextRow = cell.row + 1;
-          if (nextRow < 5) {
-            nextCell = cells.find(c => c.row === nextRow && c.col === cell.col && !c.isBlocked);
+          // Move down for down clues, skipping correct cells
+          let checkRow = cell.row + 1;
+          while (checkRow < 5) {
+            const candidateCell = cells.find(c => c.row === checkRow && c.col === cell.col && !c.isBlocked);
+            if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
+              nextCell = candidateCell;
+              break;
+            }
+            checkRow++;
           }
         }
         
@@ -81,13 +91,15 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
           }
         }
       } else {
-        // Default to moving right if no current clue context
-        const nextCol = cell.col + 1;
-        if (nextCol < 5) {
-          const nextCell = cells.find(c => c.row === cell.row && c.col === nextCol && !c.isBlocked);
-          if (nextCell) {
-            onCellSelect(nextCell.id);
+        // Default to moving right if no current clue context, skipping correct cells
+        let checkCol = cell.col + 1;
+        while (checkCol < 5) {
+          const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
+          if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
+            onCellSelect(candidateCell.id);
+            break;
           }
+          checkCol++;
         }
       }
     } else if (e.key === 'Backspace') {
