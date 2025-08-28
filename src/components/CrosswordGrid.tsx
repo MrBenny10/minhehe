@@ -69,13 +69,35 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       e.preventDefault();
       onCellUpdate(cell.id, '');
       
-      // Move to previous cell
-      const prevCol = cell.col - 1;
-      const prevRow = cell.row;
-      if (prevCol >= 0) {
-        const prevCell = cells.find(c => c.row === prevRow && c.col === prevCol && !c.isBlocked);
-        if (prevCell) {
-          onCellSelect(prevCell.id);
+      // Smart backspace based on current clue direction
+      if (currentClue) {
+        if (currentClue.direction === 'across') {
+          // Move left for across clues
+          const prevCol = cell.col - 1;
+          if (prevCol >= 0) {
+            const prevCell = cells.find(c => c.row === cell.row && c.col === prevCol && !c.isBlocked);
+            if (prevCell) {
+              onCellSelect(prevCell.id);
+            }
+          }
+        } else if (currentClue.direction === 'down') {
+          // Move up for down clues
+          const prevRow = cell.row - 1;
+          if (prevRow >= 0) {
+            const prevCell = cells.find(c => c.row === prevRow && c.col === cell.col && !c.isBlocked);
+            if (prevCell) {
+              onCellSelect(prevCell.id);
+            }
+          }
+        }
+      } else {
+        // Default to moving left if no current clue context
+        const prevCol = cell.col - 1;
+        if (prevCol >= 0) {
+          const prevCell = cells.find(c => c.row === cell.row && c.col === prevCol && !c.isBlocked);
+          if (prevCell) {
+            onCellSelect(prevCell.id);
+          }
         }
       }
     } else if (e.key === 'ArrowRight') {
