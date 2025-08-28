@@ -16,6 +16,7 @@ export interface Clue {
   startCol: number;
   length: number;
   solution: string;
+  alternateSolutions?: string[];
 }
 
 export interface Cell {
@@ -79,10 +80,11 @@ const samplePuzzle: Puzzle = {
       number: 2,
       text: 'Prize named for Alfred (5)',
       direction: 'down',
-      startRow: 0,
+      startRow: 1,
       startCol: 12,
       length: 5,
       solution: 'NOBEL',
+      alternateSolutions: ['SKALL'],
     },
     {
       number: 3,
@@ -166,12 +168,35 @@ export const CrosswordGame: React.FC = () => {
     setCells(newCells);
   }, []);
 
+  const isValidAnswer = useCallback((cell: Cell, value: string) => {
+    const cluesForCell = samplePuzzle.clues.filter(clue => {
+      if (clue.direction === 'across') {
+        return cell.row === clue.startRow && cell.col >= clue.startCol && cell.col < clue.startCol + clue.length;
+      }
+      return cell.col === clue.startCol && cell.row >= clue.startRow && cell.row < clue.startRow + clue.length;
+    });
+
+    return cluesForCell.some(clue => {
+      const position = clue.direction === 'across' 
+        ? cell.col - clue.startCol 
+        : cell.row - clue.startRow;
+      
+      const solutions = [clue.solution, ...(clue.alternateSolutions || [])];
+      return solutions.some(solution => solution[position] === value.toUpperCase());
+    });
+  }, []);
+
   const handleCellUpdate = useCallback((cellId: string, value: string) => {
     setCells(prev => {
       const next = prev.map(cell =>
         cell.id === cellId ? { ...cell, value: value.toUpperCase() } : cell
       );
-      const complete = next.every(cell => cell.isBlocked || cell.value.toUpperCase() === cell.answer.toUpperCase());
+      
+      const complete = next.every(cell => {
+        if (cell.isBlocked) return true;
+        return isValidAnswer(cell, cell.value);
+      });
+      
       if (complete && !gameCompleted) {
         setGameCompleted(true);
         setShowCompletionModal(true);
@@ -182,7 +207,7 @@ export const CrosswordGame: React.FC = () => {
       }
       return next;
     });
-  }, [gameCompleted, timeElapsed]);
+  }, [gameCompleted, timeElapsed, isValidAnswer]);
 
   const handleCellSelect = useCallback((cellId: string) => {
     setSelectedCell(cellId);
@@ -218,14 +243,17 @@ export const CrosswordGame: React.FC = () => {
 
   const handleCheck = useCallback(() => {
     setShowingErrors(true);
-    const isComplete = cells.every(cell => cell.isBlocked || cell.value.toUpperCase() === cell.answer.toUpperCase());
+    const isComplete = cells.every(cell => {
+      if (cell.isBlocked) return true;
+      return isValidAnswer(cell, cell.value);
+    });
     if (isComplete) {
       setGameCompleted(true);
       setShowCompletionModal(true);
       setCompletionTime(timeElapsed);
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-  }, [cells, timeElapsed]);
+  }, [cells, timeElapsed, isValidAnswer]);
 
   React.useEffect(() => {
     const t = setTimeout(() => {
