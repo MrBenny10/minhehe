@@ -197,14 +197,16 @@ export const CrosswordGame: React.FC = () => {
     }
   }, [cells, timeElapsed]);
 
-  // Loading screen effect
+  // Loading screen effect and auto-start game
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setShowLoadingScreen(false);
+      // Auto-start the game when loading finishes
+      handleStart();
     }, 2500);
     
     return () => clearTimeout(timer);
-  }, []);
+  }, [handleStart]);
 
   if (showLoadingScreen) {
     return (
@@ -227,21 +229,6 @@ export const CrosswordGame: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted p-4">
       <div className="container mx-auto max-w-6xl">
-        <header className="text-center mb-8">
-          <div className="flex flex-col items-center space-y-4">
-            <img 
-              src={minHeheLogoSrc} 
-              alt="minHehe Logo" 
-              className="h-20 w-auto"
-            />
-            <div className="space-y-2">
-              <h1 className="text-4xl font-bold text-foreground">minHehe</h1>
-              <p className="text-lg text-muted-foreground font-medium">Fun crosswords for all, no paywall!</p>
-              <p className="text-sm text-muted-foreground">Challenge yourself with our daily puzzle</p>
-            </div>
-          </div>
-        </header>
-
         {/* Fixed clue display at top */}
         {gameStarted && currentClue && (
           <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border mb-4">
@@ -260,28 +247,24 @@ export const CrosswordGame: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            {gameStarted && (
-              <>
-                <div className="flex justify-center">
-                  <GameTimer 
-                    timeElapsed={timeElapsed}
-                    setTimeElapsed={setTimeElapsed}
-                    isRunning={gameStarted && !gameCompleted}
-                    gameCompleted={gameCompleted}
-                  />
-                </div>
-                
-                <CrosswordGrid
-                  cells={cells}
-                  selectedCell={selectedCell}
-                  onCellSelect={handleCellSelect}
-                  onCellUpdate={handleCellUpdate}
-                  showingErrors={showingErrors}
-                  gameStarted={gameStarted}
-                  currentClue={currentClue}
-                />
-              </>
-            )}
+            <div className="flex justify-center">
+              <GameTimer 
+                timeElapsed={timeElapsed}
+                setTimeElapsed={setTimeElapsed}
+                isRunning={gameStarted && !gameCompleted}
+                gameCompleted={gameCompleted}
+              />
+            </div>
+            
+            <CrosswordGrid
+              cells={cells}
+              selectedCell={selectedCell}
+              onCellSelect={handleCellSelect}
+              onCellUpdate={handleCellUpdate}
+              showingErrors={showingErrors}
+              gameStarted={gameStarted}
+              currentClue={currentClue}
+            />
             
             <GameControls
               gameStarted={gameStarted}
@@ -291,11 +274,9 @@ export const CrosswordGame: React.FC = () => {
             />
           </div>
 
-          {gameStarted && (
-            <div className="lg:col-span-1">
-              <CluesPanel clues={samplePuzzle.clues} />
-            </div>
-          )}
+          <div className="lg:col-span-1">
+            <CluesPanel clues={samplePuzzle.clues} />
+          </div>
         </div>
 
         <CompletionModal
