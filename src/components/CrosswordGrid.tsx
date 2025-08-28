@@ -58,9 +58,14 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
 
   const handleCellClick = useCallback((cell: Cell) => {
     if (!cell.isBlocked) {
-      onCellSelect(cell.id);
+      // If cell is correct, auto-advance to next available cell instead of selecting it
+      if (cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()) {
+        autoAdvanceToNext(cell);
+      } else {
+        onCellSelect(cell.id);
+      }
     }
-  }, [onCellSelect]);
+  }, [onCellSelect, autoAdvanceToNext]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent, cell: Cell) => {
     if (cell.isBlocked || !gameStarted) return;
@@ -202,6 +207,10 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                 type="text"
                 value={cell.value}
                 onChange={(e) => {
+                  // Prevent editing if cell is already correct
+                  if (cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()) {
+                    return;
+                  }
                   const value = e.target.value.slice(-1); // Only take the last character
                   if (value.match(/[a-zA-Z]/) || value === '') {
                     onCellUpdate(cell.id, value);
@@ -209,6 +218,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                 }}
                 onKeyDown={(e) => handleKeyDown(e, cell)}
                 onClick={() => handleCellClick(cell)}
+                readOnly={cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()}
                 className={cn(
                   "w-12 h-12 text-center text-lg font-mono font-bold border-2 rounded-sm",
                   "focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200",
@@ -219,6 +229,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                     "bg-grid-correct border-grid-correct text-white": status === 'correct',
                     "bg-grid-incorrect border-destructive text-destructive-foreground animate-pulse-error": status === 'incorrect',
                     "bg-muted border-muted text-muted-foreground cursor-not-allowed": status === 'inactive',
+                    "cursor-default": cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase(),
                   }
                 )}
                 maxLength={1}
