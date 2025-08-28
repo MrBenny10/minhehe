@@ -205,12 +205,13 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   return (
     <div className="flex justify-center w-full h-full">
       <div 
-        className="grid gap-1 p-2 bg-background border-2 border-grid-border rounded-lg"
+        className="grid gap-0.5 p-1 md:gap-1 md:p-2 bg-background border-2 border-grid-border rounded-lg"
         style={{ 
           gridTemplateColumns: 'repeat(13, 1fr)',
           gridTemplateRows: 'repeat(8, 1fr)',
-          width: 'min(95vw, 65vh * 13/8)',
-          height: 'min(95vw * 8/13, 65vh)',
+          // Mobile: use full viewport calculations
+          width: 'min(98vw, (100vh - 120px) * 13/8)',
+          height: 'min(98vw * 8/13, 100vh - 120px)',
           aspectRatio: '13/8',
         }}
       >
@@ -222,7 +223,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
             return (
               <div
                 key={cell.id}
-                className="w-full h-full bg-slate-900 dark:bg-slate-800 border border-slate-700 dark:border-slate-600 rounded-sm shadow-inner"
+                className="w-full h-full bg-block-bg border border-block-border rounded-sm shadow-inner"
               />
             );
           }
@@ -233,7 +234,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
               className="relative w-full h-full"
             >
               {cell.number && (
-                <span className="absolute top-0 left-0 text-[0.6rem] sm:text-xs font-bold text-foreground z-10 ml-0.5 mt-0.5 leading-none">
+                <span className="absolute top-0 left-0 text-[0.5rem] md:text-[0.6rem] font-bold text-grid-text z-10 ml-0.5 mt-0.5 leading-none">
                   {cell.number}
                 </span>
               )}
@@ -255,11 +256,11 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                 onClick={() => handleCellClick(cell)}
                 readOnly={cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()}
                 className={cn(
-                  "w-full h-full text-center text-xs sm:text-sm md:text-base font-mono font-bold border-2 rounded-sm",
+                  "w-full h-full text-center text-[0.7rem] md:text-xs lg:text-sm font-mono font-bold border-2 rounded-sm",
                   "focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200",
                   "cursor-pointer select-none uppercase",
                   {
-                    "bg-grid-cell border-grid-border text-foreground": status === 'active',
+                    "bg-grid-cell border-grid-border text-grid-text": status === 'active',
                     "bg-grid-active border-primary": isSelected && status === 'active',
                     "bg-grid-correct border-grid-correct text-white": status === 'correct',
                     "bg-grid-incorrect border-destructive text-destructive-foreground animate-pulse-error": status === 'incorrect',

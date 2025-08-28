@@ -50,7 +50,7 @@ const samplePuzzle: Puzzle = {
       number: 7,
       text: 'Swedish word for "cheers!" (4)',
       direction: 'across',
-      startRow: 4,
+      startRow: 5,
       startCol: 9,
       length: 4,
       solution: 'SKAL',
@@ -106,7 +106,7 @@ const samplePuzzle: Puzzle = {
       number: 6,
       text: 'Flat-pack furniture giant (4)',
       direction: 'down',
-      startRow: 3,
+      startRow: 4,
       startCol: 10,
       length: 4,
       solution: 'IKEA',
@@ -251,8 +251,8 @@ export const CrosswordGame: React.FC = () => {
     <div className="h-screen bg-gradient-to-br from-background via-background to-muted overflow-hidden">
       {gameStarted && currentClue && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-background/98 backdrop-blur-sm border-b border-border">
-          <div className="px-2 py-1.5">
-            <div className="flex items-center gap-2 text-xs sm:text-sm">
+          <div className="px-2 py-1.5 md:px-4 md:py-2">
+            <div className="flex items-center gap-2 text-xs md:text-sm">
               <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
                 {currentClue.number}{currentClue.direction === 'across' ? 'A' : 'D'}
               </span>
@@ -264,7 +264,10 @@ export const CrosswordGame: React.FC = () => {
 
       <div className="flex flex-col h-full">
         {/* Timer at top */}
-        <div className={cn("flex justify-center py-2 px-4", gameStarted && currentClue ? "pt-12" : "pt-2")}>
+        <div className={cn(
+          "flex justify-center py-1 px-2 md:py-2 md:px-4", 
+          gameStarted && currentClue ? "pt-10 md:pt-12" : "pt-1 md:pt-2"
+        )}>
           <GameTimer
             timeElapsed={timeElapsed}
             setTimeElapsed={setTimeElapsed}
@@ -274,7 +277,7 @@ export const CrosswordGame: React.FC = () => {
         </div>
 
         {/* Main content area - crossword grid */}
-        <div className="flex-1 flex flex-col items-center justify-center px-2 py-2 min-h-0">
+        <div className="flex-1 flex flex-col items-center justify-center px-1 py-1 md:px-2 md:py-2 min-h-0">
           <div className="w-full max-w-full flex-1 flex items-center justify-center">
             <CrosswordGrid
               cells={cells}
@@ -290,7 +293,7 @@ export const CrosswordGame: React.FC = () => {
         </div>
 
         {/* Controls at bottom */}
-        <div className="flex justify-center py-2 px-4">
+        <div className="flex justify-center py-1 px-2 md:py-2 md:px-4">
           <GameControls
             gameStarted={gameStarted}
             gameCompleted={gameCompleted}
