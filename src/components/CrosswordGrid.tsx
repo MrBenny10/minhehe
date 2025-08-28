@@ -36,22 +36,47 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       
       // Smart auto-advance based on current clue direction
       if (currentClue) {
+        let nextCell = null;
+        
         if (currentClue.direction === 'across') {
           // Move right for across clues
           const nextCol = cell.col + 1;
           if (nextCol < 5) {
-            const nextCell = cells.find(c => c.row === cell.row && c.col === nextCol && !c.isBlocked);
-            if (nextCell) {
-              onCellSelect(nextCell.id);
-            }
+            nextCell = cells.find(c => c.row === cell.row && c.col === nextCol && !c.isBlocked);
           }
         } else if (currentClue.direction === 'down') {
           // Move down for down clues
           const nextRow = cell.row + 1;
           if (nextRow < 5) {
-            const nextCell = cells.find(c => c.row === nextRow && c.col === cell.col && !c.isBlocked);
-            if (nextCell) {
-              onCellSelect(nextCell.id);
+            nextCell = cells.find(c => c.row === nextRow && c.col === cell.col && !c.isBlocked);
+          }
+        }
+        
+        if (nextCell) {
+          onCellSelect(nextCell.id);
+        } else {
+          // We've reached the end of current word, find another word to continue with
+          // Find all available clues and pick the next one
+          const allClues = [
+            { number: 1, direction: 'across', startRow: 1, startCol: 0 },
+            { number: 3, direction: 'across', startRow: 3, startCol: 1 },
+            { number: 2, direction: 'down', startRow: 0, startCol: 1 }
+          ];
+          
+          // Find the next clue that's different from current
+          const currentIndex = allClues.findIndex(clue => 
+            clue.number === currentClue.number && clue.direction === currentClue.direction
+          );
+          
+          if (currentIndex !== -1) {
+            const nextClueIndex = (currentIndex + 1) % allClues.length;
+            const nextClue = allClues[nextClueIndex];
+            const nextStartCell = cells.find(c => 
+              c.row === nextClue.startRow && c.col === nextClue.startCol && !c.isBlocked
+            );
+            
+            if (nextStartCell) {
+              onCellSelect(nextStartCell.id);
             }
           }
         }

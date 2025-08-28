@@ -5,6 +5,7 @@ import { CluesPanel } from './CluesPanel';
 import { GameTimer } from './GameTimer';
 import { GameControls } from './GameControls';
 import { CompletionModal } from './CompletionModal';
+import { cn } from '@/lib/utils';
 import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 
 export interface Clue {
@@ -246,7 +247,7 @@ export const CrosswordGame: React.FC = () => {
       <div className="container mx-auto max-w-6xl">
         {/* Compact clue display - stays visible with keyboard */}
         {gameStarted && currentClue && (
-          <div className="sticky top-0 z-50 bg-background/98 backdrop-blur-sm border-b border-border">
+          <div className="fixed top-0 left-0 right-0 z-50 bg-background/98 backdrop-blur-sm border-b border-border">
             <div className="px-4 py-2">
               <div className="flex items-center gap-2 text-sm">
                 <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
@@ -258,7 +259,7 @@ export const CrosswordGame: React.FC = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className={cn("grid grid-cols-1 lg:grid-cols-3 gap-8", gameStarted && currentClue ? "pt-12" : "")}>
           <div className="lg:col-span-2 space-y-6">
             <div className="flex justify-center">
               <GameTimer 
