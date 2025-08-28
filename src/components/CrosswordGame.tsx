@@ -28,13 +28,22 @@ export interface Cell {
   number?: number;
 }
 
-// Swedish-themed 5x5 crossword - FULLY TESTED INTERSECTIONS
+// Swedish-themed 5x5 crossword with proper intersections
 const samplePuzzle = {
   size: 5,
   clues: [
     // Across clues
     {
       number: 1,
+      text: 'Bright star in our sky (3)',
+      direction: 'across' as const,
+      startRow: 0,
+      startCol: 1,
+      length: 3,
+      solution: 'SUN',
+    },
+    {
+      number: 2,
       text: 'Swedish furniture giant (4)',
       direction: 'across' as const,
       startRow: 1,
@@ -45,22 +54,31 @@ const samplePuzzle = {
 
     // Down clues
     {
-      number: 2,
+      number: 1,
       text: 'Swedish word for cheers (4)',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
       length: 4,
-      solution: 'SKAL', // S, K(shared with IKEA), A, L
+      solution: 'SKAL', // S(shared with SUN), K(shared with IKEA), A, L
     },
     {
       number: 3,
-      text: 'Hot beverage (3)',
+      text: 'Creative work (3)',
       direction: 'down' as const,
-      startRow: 2,
+      startRow: 1,
       startCol: 3,
       length: 3,
-      solution: 'TEA', // T, E, A (starting after IKEA ends)
+      solution: 'ART', // A(shared with IKEA), R, T
+    },
+    {
+      number: 4,
+      text: 'Hot beverage (3)',
+      direction: 'down' as const,
+      startRow: 1,
+      startCol: 4,
+      length: 3,
+      solution: 'TEA', // T, E, A
     },
   ],
 };
