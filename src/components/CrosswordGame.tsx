@@ -28,55 +28,64 @@ export interface Cell {
   number?: number;
 }
 
-// Fun Swedish-themed 5x5 crossword with proper intersections
+// Challenging Swedish-themed 5x5 crossword with longer words
 // Grid layout:
 //   0 1 2 3 4
-// 0 ■ S U N ■
-// 1 ■ K ■ O ■  
-// 2 ■ A L L ■
-// 3 ■ L ■ R ■
-// 4 ■ ■ ■ D ■
+// 0 A B B A ■
+// 1 ■ L ■ ■ ■
+// 2 V O L V O
+// 3 ■ R ■ ■ ■
+// 4 ■ N ■ ■ ■
 const samplePuzzle = {
   size: 5,
   clues: [
     // Across clues
     {
       number: 1,
-      text: 'What lights up Sweden in summer (3)',
+      text: 'Famous Swedish pop group that won Eurovision (4)',
       direction: 'across' as const,
       startRow: 0,
-      startCol: 1,
-      length: 3,
-      solution: 'SUN',
+      startCol: 0,
+      length: 4,
+      solution: 'ABBA',
     },
     {
-      number: 3,
-      text: 'Everything in Swedish (3)', 
+      number: 5,
+      text: 'Swedish car manufacturer from Gothenburg (5)',
       direction: 'across' as const,
       startRow: 2,
-      startCol: 1,
-      length: 3,
-      solution: 'ALL',
+      startCol: 0,
+      length: 5,
+      solution: 'VOLVO',
     },
 
     // Down clues
     {
-      number: 1,
-      text: 'What Swedes say for "cheers!" (4)',
+      number: 2,
+      text: 'Swedish word for "blue" (3)',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
-      length: 4,
-      solution: 'SKAL', // S(shared with SUN), K, A(shared with ALL), L
+      length: 3,
+      solution: 'BLA', // B(ABBA), L, O(VOLVO)
     },
     {
-      number: 2,
-      text: 'Swedish word for "north" (4)',
+      number: 3,
+      text: 'Swedish word for "bread" (4)', 
+      direction: 'down' as const,
+      startRow: 0,
+      startCol: 2,
+      length: 3,
+      solution: 'BRO', // B(ABBA), ■, L(VOLVO)
+    },
+    {
+      number: 4,
+      text: 'Swedish word for "all" (4)',
       direction: 'down' as const,
       startRow: 0,
       startCol: 3,
-      length: 4,
-      solution: 'NORD', // N(shared with SUN), O, R, D
+      length: 3,
+      solution: 'ALL', // A(ABBA), ■, V(VOLVO)
     },
   ],
 };
