@@ -28,57 +28,66 @@ export interface Cell {
   number?: number;
 }
 
-// Swedish-themed 5x5 crossword with proper intersections
+// Simple 5x5 crossword with proper intersections
 const samplePuzzle = {
   size: 5,
   clues: [
     // Across clues
     {
       number: 1,
-      text: 'Bright star in our sky (3)',
+      text: 'Hot beverage (3)',
       direction: 'across' as const,
       startRow: 0,
-      startCol: 1,
+      startCol: 0,
       length: 3,
-      solution: 'SUN',
+      solution: 'TEA',
     },
     {
-      number: 2,
-      text: 'Swedish furniture giant (4)',
+      number: 4,
+      text: 'Large feline (3)',
       direction: 'across' as const,
-      startRow: 1,
+      startRow: 2,
       startCol: 0,
-      length: 4,
-      solution: 'IKEA',
+      length: 3,
+      solution: 'CAT',
+    },
+    {
+      number: 6,
+      text: 'Male offspring (3)',
+      direction: 'across' as const,
+      startRow: 4,
+      startCol: 0,
+      length: 3,
+      solution: 'SON',
     },
 
     // Down clues
     {
       number: 1,
-      text: 'Swedish word for cheers (4)',
+      text: 'Faucet (3)',
+      direction: 'down' as const,
+      startRow: 0,
+      startCol: 0,
+      length: 3,
+      solution: 'TAP', // T(shared with TEA), A(shared with CAT), P
+    },
+    {
+      number: 2,
+      text: 'Past tense of eat (3)',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
-      length: 4,
-      solution: 'SKAL', // S(shared with SUN), K(shared with IKEA), A, L
+      length: 3,
+      solution: 'EAT', // E(shared with TEA), A(shared with CAT), T
     },
     {
       number: 3,
       text: 'Creative work (3)',
       direction: 'down' as const,
-      startRow: 1,
-      startCol: 3,
+      startRow: 0,
+      startCol: 2,
       length: 3,
-      solution: 'ART', // A(shared with IKEA), R, T
-    },
-    {
-      number: 4,
-      text: 'Hot beverage (3)',
-      direction: 'down' as const,
-      startRow: 1,
-      startCol: 4,
-      length: 3,
-      solution: 'TEA', // T, E, A
+      solution: 'ART', // A(shared with TEA), T(shared with CAT), T
     },
   ],
 };
