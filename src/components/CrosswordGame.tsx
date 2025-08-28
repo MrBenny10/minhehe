@@ -248,32 +248,34 @@ export const CrosswordGame: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted p-4">
-      <div className="container mx-auto max-w-6xl">
-        {gameStarted && currentClue && (
-          <div className="fixed top-0 left-0 right-0 z-50 bg-background/98 backdrop-blur-sm border-b border-border">
-            <div className="px-4 py-2">
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
-                  {currentClue.number}{currentClue.direction === 'across' ? 'A' : 'D'}
-                </span>
-                <p className="text-foreground font-medium truncate">{currentClue.text}</p>
-              </div>
+    <div className="h-screen bg-gradient-to-br from-background via-background to-muted overflow-hidden">
+      {gameStarted && currentClue && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-background/98 backdrop-blur-sm border-b border-border">
+          <div className="px-2 py-1.5">
+            <div className="flex items-center gap-2 text-xs sm:text-sm">
+              <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+                {currentClue.number}{currentClue.direction === 'across' ? 'A' : 'D'}
+              </span>
+              <p className="text-foreground font-medium truncate">{currentClue.text}</p>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        <div className={cn("grid grid-cols-1 lg:grid-cols-3 gap-8", gameStarted && currentClue ? "pt-12" : "")}>
-          <div className="lg:col-span-2 space-y-6">
-            <div className="flex justify-center">
-              <GameTimer
-                timeElapsed={timeElapsed}
-                setTimeElapsed={setTimeElapsed}
-                isRunning={gameStarted && !gameCompleted}
-                gameCompleted={gameCompleted}
-              />
-            </div>
+      <div className="flex flex-col h-full">
+        {/* Timer at top */}
+        <div className={cn("flex justify-center py-2 px-4", gameStarted && currentClue ? "pt-12" : "pt-2")}>
+          <GameTimer
+            timeElapsed={timeElapsed}
+            setTimeElapsed={setTimeElapsed}
+            isRunning={gameStarted && !gameCompleted}
+            gameCompleted={gameCompleted}
+          />
+        </div>
 
+        {/* Main content area - crossword grid */}
+        <div className="flex-1 flex flex-col items-center justify-center px-2 py-2 min-h-0">
+          <div className="w-full max-w-full flex-1 flex items-center justify-center">
             <CrosswordGrid
               cells={cells}
               selectedCell={selectedCell}
@@ -284,29 +286,31 @@ export const CrosswordGame: React.FC = () => {
               currentClue={currentClue}
               gridSize={13}
             />
-
-            <div className="flex justify-center">
-              <GameControls
-                gameStarted={gameStarted}
-                gameCompleted={gameCompleted}
-                onStartGame={handleStart}
-                onCheckAnswers={handleCheck}
-              />
-            </div>
-          </div>
-
-          <div className="lg:col-span-1">
-            <CluesPanel clues={samplePuzzle.clues} />
           </div>
         </div>
 
-        <CompletionModal
-          isOpen={showCompletionModal}
-          onClose={() => setShowCompletionModal(false)}
-          completionTime={completionTime || 0}
-          onNewGame={handleStart}
-        />
+        {/* Controls at bottom */}
+        <div className="flex justify-center py-2 px-4">
+          <GameControls
+            gameStarted={gameStarted}
+            gameCompleted={gameCompleted}
+            onStartGame={handleStart}
+            onCheckAnswers={handleCheck}
+          />
+        </div>
+
+        {/* Clues panel - hidden on mobile, accessible via modal/drawer if needed */}
+        <div className="hidden lg:block fixed right-4 top-1/2 transform -translate-y-1/2 w-80">
+          <CluesPanel clues={samplePuzzle.clues} />
+        </div>
       </div>
+
+      <CompletionModal
+        isOpen={showCompletionModal}
+        onClose={() => setShowCompletionModal(false)}
+        completionTime={completionTime || 0}
+        onNewGame={handleStart}
+      />
     </div>
   );
 };
