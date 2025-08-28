@@ -186,13 +186,16 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     return 'active';
   };
 
-  // Auto-focus selected cell without any scrolling
+  // Auto-focus selected cell to show keyboard
   useEffect(() => {
     if (selectedCell) {
-      const cellElement = document.getElementById(`cell-${selectedCell}`);
-      if (cellElement) {
-        cellElement.focus({ preventScroll: true });
-      }
+      // Small delay to ensure the DOM is ready
+      setTimeout(() => {
+        const cellElement = document.getElementById(`cell-${selectedCell}`);
+        if (cellElement) {
+          cellElement.focus({ preventScroll: true });
+        }
+      }, 0);
     }
   }, [selectedCell]);
 
@@ -247,7 +250,13 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                   }
                 }}
                 onKeyDown={(e) => handleKeyDown(e, cell)}
-                onClick={() => handleCellClick(cell)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCellClick(cell);
+                }}
+                onFocus={(e) => {
+                  e.target.setSelectionRange(0, 0); // Prevent text selection
+                }}
                 readOnly={cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()}
                 className={cn(
                   "w-full h-full text-center text-[0.7rem] md:text-xs lg:text-sm font-mono font-bold border-2 rounded-sm",
