@@ -164,12 +164,18 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     return 'active';
   };
 
-  // Auto-focus selected cell
+  // Auto-focus selected cell without scrolling
   useEffect(() => {
     if (selectedCell) {
       const cellElement = document.getElementById(`cell-${selectedCell}`);
       if (cellElement) {
-        cellElement.focus();
+        // Use scrollIntoView with block: 'nearest' to prevent viewport jumping
+        cellElement.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'nearest', 
+          inline: 'nearest' 
+        });
+        cellElement.focus({ preventScroll: true });
       }
     }
   }, [selectedCell]);

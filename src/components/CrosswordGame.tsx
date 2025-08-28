@@ -236,7 +236,8 @@ export const CrosswordGame: React.FC = () => {
             />
           </div>
           <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
-          <p className="text-xl text-muted-foreground animate-fade-in">Loading your crossword adventure...</p>
+          <p className="text-xl text-muted-foreground animate-fade-in">Fun crosswords, no wall to pay!</p>
+          <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your puzzle...</p>
         </div>
       </div>
     );
