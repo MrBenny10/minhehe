@@ -9,6 +9,7 @@ interface CrosswordGridProps {
   onCellUpdate: (id: string, value: string) => void;
   showingErrors: boolean;
   gameStarted: boolean;
+  currentClue?: any; // Add current clue to know direction
 }
 
 export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
@@ -17,7 +18,8 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   onCellSelect,
   onCellUpdate,
   showingErrors,
-  gameStarted
+  gameStarted,
+  currentClue
 }) => {
   const handleCellClick = useCallback((cell: Cell) => {
     if (!cell.isBlocked) {
@@ -32,13 +34,35 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       e.preventDefault();
       onCellUpdate(cell.id, e.key);
       
-      // Move to next cell
-      const nextCol = cell.col + 1;
-      const nextRow = cell.row;
-      if (nextCol < 5) {
-        const nextCell = cells.find(c => c.row === nextRow && c.col === nextCol && !c.isBlocked);
-        if (nextCell) {
-          onCellSelect(nextCell.id);
+      // Smart auto-advance based on current clue direction
+      if (currentClue) {
+        if (currentClue.direction === 'across') {
+          // Move right for across clues
+          const nextCol = cell.col + 1;
+          if (nextCol < 5) {
+            const nextCell = cells.find(c => c.row === cell.row && c.col === nextCol && !c.isBlocked);
+            if (nextCell) {
+              onCellSelect(nextCell.id);
+            }
+          }
+        } else if (currentClue.direction === 'down') {
+          // Move down for down clues
+          const nextRow = cell.row + 1;
+          if (nextRow < 5) {
+            const nextCell = cells.find(c => c.row === nextRow && c.col === cell.col && !c.isBlocked);
+            if (nextCell) {
+              onCellSelect(nextCell.id);
+            }
+          }
+        }
+      } else {
+        // Default to moving right if no current clue context
+        const nextCol = cell.col + 1;
+        if (nextCol < 5) {
+          const nextCell = cells.find(c => c.row === cell.row && c.col === nextCol && !c.isBlocked);
+          if (nextCell) {
+            onCellSelect(nextCell.id);
+          }
         }
       }
     } else if (e.key === 'Backspace') {
@@ -83,7 +107,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         if (prevCell) onCellSelect(prevCell.id);
       }
     }
-  }, [cells, onCellUpdate, onCellSelect, gameStarted]);
+  }, [cells, onCellUpdate, onCellSelect, gameStarted, currentClue]);
 
   const getCellStatus = (cell: Cell) => {
     if (cell.isBlocked) return 'blocked';

@@ -267,6 +267,7 @@ export const CrosswordGame: React.FC = () => {
               onCellUpdate={handleCellUpdate}
               showingErrors={showingErrors}
               gameStarted={gameStarted}
+              currentClue={currentClue}
             />
             
             <GameControls
