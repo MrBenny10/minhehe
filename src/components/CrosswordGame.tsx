@@ -82,7 +82,7 @@ const samplePuzzle: Puzzle = {
       startRow: 0,
       startCol: 12,
       length: 5,
-      solution: 'NOBELS',
+      solution: 'NOBEL',
     },
     {
       number: 3,
