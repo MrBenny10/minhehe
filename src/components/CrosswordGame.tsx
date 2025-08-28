@@ -42,25 +42,25 @@ const samplePuzzle: Puzzle = {
       text: 'Swedish pop group (4)',
       direction: 'across',
       startRow: 0,
-      startCol: 0,
+      startCol: 1,
       length: 4,
       solution: 'ABBA',
     },
     {
-      number: 3,
+      number: 4,
       text: 'Swedish carmaker (5)',
       direction: 'across',
       startRow: 2,
-      startCol: 1,
+      startCol: 0,
       length: 5,
       solution: 'VOLVO',
     },
     {
-      number: 5,
+      number: 6,
       text: "Swedish ideal of 'just right' (5)",
       direction: 'across',
       startRow: 4,
-      startCol: 1,
+      startCol: 2,
       length: 5,
       solution: 'LAGOM',
     },
@@ -71,25 +71,25 @@ const samplePuzzle: Puzzle = {
       text: 'Flat-pack furniture giant (4)',
       direction: 'down',
       startRow: 0,
-      startCol: 3, // Second A in ABBA
+      startCol: 2, // B in ABBA
       length: 4,
       solution: 'IKEA',
     },
     {
-      number: 4,
+      number: 3,
       text: 'Prize named for Alfred (5)',
       direction: 'down',
-      startRow: 2,
-      startCol: 2, // L in VOLVO
+      startRow: 0,
+      startCol: 4, // A in ABBA
       length: 5,
       solution: 'NOBEL',
     },
     {
-      number: 6,
+      number: 5,
       text: 'Swedish word for "cheers!" (4)',
       direction: 'down',
       startRow: 2,
-      startCol: 5, // O in VOLVO
+      startCol: 4, // O in VOLVO
       length: 4,
       solution: 'SKAL',
     },
