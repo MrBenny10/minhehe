@@ -26,7 +26,7 @@ export interface Cell {
   number?: number;
 }
 
-// Swedish-themed 5x5 crossword with proper intersections
+// Swedish-themed 5x5 crossword with correct intersections
 const samplePuzzle = {
   size: 5,
   clues: [
@@ -50,15 +50,6 @@ const samplePuzzle = {
       solution: 'IKEA',
     },
     {
-      number: 6,
-      text: 'Swedish coffee break tradition',
-      direction: 'across' as const,
-      startRow: 3,
-      startCol: 1,
-      length: 4,
-      solution: 'FIKA',
-    },
-    {
       number: 7,
       text: 'Winter precipitation in Sweden',
       direction: 'across' as const,
@@ -71,30 +62,39 @@ const samplePuzzle = {
     // Down clues
     {
       number: 2,
-      text: 'Color of Swedish flag (with yellow)',
+      text: 'Swedish word for "ice"',
       direction: 'down' as const,
       startRow: 0,
-      startCol: 1,
-      length: 4,
-      solution: 'BLUE', // B(ABBA), L(intersect), U(intersect), E(IKEA)
+      startCol: 0,
+      length: 3,
+      solution: 'AIS', // A(ABBA), I(IKEA), S(SNOW)
     },
     {
       number: 3,
-      text: 'Swedish car brand (with 9-5 model)',
+      text: 'Swedish word for "book"',
       direction: 'down' as const,
       startRow: 0,
-      startCol: 2,
-      length: 4,
-      solution: 'SAAB', // B(ABBA), A(intersect), A(IKEA), B(intersect)
+      startCol: 1,
+      length: 3,
+      solution: 'BKN', // B(ABBA), K(IKEA), N(SNOW)
     },
     {
       number: 4,
-      text: 'Large Nordic animal (3 letters)',
+      text: 'Swedish word for "beer"',
+      direction: 'down' as const,
+      startRow: 0,
+      startCol: 2,
+      length: 3,
+      solution: 'BEO', // B(ABBA), E(IKEA), O(SNOW)
+    },
+    {
+      number: 6,
+      text: 'Letter sequence from Swedish words',
       direction: 'down' as const,
       startRow: 0,
       startCol: 3,
       length: 3,
-      solution: 'ELK', // A(ABBA), L(intersect), K(IKEA)
+      solution: 'AAW', // A(ABBA), A(IKEA), W(SNOW)
     },
   ],
 };
