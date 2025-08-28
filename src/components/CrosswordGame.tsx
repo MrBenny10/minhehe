@@ -28,49 +28,46 @@ export interface Cell {
   number?: number;
 }
 
-// Swedish-themed 7x7 crossword with proper intersections
+// Swedish-themed 5x5 crossword with proper intersections
 // Grid layout:
-//   0 1 2 3 4 5 6
-// 0 ■ S A A B ■ ■
-// 1 ■ K ■ ■ ■ ■ ■
-// 2 ■ A ■ ■ ■ ■ ■
-// 3 ■ L ■ ■ ■ ■ ■
-// 4 I K E A ■ ■ ■
-// 5 ■ ■ ■ ■ ■ ■ ■
-// 6 ■ ■ ■ ■ ■ ■ ■
+//   0 1 2 3 4
+// 0 ■ A B B A
+// 1 ■ ■ ■ ■ ■
+// 2 S K A L ■
+// 3 ■ ■ ■ ■ ■
+// 4 ■ I K E A
 const samplePuzzle = {
-  size: 7,
+  size: 5,
   clues: [
     // Across clues
     {
       number: 1,
-      text: 'Swedish car manufacturer (4)',
+      text: 'Famous Swedish pop group (4)',
       direction: 'across' as const,
       startRow: 0,
       startCol: 1,
       length: 4,
-      solution: 'SAAB',
+      solution: 'ABBA',
     },
     {
       number: 3,
+      text: 'What Swedes say for "cheers!" (4)',
+      direction: 'across' as const,
+      startRow: 2,
+      startCol: 0,
+      length: 4,
+      solution: 'SKAL',
+    },
+    {
+      number: 5,
       text: 'Swedish furniture giant (4)',
       direction: 'across' as const,
       startRow: 4,
-      startCol: 0,
+      startCol: 1,
       length: 4,
       solution: 'IKEA',
     },
 
-    // Down clues
-    {
-      number: 2,
-      text: 'What Swedes say for "cheers!" (4)',
-      direction: 'down' as const,
-      startRow: 0,
-      startCol: 1,
-      length: 4,
-      solution: 'SKAL', // S(SAAB), K, A, L - intersects with IKEA at K
-    },
   ],
 };
 
