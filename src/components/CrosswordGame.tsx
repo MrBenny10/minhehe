@@ -166,11 +166,18 @@ export const CrosswordGame: React.FC = () => {
       }
     });
     
-    // If we have matching clues, use the first one (or implement logic to prefer across/down)
+    // If we have matching clues, prefer to keep the same direction as current clue
     if (matchingClues.length > 0) {
-      setCurrentClue(matchingClues[0]);
+      let selectedClue = matchingClues[0];
+      
+      // If current clue exists and there's a matching clue in the same direction, prefer it
+      if (currentClue && matchingClues.some(clue => clue.direction === currentClue.direction)) {
+        selectedClue = matchingClues.find(clue => clue.direction === currentClue.direction) || matchingClues[0];
+      }
+      
+      setCurrentClue(selectedClue);
     }
-  }, []);
+  }, [currentClue]);
 
   const handleStart = useCallback(() => {
     initializeGrid();
