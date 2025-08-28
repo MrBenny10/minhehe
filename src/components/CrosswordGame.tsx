@@ -34,14 +34,14 @@ export interface Puzzle {
 }
 
 const samplePuzzle: Puzzle = {
-  size: 6,
+  size: 5,
   clues: [
     // Across
     {
       number: 1,
       text: 'Swedish pop group (4)',
       direction: 'across',
-      startRow: 0,
+      startRow: 1,
       startCol: 0,
       length: 4,
       solution: 'ABBA',
@@ -50,19 +50,10 @@ const samplePuzzle: Puzzle = {
       number: 3,
       text: 'Swedish carmaker (5)',
       direction: 'across',
-      startRow: 2,
+      startRow: 3,
       startCol: 1,
-      length: 5,
-      solution: 'VOLVO',
-    },
-    {
-      number: 5,
-      text: "Swedish ideal of 'just right' (5)",
-      direction: 'across',
-      startRow: 4,
-      startCol: 0,
-      length: 5,
-      solution: 'LAGOM',
+      length: 4,
+      solution: 'IKEA',
     },
 
     // Down
@@ -71,18 +62,9 @@ const samplePuzzle: Puzzle = {
       text: 'Flat-pack furniture giant (4)',
       direction: 'down',
       startRow: 0,
-      startCol: 1, // B in ABBA
+      startCol: 1,
       length: 4,
-      solution: 'IKEA',
-    },
-    {
-      number: 4,
-      text: 'Prize named for Alfred (5)',
-      direction: 'down',
-      startRow: 0,
-      startCol: 3, // A in ABBA
-      length: 5,
-      solution: 'NOBEL',
+      solution: 'BIKE',
     },
   ],
 };
