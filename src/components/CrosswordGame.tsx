@@ -69,6 +69,7 @@ export const CrosswordGame: React.FC = () => {
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showingErrors, setShowingErrors] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [completionTime, setCompletionTime] = useState<number | null>(null);
@@ -129,6 +130,7 @@ export const CrosswordGame: React.FC = () => {
       if (isComplete && !gameCompleted) {
         // Stop timer and complete game immediately in the same render cycle
         setGameCompleted(true);
+        setShowCompletionModal(true);
         setCompletionTime(timeElapsed);
         
         // Trigger confetti after a brief delay
@@ -166,6 +168,7 @@ export const CrosswordGame: React.FC = () => {
     initializeGrid();
     setGameStarted(true);
     setGameCompleted(false);
+    setShowCompletionModal(false);
     setCompletionTime(null);
     setShowingErrors(false);
     setTimeElapsed(0);
@@ -182,6 +185,7 @@ export const CrosswordGame: React.FC = () => {
     
     if (isComplete) {
       setGameCompleted(true);
+      setShowCompletionModal(true);
       setCompletionTime(timeElapsed);
       
       // Trigger confetti
@@ -289,8 +293,8 @@ export const CrosswordGame: React.FC = () => {
         </div>
 
         <CompletionModal
-          isOpen={gameCompleted}
-          onClose={() => setGameCompleted(false)}
+          isOpen={showCompletionModal}
+          onClose={() => setShowCompletionModal(false)}
           completionTime={completionTime || 0}
           onNewGame={handleStart}
         />
