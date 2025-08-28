@@ -34,7 +34,7 @@ export interface Puzzle {
 }
 
 const samplePuzzle: Puzzle = {
-  size: 9,
+  size: 13,
   clues: [
     // Across
     {
@@ -50,7 +50,7 @@ const samplePuzzle: Puzzle = {
       number: 7,
       text: 'Swedish word for "cheers!" (4)',
       direction: 'across',
-      startRow: 5,
+      startRow: 4,
       startCol: 7,
       length: 4,
       solution: 'SKAL',
@@ -60,7 +60,7 @@ const samplePuzzle: Puzzle = {
       text: 'Swedish pop group (4)',
       direction: 'across',
       startRow: 6,
-      startCol: 6,
+      startCol: 5,
       length: 4,
       solution: 'ABBA',
     },
@@ -71,7 +71,7 @@ const samplePuzzle: Puzzle = {
       text: 'Swedish university city (7)',
       direction: 'down',
       startRow: 0,
-      startCol: 3,
+      startCol: 5,
       length: 7,
       solution: 'UPPSALA',
     },
@@ -88,8 +88,8 @@ const samplePuzzle: Puzzle = {
       number: 3,
       text: 'Swedish ideal of "just right" (5)',
       direction: 'down',
-      startRow: 2,
-      startCol: 2,
+      startRow: 1,
+      startCol: 3,
       length: 5,
       solution: 'LAGOM',
     },
@@ -97,7 +97,7 @@ const samplePuzzle: Puzzle = {
       number: 4,
       text: 'Swedish carmaker (5)',
       direction: 'down',
-      startRow: 1,
+      startRow: 2,
       startCol: 1,
       length: 5,
       solution: 'VOLVO',
@@ -106,7 +106,7 @@ const samplePuzzle: Puzzle = {
       number: 6,
       text: 'Flat-pack furniture giant (4)',
       direction: 'down',
-      startRow: 3,
+      startRow: 2,
       startCol: 8,
       length: 4,
       solution: 'IKEA',
