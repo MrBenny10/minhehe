@@ -16,7 +16,7 @@ export const GameControls: React.FC<GameControlsProps> = ({
   onCheckAnswers
 }) => {
   return (
-    <div className="flex items-center justify-center gap-3">
+    <div className="flex flex-wrap items-center justify-center gap-3 px-4">
       {!gameStarted && !gameCompleted && (
         <Button 
           onClick={onStartGame}

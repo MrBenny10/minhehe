@@ -281,12 +281,14 @@ export const CrosswordGame: React.FC = () => {
               currentClue={currentClue}
             />
             
-            <GameControls
-              gameStarted={gameStarted}
-              gameCompleted={gameCompleted}
-              onStartGame={handleStart}
-              onCheckAnswers={handleCheck}
-            />
+            <div className="flex justify-center">
+              <GameControls
+                gameStarted={gameStarted}
+                gameCompleted={gameCompleted}
+                onStartGame={handleStart}
+                onCheckAnswers={handleCheck}
+              />
+            </div>
           </div>
 
           <div className="lg:col-span-1">
