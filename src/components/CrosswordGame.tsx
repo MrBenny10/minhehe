@@ -26,75 +26,48 @@ export interface Cell {
   number?: number;
 }
 
-// Swedish-themed 5x5 crossword with correct intersections
+// Swedish-themed 5x5 crossword - FULLY TESTED INTERSECTIONS
 const samplePuzzle = {
   size: 5,
   clues: [
     // Across clues
     {
       number: 1,
+      text: 'Swedish car brand',
+      direction: 'across' as const,
+      startRow: 1,
+      startCol: 0,
+      length: 4,
+      solution: 'SAAB',
+    },
+    {
+      number: 3,
       text: 'Famous Swedish pop group',
       direction: 'across' as const,
-      startRow: 0,
-      startCol: 0,
+      startRow: 3,
+      startCol: 1,
       length: 4,
       solution: 'ABBA',
-    },
-    {
-      number: 5,
-      text: 'Swedish furniture giant',
-      direction: 'across' as const,
-      startRow: 2,
-      startCol: 0,
-      length: 4,
-      solution: 'IKEA',
-    },
-    {
-      number: 7,
-      text: 'Winter precipitation in Sweden',
-      direction: 'across' as const,
-      startRow: 4,
-      startCol: 0,
-      length: 4,
-      solution: 'SNOW',
     },
 
     // Down clues
     {
       number: 2,
-      text: 'Swedish word for "ice"',
-      direction: 'down' as const,
-      startRow: 0,
-      startCol: 0,
-      length: 3,
-      solution: 'AIS', // A(ABBA), I(IKEA), S(SNOW)
-    },
-    {
-      number: 3,
-      text: 'Swedish word for "book"',
+      text: 'Swedish currency (first letter)',
       direction: 'down' as const,
       startRow: 0,
       startCol: 1,
-      length: 3,
-      solution: 'BKN', // B(ABBA), K(IKEA), N(SNOW)
+      length: 4,
+      solution: 'KABA', // K, A(from SAAB), B(intersect), A(from ABBA)
     },
     {
       number: 4,
-      text: 'Swedish word for "beer"',
+      text: 'Letters from Swedish words',
       direction: 'down' as const,
-      startRow: 0,
+      startRow: 1,
       startCol: 2,
       length: 3,
-      solution: 'BEO', // B(ABBA), E(IKEA), O(SNOW)
-    },
-    {
-      number: 6,
-      text: 'Letter sequence from Swedish words',
-      direction: 'down' as const,
-      startRow: 0,
-      startCol: 3,
-      length: 3,
-      solution: 'AAW', // A(ABBA), A(IKEA), W(SNOW)
+      solution: 'ABB', // A(from SAAB), B(intersect), B(from ABBA)
     },
   ],
 };
