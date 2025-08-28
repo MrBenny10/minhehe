@@ -34,55 +34,82 @@ export interface Puzzle {
 }
 
 const samplePuzzle: Puzzle = {
-  size: 10,
+  size: 13, // 13 cols × 8 rows
   clues: [
     // Across
     {
-      number: 1,
+      number: 5,
       text: 'Traditional buffet, part of "smorgasbord" (7)',
       direction: 'across',
-      startRow: 3,
-      startCol: 0,
+      startRow: 4,
+      startCol: 1,
       length: 7,
       solution: 'SMORGAS',
     },
     {
-      number: 3,
-      text: 'Swedish word for "cheers!" (5)',
+      number: 7,
+      text: 'Swedish word for "cheers!" (4)',
       direction: 'across',
-      startRow: 3,
-      startCol: 5,
-      length: 5,
-      solution: 'SKALL',
+      startRow: 4,
+      startCol: 9,
+      length: 4,
+      solution: 'SKAL',
     },
     {
-      number: 4,
+      number: 8,
       text: 'Swedish pop group (4)',
       direction: 'across',
-      startRow: 6,
-      startCol: 3,
+      startRow: 7,
+      startCol: 7,
       length: 4,
       solution: 'ABBA',
     },
 
     // Down
     {
+      number: 1,
+      text: 'Swedish university city (7)',
+      direction: 'down',
+      startRow: 1,
+      startCol: 7,
+      length: 7,
+      solution: 'UPPSALA',
+    },
+    {
       number: 2,
+      text: 'Prize named for Alfred (5)',
+      direction: 'down',
+      startRow: 0,
+      startCol: 12,
+      length: 5,
+      solution: 'NOBEL',
+    },
+    {
+      number: 3,
+      text: 'Swedish ideal of "just right" (5)',
+      direction: 'down',
+      startRow: 2,
+      startCol: 5,
+      length: 5,
+      solution: 'LAGOM',
+    },
+    {
+      number: 4,
       text: 'Swedish carmaker (5)',
       direction: 'down',
-      startRow: 4,
-      startCol: 0,
+      startRow: 3,
+      startCol: 3,
       length: 5,
       solution: 'VOLVO',
     },
     {
-      number: 5,
-      text: 'Swedish university city (7)',
+      number: 6,
+      text: 'Flat-pack furniture giant (4)',
       direction: 'down',
-      startRow: 0,
-      startCol: 3,
-      length: 7,
-      solution: 'UPPSALA',
+      startRow: 3,
+      startCol: 10,
+      length: 4,
+      solution: 'IKEA',
     },
   ],
 };
@@ -107,8 +134,11 @@ export const CrosswordGame: React.FC = () => {
   // Initialize grid
   const initializeGrid = useCallback(() => {
     const newCells: Cell[] = [];
-    for (let row = 0; row < samplePuzzle.size; row++) {
-      for (let col = 0; col < samplePuzzle.size; col++) {
+    const cols = 13; // 13 columns
+    const rows = 8;  // 8 rows
+    
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
         newCells.push({
           id: `${row}-${col}`,
           row,
@@ -124,8 +154,8 @@ export const CrosswordGame: React.FC = () => {
       for (let i = 0; i < clue.length; i++) {
         const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
         const c = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
-        const idx = r * samplePuzzle.size + c;
-        if (newCells[idx]) {
+        const idx = r * cols + c;
+        if (newCells[idx] && r < rows && c < cols) {
           newCells[idx].isBlocked = false;
           newCells[idx].answer = clue.solution[i];
           if (i === 0) newCells[idx].number = clue.number;
@@ -252,7 +282,7 @@ export const CrosswordGame: React.FC = () => {
               showingErrors={showingErrors}
               gameStarted={gameStarted}
               currentClue={currentClue}
-              gridSize={samplePuzzle.size}
+              gridSize={13}
             />
 
             <div className="flex justify-center">

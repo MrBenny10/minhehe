@@ -31,7 +31,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       if (currentClue.direction === 'across') {
         // Move right for across clues, skipping correct cells
         let checkCol = cell.col + 1;
-        while (checkCol < gridSize) {
+        while (checkCol < 13) { // 13 columns
           const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
           if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
             nextCell = candidateCell;
@@ -42,7 +42,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       } else if (currentClue.direction === 'down') {
         // Move down for down clues, skipping correct cells
         let checkRow = cell.row + 1;
-        while (checkRow < gridSize) {
+        while (checkRow < 8) { // 8 rows
           const candidateCell = cells.find(c => c.row === checkRow && c.col === cell.col && !c.isBlocked);
           if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
             nextCell = candidateCell;
@@ -150,7 +150,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
       const nextCol = cell.col + 1;
-      if (nextCol < gridSize) {
+      if (nextCol < 13) { // 13 columns
         const nextCell = cells.find(c => c.row === cell.row && c.col === nextCol && !c.isBlocked);
         if (nextCell) onCellSelect(nextCell.id);
       }
@@ -164,7 +164,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       const nextRow = cell.row + 1;
-      if (nextRow < gridSize) {
+      if (nextRow < 8) { // 8 rows
         const nextCell = cells.find(c => c.row === nextRow && c.col === cell.col && !c.isBlocked);
         if (nextCell) onCellSelect(nextCell.id);
       }
@@ -207,9 +207,9 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       <div 
         className="grid gap-0.5 sm:gap-1 p-2 sm:p-4 bg-background border-2 border-grid-border rounded-lg min-w-fit mx-auto"
         style={{ 
-          gridTemplateColumns: `repeat(${gridSize}, minmax(0, 1fr))`,
-          maxWidth: 'min(90vw, 400px)',
-          aspectRatio: '1'
+          gridTemplateColumns: 'repeat(13, minmax(0, 1fr))',
+          gridTemplateRows: 'repeat(8, minmax(0, 1fr))',
+          maxWidth: 'min(90vw, 650px)',
         }}
       >
         {cells.map((cell) => {
