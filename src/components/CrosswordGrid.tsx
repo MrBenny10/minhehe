@@ -21,7 +21,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   showingErrors,
   gameStarted,
   currentClue,
-  gridSize = 9
+  gridSize = 7
 }) => {
   // Helper function for auto-advance logic
   const autoAdvanceToNext = useCallback((cell: Cell) => {
