@@ -203,8 +203,15 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   }, [selectedCell]);
 
   return (
-    <div className="flex justify-center">
-      <div className={`grid gap-1 p-4 bg-background border-2 border-grid-border rounded-lg`} style={{ gridTemplateColumns: `repeat(${gridSize}, minmax(0, 1fr))` }}>
+    <div className="flex justify-center w-full overflow-x-auto">
+      <div 
+        className="grid gap-0.5 sm:gap-1 p-2 sm:p-4 bg-background border-2 border-grid-border rounded-lg min-w-fit mx-auto"
+        style={{ 
+          gridTemplateColumns: `repeat(${gridSize}, minmax(0, 1fr))`,
+          maxWidth: 'min(90vw, 400px)',
+          aspectRatio: '1'
+        }}
+      >
         {cells.map((cell) => {
           const status = getCellStatus(cell);
           const isSelected = selectedCell === cell.id;
@@ -213,7 +220,8 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
             return (
               <div
                 key={cell.id}
-                className="w-12 h-12 bg-foreground opacity-10 rounded-sm"
+                className="aspect-square bg-foreground opacity-10 rounded-sm"
+                style={{ minWidth: '32px', minHeight: '32px' }}
               />
             );
           }
@@ -221,10 +229,11 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
           return (
             <div
               key={cell.id}
-              className="relative"
+              className="relative aspect-square"
+              style={{ minWidth: '32px', minHeight: '32px' }}
             >
               {cell.number && (
-                <span className="absolute top-0 left-0 text-xs font-bold text-foreground z-10 ml-1 mt-0.5">
+                <span className="absolute top-0 left-0 text-xs font-bold text-foreground z-10 ml-0.5 sm:ml-1 mt-0.5 leading-none">
                   {cell.number}
                 </span>
               )}
@@ -246,7 +255,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                 onClick={() => handleCellClick(cell)}
                 readOnly={cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()}
                 className={cn(
-                  "w-12 h-12 text-center text-lg font-mono font-bold border-2 rounded-sm",
+                  "w-full h-full text-center text-sm sm:text-lg font-mono font-bold border-2 rounded-sm",
                   "focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200",
                   "cursor-pointer select-none uppercase",
                   {
