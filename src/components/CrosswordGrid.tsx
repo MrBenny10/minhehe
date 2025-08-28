@@ -31,7 +31,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       if (currentClue.direction === 'across') {
         // Move right for across clues, skipping correct cells
         let checkCol = cell.col + 1;
-        while (checkCol < 8) { // 8 columns
+        while (checkCol < 13) { // 13 columns
           const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
           if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
             nextCell = candidateCell;
@@ -42,7 +42,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       } else if (currentClue.direction === 'down') {
         // Move down for down clues, skipping correct cells
         let checkRow = cell.row + 1;
-        while (checkRow < 7) { // 7 rows
+        while (checkRow < 8) { // 8 rows
           const candidateCell = cells.find(c => c.row === checkRow && c.col === cell.col && !c.isBlocked);
           if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
             nextCell = candidateCell;
@@ -57,10 +57,9 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       } else {
         // Current word is complete, find the next incomplete word
         const allClues = [
-          { number: 1, direction: 'across', startRow: 3, startCol: 0, length: 7 },
-          { number: 2, direction: 'down', startRow: 0, startCol: 3, length: 7 },
-          { number: 3, direction: 'down', startRow: 1, startCol: 1, length: 5 },
-          { number: 4, direction: 'down', startRow: 2, startCol: 5, length: 5 }
+          { number: 1, direction: 'across', startRow: 1, startCol: 0, length: 4 },
+          { number: 3, direction: 'across', startRow: 3, startCol: 1, length: 4 },
+          { number: 2, direction: 'down', startRow: 0, startCol: 1, length: 4 }
         ];
         
         // Find a clue that has incomplete cells
@@ -151,7 +150,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
       const nextCol = cell.col + 1;
-      if (nextCol < 8) { // 8 columns
+      if (nextCol < 13) { // 13 columns
         const nextCell = cells.find(c => c.row === cell.row && c.col === nextCol && !c.isBlocked);
         if (nextCell) onCellSelect(nextCell.id);
       }
@@ -165,7 +164,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       const nextRow = cell.row + 1;
-      if (nextRow < 7) { // 7 rows
+      if (nextRow < 8) { // 8 rows
         const nextCell = cells.find(c => c.row === nextRow && c.col === cell.col && !c.isBlocked);
         if (nextCell) onCellSelect(nextCell.id);
       }
@@ -208,11 +207,11 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       <div 
         className="grid gap-1 p-2 bg-background border-2 border-grid-border rounded-lg"
         style={{ 
-          gridTemplateColumns: 'repeat(8, 1fr)',
-          gridTemplateRows: 'repeat(7, 1fr)',
-          width: 'min(95vw, 65vh * 8/7)',
-          height: 'min(95vw * 7/8, 65vh)',
-          aspectRatio: '8/7',
+          gridTemplateColumns: 'repeat(13, 1fr)',
+          gridTemplateRows: 'repeat(8, 1fr)',
+          width: 'min(95vw, 65vh * 13/8)',
+          height: 'min(95vw * 8/13, 65vh)',
+          aspectRatio: '13/8',
         }}
       >
         {cells.map((cell) => {
