@@ -260,24 +260,28 @@ export const CrosswordGame: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <div className="flex justify-center">
-              <GameTimer 
-                timeElapsed={timeElapsed}
-                setTimeElapsed={setTimeElapsed}
-                isRunning={gameStarted && !gameCompleted}
-                gameCompleted={gameCompleted}
-              />
-            </div>
-            
-            <CrosswordGrid
-              cells={cells}
-              selectedCell={selectedCell}
-              onCellSelect={handleCellSelect}
-              onCellUpdate={handleCellUpdate}
-              showingErrors={showingErrors}
-              gameStarted={gameStarted}
-              currentClue={currentClue}
-            />
+            {gameStarted && (
+              <>
+                <div className="flex justify-center">
+                  <GameTimer 
+                    timeElapsed={timeElapsed}
+                    setTimeElapsed={setTimeElapsed}
+                    isRunning={gameStarted && !gameCompleted}
+                    gameCompleted={gameCompleted}
+                  />
+                </div>
+                
+                <CrosswordGrid
+                  cells={cells}
+                  selectedCell={selectedCell}
+                  onCellSelect={handleCellSelect}
+                  onCellUpdate={handleCellUpdate}
+                  showingErrors={showingErrors}
+                  gameStarted={gameStarted}
+                  currentClue={currentClue}
+                />
+              </>
+            )}
             
             <GameControls
               gameStarted={gameStarted}
@@ -287,9 +291,11 @@ export const CrosswordGame: React.FC = () => {
             />
           </div>
 
-          <div className="lg:col-span-1">
-            <CluesPanel clues={samplePuzzle.clues} />
-          </div>
+          {gameStarted && (
+            <div className="lg:col-span-1">
+              <CluesPanel clues={samplePuzzle.clues} />
+            </div>
+          )}
         </div>
 
         <CompletionModal
