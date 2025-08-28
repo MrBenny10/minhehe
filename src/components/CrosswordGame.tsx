@@ -25,9 +25,9 @@ export interface Cell {
   number?: number;
 }
 
-// Crossword matching the correct layout
+// Crossword matching the exact grid layout
 const samplePuzzle = {
-  size: 9,
+  size: 10,
   clues: [
     // Across clues
     {
@@ -35,7 +35,7 @@ const samplePuzzle = {
       text: 'Sign of life',
       direction: 'across' as const,
       startRow: 1,
-      startCol: 1,
+      startCol: 3,
       length: 5,
       solution: 'PULSE',
     },
@@ -44,7 +44,7 @@ const samplePuzzle = {
       text: 'Political commentator Jen',
       direction: 'across' as const,
       startRow: 3,
-      startCol: 4,
+      startCol: 5,
       length: 5,
       solution: 'PSAKI',
     },
@@ -61,8 +61,8 @@ const samplePuzzle = {
       number: 8,
       text: "Kick one's feet up",
       direction: 'across' as const,
-      startRow: 6,
-      startCol: 1,
+      startRow: 7,
+      startCol: 0,
       length: 5,
       solution: 'RELAX',
     },
@@ -75,52 +75,52 @@ const samplePuzzle = {
       startRow: 0,
       startCol: 6,
       length: 5,
-      solution: 'BABKA', // B, A, B, K, A down
+      solution: 'BABKA',
     },
     {
       number: 2,
       text: 'Regular patron\'s order, with "the"',
       direction: 'down' as const,
-      startRow: 0,
+      startRow: 1,
       startCol: 2,
       length: 5,
-      solution: 'USUAL', // U, S, U, A, L down
+      solution: 'USUAL',
     },
     {
       number: 4,
       text: 'Host of the 2028 Olympics, for short',
       direction: 'down' as const,
       startRow: 1,
-      startCol: 3,
+      startCol: 4,
       length: 3,
-      solution: 'USA', // U, S, A down
+      solution: 'USA',
     },
     {
       number: 5,
       text: 'Place to pour a pint',
       direction: 'down' as const,
       startRow: 3,
-      startCol: 4,
+      startCol: 5,
       length: 3,
-      solution: 'PUB', // P, U, B down
+      solution: 'PUB',
     },
     {
-      number: 7,
+      number: 6,
       text: 'Skill practiced on dummies, for short',
       direction: 'down' as const,
       startRow: 5,
       startCol: 1,
       length: 3,
-      solution: 'CPR', // C, P, R down
+      solution: 'CPR',
     },
     {
       number: 7,
       text: 'Age at which Tiger Woods made his first hole-in-one',
       direction: 'down' as const,
-      startRow: 3,
-      startCol: 8,
+      startRow: 5,
+      startCol: 5,
       length: 3,
-      solution: 'SIX', // S, I, X down
+      solution: 'SIX',
     },
   ],
 };
