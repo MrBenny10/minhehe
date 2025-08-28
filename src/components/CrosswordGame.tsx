@@ -229,17 +229,15 @@ export const CrosswordGame: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted p-4">
       <div className="container mx-auto max-w-6xl">
-        {/* Fixed clue display at top */}
+        {/* Compact clue display - stays visible with keyboard */}
         {gameStarted && currentClue && (
-          <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border mb-4">
-            <div className="container mx-auto max-w-6xl p-4">
-              <div className="bg-card border border-border rounded-lg p-4 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded">
-                    {currentClue.number} {currentClue.direction}
-                  </span>
-                  <p className="text-foreground font-medium">{currentClue.text}</p>
-                </div>
+          <div className="sticky top-0 z-50 bg-background/98 backdrop-blur-sm border-b border-border">
+            <div className="px-4 py-2">
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+                  {currentClue.number}{currentClue.direction === 'across' ? 'A' : 'D'}
+                </span>
+                <p className="text-foreground font-medium truncate">{currentClue.text}</p>
               </div>
             </div>
           </div>
