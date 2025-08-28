@@ -251,14 +251,6 @@ const Day2: React.FC = () => {
 
   return (
     <div className="h-screen bg-gradient-to-br from-background via-background to-muted overflow-hidden">
-      {/* Navigation */}
-      <div className="fixed top-4 left-4 z-[60] flex gap-2">
-        <Link to="/">
-          <Button variant="outline" size="sm">Day 1</Button>
-        </Link>
-        <Button variant="default" size="sm" disabled>Day 2</Button>
-      </div>
-
       {gameStarted && currentClue && (
         <div className="fixed top-0 left-0 right-0 z-40 bg-background/98 backdrop-blur-sm border-b border-border">
           <div className="px-2 py-1.5 md:px-4 md:py-2">
@@ -316,6 +308,14 @@ const Day2: React.FC = () => {
         <div className="hidden lg:block fixed right-4 top-1/2 transform -translate-y-1/2 w-80">
           <CluesPanel clues={londonPuzzle.clues} />
         </div>
+      </div>
+
+      {/* Navigation below grid */}
+      <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50 flex gap-2">
+        <Link to="/">
+          <Button variant="outline" size="sm">Day 1</Button>
+        </Link>
+        <Button variant="default" size="sm" disabled>Day 2</Button>
       </div>
 
       <CompletionModal
