@@ -33,9 +33,9 @@ interface Puzzle {
 
 // 8-word Swedish crossword with proper intersections
 const samplePuzzle: Puzzle = {
-  size: 7,
+  size: 9,
   clues: [
-    // Across
+    // Across words
     {
       number: 1,
       text: 'Swedish pop group (4)',
@@ -46,67 +46,67 @@ const samplePuzzle: Puzzle = {
       solution: 'ABBA',
     },
     {
-      number: 3,
-      text: 'Swedish car brand (4)',
-      direction: 'across',
-      startRow: 2,
-      startCol: 2,
-      length: 4,
-      solution: 'SAAB',
-    },
-    {
-      number: 5,
+      number: 4,
       text: 'Swedish furniture store (4)',
       direction: 'across',
-      startRow: 4,
+      startRow: 2,
       startCol: 0,
       length: 4,
       solution: 'IKEA',
     },
     {
       number: 6,
+      text: 'Swedish car brand (4)',
+      direction: 'across',
+      startRow: 4,
+      startCol: 2,
+      length: 4,
+      solution: 'SAAB',
+    },
+    {
+      number: 8,
       text: 'Swedish car manufacturer (5)',
       direction: 'across',
       startRow: 6,
-      startCol: 1,
+      startCol: 0,
       length: 5,
       solution: 'VOLVO',
     },
     
-    // Down
+    // Down words
     {
       number: 2,
-      text: 'Swedish concept of balance (5)',
-      direction: 'down',
-      startRow: 1,
-      startCol: 3,
-      length: 5,
-      solution: 'LAGOM',
-    },
-    {
-      number: 4,
       text: 'Indigenous people of northern Sweden (4)',
       direction: 'down',
-      startRow: 2,
-      startCol: 5,
+      startRow: 0,
+      startCol: 3,
       length: 4,
       solution: 'SAMI',
     },
     {
-      number: 7,
+      number: 3,
       text: 'Swedish cheers (4)',
       direction: 'down',
-      startRow: 3,
-      startCol: 0,
+      startRow: 2,
+      startCol: 2,
       length: 4,
       solution: 'SKAL',
     },
     {
-      number: 8,
+      number: 5,
+      text: 'Swedish concept of balance (5)',
+      direction: 'down',
+      startRow: 1,
+      startCol: 1,
+      length: 5,
+      solution: 'LAGOM',
+    },
+    {
+      number: 7,
       text: 'Swedish university city (7)',
       direction: 'down',
       startRow: 0,
-      startCol: 1,
+      startCol: 4,
       length: 7,
       solution: 'UPPSALA',
     },
