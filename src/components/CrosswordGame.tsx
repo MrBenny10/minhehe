@@ -28,46 +28,110 @@ export interface Cell {
   number?: number;
 }
 
-// Swedish-themed 5x5 crossword with proper intersections
-// Grid layout:
-//   0 1 2 3 4
-// 0 ■ A B B A
-// 1 ■ ■ ■ ■ ■
-// 2 S K A L ■
-// 3 ■ ■ ■ ■ ■
-// 4 ■ I K E A
+/**
+ * 9x9 Swedish-themed crossword with proper intersections
+ * Coordinates: row/col are 0-indexed
+ *
+ * Final grid (■ = blocked) with placed answers:
+ *
+ * 0  ■ ■ ■ ■ ■ ■ ■ ■ ■
+ * 1  U ■ ■ ■ ■ ■ ■ ■ ■
+ * 2  P ■ V O L V O ■ ■
+ * 3  P I K E A B B A ■
+ * 4  S M O R G A S ■ ■
+ * 5  A ■ ■ ■ O ■ K ■ ■
+ * 6  L ■ S A M I A ■ ■
+ * 7  A ■ ■ ■ ■ ■ L ■ ■
+ * 8  ■ ■ ■ ■ ■ ■ ■ ■ ■
+ *
+ * Words:
+ * 1A VOLVO (row 2, col 2, across)
+ * 4A IKEA  (row 3, col 1, across)
+ * 5A ABBA  (row 3, col 4, across)
+ * 6A SMORGAS (row 4, col 0, across)
+ * 8A SAMI  (row 6, col 2, across)
+ * 2D LAGOM (row 2, col 4, down)
+ * 3D UPPSALA (row 1, col 0, down)
+ * 7D SKAL (row 4, col 6, down)
+ */
 const samplePuzzle = {
-  size: 5,
+  size: 9,
   clues: [
-    // Across clues
+    // Across
     {
       number: 1,
-      text: 'Famous Swedish pop group (4)',
-      direction: 'across' as const,
-      startRow: 0,
-      startCol: 1,
-      length: 4,
-      solution: 'ABBA',
-    },
-    {
-      number: 3,
-      text: 'What Swedes say for "cheers!" (4)',
+      text: 'Swedish carmaker (5)',
       direction: 'across' as const,
       startRow: 2,
-      startCol: 0,
-      length: 4,
-      solution: 'SKAL',
+      startCol: 2,
+      length: 5,
+      solution: 'VOLVO',
     },
     {
-      number: 5,
-      text: 'Swedish furniture giant (4)',
+      number: 4,
+      text: 'Flat-pack furniture giant (4)',
       direction: 'across' as const,
-      startRow: 4,
+      startRow: 3,
       startCol: 1,
       length: 4,
       solution: 'IKEA',
     },
+    {
+      number: 5,
+      text: 'Famous Swedish pop group (4)',
+      direction: 'across' as const,
+      startRow: 3,
+      startCol: 4,
+      length: 4,
+      solution: 'ABBA',
+    },
+    {
+      number: 6,
+      text: "Part of 'smorgasbord' (7)",
+      direction: 'across' as const,
+      startRow: 4,
+      startCol: 0,
+      length: 7,
+      solution: 'SMORGAS',
+    },
+    {
+      number: 8,
+      text: 'Indigenous people of northern Sweden (4)',
+      direction: 'across' as const,
+      startRow: 6,
+      startCol: 2,
+      length: 4,
+      solution: 'SAMI',
+    },
 
+    // Down
+    {
+      number: 2,
+      text: "Swedish ideal of 'just right' (5)",
+      direction: 'down' as const,
+      startRow: 2,
+      startCol: 4,
+      length: 5,
+      solution: 'LAGOM',
+    },
+    {
+      number: 3,
+      text: 'Historic Swedish university city (7)',
+      direction: 'down' as const,
+      startRow: 1,
+      startCol: 0,
+      length: 7,
+      solution: 'UPPSALA',
+    },
+    {
+      number: 7,
+      text: 'What Swedes say for "cheers!" (4)',
+      direction: 'down' as const,
+      startRow: 4,
+      startCol: 6,
+      length: 4,
+      solution: 'SKAL',
+    },
   ],
 };
 
