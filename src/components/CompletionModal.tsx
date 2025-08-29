@@ -50,31 +50,45 @@ ${currentUrl}
     window.open(whatsappUrl, '_blank');
   };
 
-  const showBuyMeCoffeeWidget = () => {
-    console.log('Attempting to show Buy Me a Coffee widget...');
+  const loadBuyMeCoffeeWidget = () => {
+    console.log('Loading Buy Me a Coffee widget...');
     
-    // Add class to body to show the widget
-    document.body.classList.add('bmc-widget-visible');
-    console.log('Added bmc-widget-visible class to body');
+    // Check if script already exists
+    const existingScript = document.querySelector('[data-name="BMC-Widget"]');
+    if (existingScript) {
+      console.log('Widget script already exists');
+      return;
+    }
+
+    // Create and load the script
+    const script = document.createElement('script');
+    script.setAttribute('data-name', 'BMC-Widget');
+    script.setAttribute('data-cfasync', 'false');
+    script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js';
+    script.setAttribute('data-id', 'BennySE');
+    script.setAttribute('data-description', 'Support me on Buy me a coffee!');
+    script.setAttribute('data-message', 'Hope you enjoyed this! Every day I\'ll make a new crossword ');
+    script.setAttribute('data-color', '#BD5FFF');
+    script.setAttribute('data-position', 'Right');
+    script.setAttribute('data-x_margin', '18');
+    script.setAttribute('data-y_margin', '18');
+    script.setAttribute('data-amount', '10');
     
-    // Also try to show any widget elements that might use different selectors
-    setTimeout(() => {
-      const widgets = document.querySelectorAll('[id*="bmc"], [class*="bmc"], iframe[src*="buymeacoffee"]');
-      widgets.forEach((widget: any) => {
-        if (widget && widget.style) {
-          widget.style.display = 'block';
-          widget.style.visibility = 'visible';
-          widget.style.opacity = '1';
-        }
-      });
-      console.log(`Found and attempted to show ${widgets.length} widget elements`);
-    }, 500);
+    script.onload = () => {
+      console.log('Buy Me a Coffee widget loaded and should be visible');
+    };
+    
+    script.onerror = (error) => {
+      console.error('Failed to load Buy Me a Coffee script:', error);
+    };
+    
+    document.body.appendChild(script);
   };
 
   useEffect(() => {
     if (isOpen) {
-      // Show widget when modal opens (game completed)
-      showBuyMeCoffeeWidget();
+      // Load widget when modal opens (game completed)
+      loadBuyMeCoffeeWidget();
     }
   }, [isOpen]);
 
