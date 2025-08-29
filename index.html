@@ -16,6 +16,18 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="/minhehe-logo.png" />
+    
+    <!-- Hide Buy Me a Coffee widget initially -->
+    <style>
+      [id*="bmc-wbtn"], [class*="bmc-btn"], iframe[src*="buymeacoffee"] {
+        display: none !important;
+      }
+      .bmc-widget-visible [id*="bmc-wbtn"], 
+      .bmc-widget-visible [class*="bmc-btn"], 
+      .bmc-widget-visible iframe[src*="buymeacoffee"] {
+        display: block !important;
+      }
+    </style>
   </head>
 
   <body>

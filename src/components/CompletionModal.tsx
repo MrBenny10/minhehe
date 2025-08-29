@@ -53,27 +53,22 @@ ${currentUrl}
   const showBuyMeCoffeeWidget = () => {
     console.log('Attempting to show Buy Me a Coffee widget...');
     
-    // Find the widget script and show it
-    const widgetScript = document.querySelector('[data-name="BMC-Widget"]') as HTMLElement;
-    if (widgetScript) {
-      widgetScript.style.display = 'block';
-      console.log('Widget script found and shown');
-      
-      // Also try to show any existing widget elements
-      setTimeout(() => {
-        const widgets = document.querySelectorAll('[id*="bmc-widget"], [class*="bmc-"], [data-id="BennySE"]');
-        widgets.forEach((widget: any) => {
-          if (widget && widget.style) {
-            widget.style.display = 'block';
-            widget.style.visibility = 'visible';
-            widget.style.opacity = '1';
-          }
-        });
-        console.log(`Found and attempted to show ${widgets.length} widget elements`);
-      }, 1000);
-    } else {
-      console.log('Widget script not found');
-    }
+    // Add class to body to show the widget
+    document.body.classList.add('bmc-widget-visible');
+    console.log('Added bmc-widget-visible class to body');
+    
+    // Also try to show any widget elements that might use different selectors
+    setTimeout(() => {
+      const widgets = document.querySelectorAll('[id*="bmc"], [class*="bmc"], iframe[src*="buymeacoffee"]');
+      widgets.forEach((widget: any) => {
+        if (widget && widget.style) {
+          widget.style.display = 'block';
+          widget.style.visibility = 'visible';
+          widget.style.opacity = '1';
+        }
+      });
+      console.log(`Found and attempted to show ${widgets.length} widget elements`);
+    }, 500);
   };
 
   useEffect(() => {
