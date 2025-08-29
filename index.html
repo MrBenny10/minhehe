@@ -19,13 +19,35 @@
     
     <!-- Hide Buy Me a Coffee widget initially -->
     <style>
-      [id*="bmc-wbtn"], [class*="bmc-btn"], iframe[src*="buymeacoffee"] {
+      [id*="bmc-wbtn"], 
+      [class*="bmc-btn"], 
+      [class*="bmc-widget"], 
+      [class*="bmc-popup"], 
+      [class*="bmc-message"],
+      [class*="bmc-tooltip"],
+      iframe[src*="buymeacoffee"],
+      div[data-id*="BennySE"],
+      .bmc-floating-btn,
+      #bmc-widget-container,
+      [id*="BMC"] {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
       }
       .bmc-widget-visible [id*="bmc-wbtn"], 
       .bmc-widget-visible [class*="bmc-btn"], 
-      .bmc-widget-visible iframe[src*="buymeacoffee"] {
+      .bmc-widget-visible [class*="bmc-widget"], 
+      .bmc-widget-visible [class*="bmc-popup"], 
+      .bmc-widget-visible [class*="bmc-message"],
+      .bmc-widget-visible [class*="bmc-tooltip"],
+      .bmc-widget-visible iframe[src*="buymeacoffee"],
+      .bmc-widget-visible div[data-id*="BennySE"],
+      .bmc-widget-visible .bmc-floating-btn,
+      .bmc-widget-visible #bmc-widget-container,
+      .bmc-widget-visible [id*="BMC"] {
         display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
       }
     </style>
   </head>
