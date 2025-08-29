@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Trophy, Clock, Play } from 'lucide-react';
+import { Trophy, Clock, Play, Share } from 'lucide-react';
 
 interface CompletionModalProps {
   isOpen: boolean;
@@ -27,6 +27,13 @@ export const CompletionModal: React.FC<CompletionModalProps> = ({
     if (time < 120) return "Excellent time! 🌟";
     if (time < 180) return "Great job! 👏";
     return "Well done! 🎉";
+  };
+
+  const handleWhatsAppShare = () => {
+    const currentUrl = window.location.href;
+    const shareText = `I completed the minHehe in ${formatTime(completionTime)}! What can you do? 🧩⏱️\n\n${currentUrl}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   return (
@@ -59,22 +66,34 @@ export const CompletionModal: React.FC<CompletionModalProps> = ({
             </div>
           </div>
 
-          <div className="flex gap-3 justify-center">
+          <div className="flex flex-col gap-3 items-center">
             <Button 
-              onClick={onNewGame}
+              onClick={handleWhatsAppShare}
+              variant="secondary"
               className="flex items-center gap-2"
               size="lg"
             >
-              <Play className="w-4 h-4" />
-              New Game
+              <Share className="w-4 h-4" />
+              Share on WhatsApp
             </Button>
-            <Button 
-              onClick={onClose}
-              variant="outline"
-              size="lg"
-            >
-              Close
-            </Button>
+            
+            <div className="flex gap-3">
+              <Button 
+                onClick={onNewGame}
+                className="flex items-center gap-2"
+                size="lg"
+              >
+                <Play className="w-4 h-4" />
+                New Game
+              </Button>
+              <Button 
+                onClick={onClose}
+                variant="outline"
+                size="lg"
+              >
+                Close
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>
