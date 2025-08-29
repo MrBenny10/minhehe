@@ -11,88 +11,88 @@ import { cn } from '@/lib/utils';
 import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 import type { Clue, Cell, Puzzle } from '@/components/CrosswordGame';
 
-const londonPuzzle: Puzzle = {
+const coldplayPuzzle: Puzzle = {
   size: 13, // 13 cols × 8 rows  
   clues: [
     // Across
     {
       number: 1,
-      text: 'Area home to Borough Market (7)',
+      text: '2000 single from Parachutes (7)',
       direction: 'across',
       startRow: 4, // row 5, col 2 → 0-indexed = (4,1)
       startCol: 1,
       length: 7,
-      solution: 'BOROUGH',
+      solution: 'TROUBLE',
     },
     {
       number: 2,
-      text: 'West End nightlife district (4)',
+      text: 'First word of "___ la Vida" (4)',
       direction: 'across',
       startRow: 4, // row 5, col 10 → 0-indexed = (4,9)
       startCol: 9,
       length: 4,
-      solution: 'SOHO',
+      solution: 'VIVA',
     },
     {
       number: 3,
-      text: 'Scotland ___ (Met Police HQ) (4)',
+      text: '"A Sky Full of ___" (5)',
       direction: 'across',
       startRow: 7, // row 8, col 8 → 0-indexed = (7,7)
       startCol: 7,
-      length: 4,
-      solution: 'YARD',
+      length: 5,
+      solution: 'STARS',
     },
 
     // Down
     {
       number: 4,
-      text: '___ Lane, Covent Garden street (5)',
+      text: '"Higher ___" (2021 single) (5)',
       direction: 'down',
       startRow: 3, // row 4, col 4 → 0-indexed = (3,3)
       startCol: 3,
       length: 5,
-      solution: 'DRURY',
+      solution: 'POWER',
     },
     {
       number: 5,
-      text: 'Word before "Bank" on the Thames (5)',
+      text: 'A Rush of Blood to the Head, for one (5)',
       direction: 'down',
       startRow: 2, // row 3, col 6 → 0-indexed = (2,5)
       startCol: 5,
       length: 5,
-      solution: 'SOUTH',
+      solution: 'ALBUM',
     },
     {
       number: 6,
-      text: 'North London area & Tube station (7)',
+      text: '2021 LP Music of the ___ (7)',
       direction: 'down',
       startRow: 1, // row 2, col 8 → 0-indexed = (1,7)
       startCol: 7,
       length: 7,
-      solution: 'ARCHWAY',
+      solution: 'SPHERES',
     },
     {
       number: 7,
-      text: 'Currency used in London (5)',
+      text: 'Desk used to blend audio live/in-studio (5)',
       direction: 'down',
       startRow: 3, // row 4, col 11 → 0-indexed = (3,10)
       startCol: 10,
       length: 5,
-      solution: 'POUND',
+      solution: 'MIXER',
     },
     {
       number: 8,
-      text: 'BBC broadcast medium (5)',
+      text: 'Typical large-venue stop on tour (5)',
       direction: 'down',
       startRow: 0, // row 1, col 13 → 0-indexed = (0,12)
       startCol: 12,
       length: 5,
-      solution: 'RADIO',
+      solution: 'ARENA',
     },
   ],
 };
 
-const Day2: React.FC = () => {
+const Day3: React.FC = () => {
   const [cells, setCells] = useState<Cell[]>([]);
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
@@ -123,7 +123,7 @@ const Day2: React.FC = () => {
       }
     }
 
-    londonPuzzle.clues.forEach((clue) => {
+    coldplayPuzzle.clues.forEach((clue) => {
       for (let i = 0; i < clue.length; i++) {
         const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
         const c = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
@@ -140,7 +140,7 @@ const Day2: React.FC = () => {
   }, []);
 
   const isValidAnswer = useCallback((cell: Cell, value: string) => {
-    const cluesForCell = londonPuzzle.clues.filter(clue => {
+    const cluesForCell = coldplayPuzzle.clues.filter(clue => {
       if (clue.direction === 'across') {
         return cell.row === clue.startRow && cell.col >= clue.startCol && cell.col < clue.startCol + clue.length;
       }
@@ -183,7 +183,7 @@ const Day2: React.FC = () => {
   const handleCellSelect = useCallback((cellId: string) => {
     setSelectedCell(cellId);
     const [row, col] = cellId.split('-').map(Number);
-    const matches = londonPuzzle.clues.filter(clue => {
+    const matches = coldplayPuzzle.clues.filter(clue => {
       if (clue.direction === 'across') {
         return row === clue.startRow && col >= clue.startCol && col < clue.startCol + clue.length;
       }
@@ -206,9 +206,9 @@ const Day2: React.FC = () => {
     setCompletionTime(null);
     setShowingErrors(false);
     setTimeElapsed(0);
-    setCurrentClue(londonPuzzle.clues[0]); // Auto-select first clue
+    setCurrentClue(coldplayPuzzle.clues[0]); // Auto-select first clue
     // Auto-select first cell of first clue
-    const firstClue = londonPuzzle.clues[0];
+    const firstClue = coldplayPuzzle.clues[0];
     setSelectedCell(`${firstClue.startRow}-${firstClue.startCol}`);
   }, [initializeGrid]);
 
@@ -256,8 +256,8 @@ const Day2: React.FC = () => {
             <img src={minHeheLogoSrc} alt="minHehe Logo" className="h-32 w-auto mx-auto mb-6 animate-pulse" />
           </div>
           <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
-          <p className="text-xl text-muted-foreground animate-fade-in">London Edition - Day 2</p>
-          <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your London puzzle...</p>
+          <p className="text-xl text-muted-foreground animate-fade-in">Coldplay Edition - Day 3</p>
+          <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your Coldplay puzzle...</p>
         </div>
         
         {/* Professional footer - positioned below content */}
@@ -344,7 +344,7 @@ const Day2: React.FC = () => {
 
         {/* Clues panel - hidden on mobile, accessible via modal/drawer if needed */}
         <div className="hidden lg:block fixed right-4 top-1/2 transform -translate-y-1/2 w-80">
-          <CluesPanel clues={londonPuzzle.clues} />
+          <CluesPanel clues={coldplayPuzzle.clues} />
         </div>
       </div>
 
@@ -353,10 +353,10 @@ const Day2: React.FC = () => {
         <Link to="/">
           <Button variant="outline" size="sm">Day 1</Button>
         </Link>
-        <Button variant="default" size="sm" disabled>Day 2</Button>
-        <Link to="/day3">
-          <Button variant="outline" size="sm">Day 3</Button>
+        <Link to="/day2">
+          <Button variant="outline" size="sm">Day 2</Button>
         </Link>
+        <Button variant="default" size="sm" disabled>Day 3</Button>
       </div>
 
       {/* Professional footer */}
@@ -381,4 +381,4 @@ const Day2: React.FC = () => {
   );
 };
 
-export default Day2;
+export default Day3;
