@@ -82,12 +82,12 @@ const coldplayPuzzle: Puzzle = {
     },
     {
       number: 8,
-      text: 'Typical large-venue stop on tour (5)',
+      text: 'Rihanna collab \'Princess of ___\' (2012) (5)',
       direction: 'down',
       startRow: 0, // row 1, col 13 → 0-indexed = (0,12)
       startCol: 12,
       length: 5,
-      solution: 'ARENA',
+      solution: 'CHINA',
     },
   ],
 };
