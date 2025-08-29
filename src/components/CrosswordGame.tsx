@@ -266,7 +266,7 @@ export const CrosswordGame: React.FC = () => {
 
   if (showLoadingScreen) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex flex-col items-center justify-center relative">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex flex-col items-center justify-center">
         <div className="text-center animate-fade-in flex-1 flex flex-col items-center justify-center">
           <div className="animate-scale-in">
             <img src={minHeheLogoSrc} alt="minHehe Logo" className="h-32 w-auto mx-auto mb-6 animate-pulse" />
@@ -274,12 +274,6 @@ export const CrosswordGame: React.FC = () => {
           <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
           <p className="text-xl text-muted-foreground animate-fade-in">Fun crosswords, no wall to pay!</p>
           <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your puzzle...</p>
-        </div>
-
-        {/* Day navigation buttons on loading screen */}
-        <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 z-50 flex gap-2 animate-fade-in">
-          <Button variant="default" size="sm" disabled>Day 1</Button>
-          <Button variant="outline" size="sm" onClick={() => window.location.href = '/day2'}>Day 2</Button>
         </div>
         
         {/* Professional footer */}
@@ -289,7 +283,7 @@ export const CrosswordGame: React.FC = () => {
             <div className="flex">
               {/* Swedish flag heart - blue and yellow */}
               <div className="w-4 h-4 relative">
-                <svg viewBox="0 0 24 24" className="w-full h-full">
+                <svg viewBox="0 0 24 24" className="w-full h-full">.
                   {/* Blue heart shape */}
                   <path
                     d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
