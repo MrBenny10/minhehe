@@ -56,33 +56,45 @@ ${currentUrl}
     // Check if script already exists
     const existingScript = document.querySelector('[data-name="BMC-Widget"]');
     if (existingScript) {
-      console.log('Widget script already exists');
-      return;
+      console.log('Widget script already exists, removing and reloading...');
+      existingScript.remove();
     }
 
-    // Create and load the script
-    const script = document.createElement('script');
-    script.setAttribute('data-name', 'BMC-Widget');
-    script.setAttribute('data-cfasync', 'false');
-    script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js';
-    script.setAttribute('data-id', 'BennySE');
-    script.setAttribute('data-description', 'Support me on Buy me a coffee!');
-    script.setAttribute('data-message', 'Hope you enjoyed this! Every day I\'ll make a new crossword ');
-    script.setAttribute('data-color', '#BD5FFF');
-    script.setAttribute('data-position', 'Right');
-    script.setAttribute('data-x_margin', '18');
-    script.setAttribute('data-y_margin', '18');
-    script.setAttribute('data-amount', '10');
-    
-    script.onload = () => {
-      console.log('Buy Me a Coffee widget loaded and should be visible');
-    };
-    
-    script.onerror = (error) => {
-      console.error('Failed to load Buy Me a Coffee script:', error);
-    };
-    
-    document.body.appendChild(script);
+    // Add a small delay to ensure DOM is ready
+    setTimeout(() => {
+      // Create and load the script
+      const script = document.createElement('script');
+      script.setAttribute('data-name', 'BMC-Widget');
+      script.setAttribute('data-cfasync', 'false');
+      script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js';
+      script.setAttribute('data-id', 'BennySE');
+      script.setAttribute('data-description', 'Support me on Buy me a coffee!');
+      script.setAttribute('data-message', 'Hope you enjoyed this! Every day I\'ll make a new crossword ');
+      script.setAttribute('data-color', '#BD5FFF');
+      script.setAttribute('data-position', 'Right');
+      script.setAttribute('data-x_margin', '18');
+      script.setAttribute('data-y_margin', '18');
+      script.setAttribute('data-amount', '10');
+      
+      script.onload = () => {
+        console.log('Buy Me a Coffee widget loaded successfully');
+        // Force widget initialization after a small delay
+        setTimeout(() => {
+          if (window.bmcWidget) {
+            console.log('BMC Widget object found, attempting to show');
+          } else {
+            console.log('BMC Widget object not found');
+          }
+        }, 1000);
+      };
+      
+      script.onerror = (error) => {
+        console.error('Failed to load Buy Me a Coffee script:', error);
+      };
+      
+      document.body.appendChild(script);
+      console.log('Buy Me a Coffee script added to DOM');
+    }, 500);
   };
 
   useEffect(() => {
