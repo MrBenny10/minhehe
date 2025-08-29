@@ -227,6 +227,20 @@ const Day2: React.FC = () => {
   }, [cells, timeElapsed, isValidAnswer]);
 
   React.useEffect(() => {
+    // Check for test parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const testParam = urlParams.get('test');
+    
+    if (testParam === 'complete') {
+      // Skip loading screen and trigger completion modal
+      setShowLoadingScreen(false);
+      setGameStarted(true);
+      setGameCompleted(true);
+      setShowCompletionModal(true);
+      setCompletionTime(123); // Test time of 2:03
+      return;
+    }
+    
     const t = setTimeout(() => {
       setShowLoadingScreen(false);
       handleStart();
