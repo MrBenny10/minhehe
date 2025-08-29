@@ -317,15 +317,6 @@ const Day3: React.FC = () => {
         {/* Subtle cosmic rings */}
         <div className="absolute top-1/3 right-1/4 w-32 h-32 border border-white/10 rounded-full animate-spin-slow" />
         <div className="absolute bottom-1/3 left-1/5 w-24 h-24 border border-white/5 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse' }} />
-        
-        {/* Coldplay Logo */}
-        <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30">
-          <img 
-            src="/lovable-uploads/5cb77257-5a1f-46aa-bd6d-96d97706f49f.png" 
-            alt="Coldplay - Music of the Spheres World Tour" 
-            className="w-64 md:w-80 lg:w-96 h-auto opacity-80 animate-fade-in"
-          />
-        </div>
       </div>
       {gameStarted && currentClue && (
         <div className="fixed top-0 left-0 right-0 z-40 bg-black/80 backdrop-blur-sm border-b border-white/20">
@@ -366,6 +357,15 @@ const Day3: React.FC = () => {
               gameStarted={gameStarted}
               currentClue={currentClue}
               gridSize={13}
+            />
+          </div>
+          
+          {/* Coldplay Logo below grid */}
+          <div className="mt-4 mb-2 flex justify-center">
+            <img 
+              src="/lovable-uploads/2e1f1a16-b2f4-465f-892d-62a0aa54e6cb.png" 
+              alt="Coldplay" 
+              className="w-48 md:w-56 lg:w-64 h-auto opacity-90 animate-fade-in"
             />
           </div>
         </div>
