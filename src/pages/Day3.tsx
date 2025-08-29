@@ -291,9 +291,9 @@ const Day3: React.FC = () => {
     <div className="h-screen relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900">
       {/* Cosmic background with floating planets - behind everything */}
       <div className="absolute inset-0 overflow-hidden -z-10">
-        {/* Animated stars - only in bottom half */}
-        <div className="absolute inset-0 top-1/2">
-          {[...Array(30)].map((_, i) => (
+        {/* Animated stars scattered throughout */}
+        <div className="absolute inset-0">
+          {[...Array(50)].map((_, i) => (
             <div
               key={i}
               className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
@@ -307,15 +307,31 @@ const Day3: React.FC = () => {
           ))}
         </div>
         
-        {/* Floating planets - repositioned to bottom area */}
+        {/* Floating planets - top area */}
+        <div className="absolute top-20 left-16 w-10 h-10 rounded-full bg-gradient-to-br from-red-400 to-red-600 animate-float shadow-lg shadow-red-500/20" style={{ animationDelay: '0.5s' }} />
+        <div className="absolute top-32 right-12 w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 animate-float shadow-lg shadow-cyan-500/20" style={{ animationDelay: '2.5s' }} />
+        <div className="absolute top-16 left-1/3 w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 animate-float shadow-lg shadow-indigo-500/20" style={{ animationDelay: '1.2s' }} />
+        
+        {/* Floating planets - bottom area */}
         <div className="absolute bottom-40 left-10 w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 animate-float shadow-lg shadow-blue-500/20" style={{ animationDelay: '0s' }} />
         <div className="absolute bottom-32 right-20 w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 animate-float shadow-lg shadow-purple-500/20" style={{ animationDelay: '1s' }} />
         <div className="absolute bottom-24 left-1/4 w-14 h-14 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 animate-float shadow-lg shadow-yellow-500/30" style={{ animationDelay: '2s' }} />
         <div className="absolute bottom-16 right-16 w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 animate-float shadow-lg shadow-green-500/20" style={{ animationDelay: '1.5s' }} />
         
-        {/* Subtle cosmic rings - bottom area only */}
+        {/* Additional floating elements */}
+        <div className="absolute top-1/4 right-1/4 w-6 h-6 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 animate-float shadow-lg shadow-pink-500/20" style={{ animationDelay: '3s' }} />
+        <div className="absolute bottom-1/2 left-12 w-9 h-9 rounded-full bg-gradient-to-br from-violet-400 to-purple-600 animate-float shadow-lg shadow-violet-500/20" style={{ animationDelay: '0.8s' }} />
+        
+        {/* Subtle cosmic rings scattered */}
+        <div className="absolute top-1/3 left-1/4 w-20 h-20 border border-white/4 rounded-full animate-spin-slow" />
         <div className="absolute bottom-1/4 right-1/4 w-24 h-24 border border-white/5 rounded-full animate-spin-slow" />
-        <div className="absolute bottom-1/3 left-1/5 w-20 h-20 border border-white/3 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse' }} />
+        <div className="absolute bottom-1/3 left-1/5 w-18 h-18 border border-white/3 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse' }} />
+        <div className="absolute top-1/5 right-1/3 w-16 h-16 border border-white/4 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse' }} />
+        
+        {/* Subtle nebula effects */}
+        <div className="absolute top-10 left-1/2 w-32 h-32 bg-purple-500/5 rounded-full blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-blue-500/5 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-8 w-24 h-24 bg-pink-500/5 rounded-full blur-xl animate-pulse" style={{ animationDelay: '3s' }} />
       </div>
       {gameStarted && currentClue && (
         <div className="fixed top-0 left-0 right-0 z-40 bg-black/80 backdrop-blur-sm border-b border-white/20">
