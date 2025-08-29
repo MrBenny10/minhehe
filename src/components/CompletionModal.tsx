@@ -1,14 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Trophy, Clock, Play, Share } from 'lucide-react';
-
-// Extend Window interface for BMC widget
-declare global {
-  interface Window {
-    bmcWidget?: any;
-  }
-}
+import { Trophy, Clock, Play, Share, Coffee } from 'lucide-react';
 
 interface CompletionModalProps {
   isOpen: boolean;
@@ -50,61 +43,9 @@ ${currentUrl}
     window.open(whatsappUrl, '_blank');
   };
 
-  const loadBuyMeCoffeeWidget = () => {
-    console.log('Loading Buy Me a Coffee widget...');
-    
-    // Check if script already exists
-    const existingScript = document.querySelector('[data-name="BMC-Widget"]');
-    if (existingScript) {
-      console.log('Widget script already exists, removing and reloading...');
-      existingScript.remove();
-    }
-
-    // Add a small delay to ensure DOM is ready
-    setTimeout(() => {
-      // Create and load the script
-      const script = document.createElement('script');
-      script.setAttribute('data-name', 'BMC-Widget');
-      script.setAttribute('data-cfasync', 'false');
-      script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js';
-      script.setAttribute('data-id', 'BennySE');
-      script.setAttribute('data-description', 'Support me on Buy me a coffee!');
-      script.setAttribute('data-message', 'Hope you enjoyed this! Every day I\'ll make a new crossword ');
-      script.setAttribute('data-color', '#BD5FFF');
-      script.setAttribute('data-position', 'Right');
-      script.setAttribute('data-x_margin', '18');
-      script.setAttribute('data-y_margin', '18');
-      script.setAttribute('data-amount', '10');
-      
-      script.onload = () => {
-        console.log('Buy Me a Coffee widget loaded successfully');
-        // Force widget initialization after a small delay
-        setTimeout(() => {
-          if (window.bmcWidget) {
-            console.log('BMC Widget object found, attempting to show');
-          } else {
-            console.log('BMC Widget object not found');
-          }
-        }, 1000);
-      };
-      
-      script.onerror = (error) => {
-        console.error('Failed to load Buy Me a Coffee script:', error);
-      };
-      
-      document.body.appendChild(script);
-      console.log('Buy Me a Coffee script added to DOM');
-    }, 500);
+  const handleBuyMeCoffee = () => {
+    window.open('https://www.buymeacoffee.com/BennySE', '_blank');
   };
-
-  useEffect(() => {
-    console.log('CompletionModal useEffect triggered, isOpen:', isOpen);
-    if (isOpen) {
-      console.log('Modal is open, loading Buy Me a Coffee widget...');
-      // Load widget when modal opens (game completed)
-      loadBuyMeCoffeeWidget();
-    }
-  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -137,15 +78,27 @@ ${currentUrl}
           </div>
 
           <div className="flex flex-col gap-3 items-center">
-            <Button 
-              onClick={handleWhatsAppShare}
-              variant="secondary"
-              className="flex items-center gap-2"
-              size="lg"
-            >
-              <Share className="w-4 h-4" />
-              Share on WhatsApp
-            </Button>
+            <div className="flex flex-col gap-2 w-full">
+              <Button 
+                onClick={handleWhatsAppShare}
+                variant="secondary"
+                className="flex items-center gap-2"
+                size="lg"
+              >
+                <Share className="w-4 h-4" />
+                Share on WhatsApp
+              </Button>
+              
+              <Button 
+                onClick={handleBuyMeCoffee}
+                variant="outline"
+                className="flex items-center gap-2 text-orange-600 border-orange-200 hover:bg-orange-50"
+                size="lg"
+              >
+                <Coffee className="w-4 h-4" />
+                Buy Me a Coffee ☕
+              </Button>
+            </div>
             
             <div className="flex gap-3">
               <Button 
