@@ -50,73 +50,36 @@ ${currentUrl}
     window.open(whatsappUrl, '_blank');
   };
 
-  const loadBuyMeCoffeeWidget = () => {
-    console.log('Attempting to load Buy Me a Coffee widget...');
+  const showBuyMeCoffeeWidget = () => {
+    console.log('Attempting to show Buy Me a Coffee widget...');
     
-    // Remove existing widget if present
-    const existingWidget = document.querySelector('[data-name="BMC-Widget"]');
-    if (existingWidget) {
-      existingWidget.remove();
-      console.log('Removed existing widget');
-    }
-
-    // Clean up any existing BMC scripts
-    const existingScripts = document.querySelectorAll('script[src*="buymeacoffee"]');
-    existingScripts.forEach(script => script.remove());
-
-    // Try to initialize widget directly if the library is already loaded
-    if (window.bmcWidget) {
-      console.log('BMC Widget already available, initializing...');
-      window.bmcWidget.init({
-        id: 'BennySE',
-        description: 'Support me on Buy me a coffee!',
-        message: 'Hope you enjoyed this! Every day I\'ll make a new crossword ',
-        color: '#BD5FFF',
-        position: 'Right',
-        x_margin: 18,
-        y_margin: 18,
-        amount: 10
-      });
-      return;
-    }
-
-    // Load the script
-    const script = document.createElement('script');
-    script.setAttribute('data-name', 'BMC-Widget');
-    script.setAttribute('data-cfasync', 'false');
-    script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js';
-    script.setAttribute('data-id', 'BennySE');
-    script.setAttribute('data-description', 'Support me on Buy me a coffee!');
-    script.setAttribute('data-message', 'Hope you enjoyed this! Every day I\'ll make a new crossword ');
-    script.setAttribute('data-color', '#BD5FFF');
-    script.setAttribute('data-position', 'Right');
-    script.setAttribute('data-x_margin', '18');
-    script.setAttribute('data-y_margin', '18');
-    script.setAttribute('data-amount', '10');
-    
-    script.onload = () => {
-      console.log('Buy Me a Coffee script loaded successfully');
-      // Force widget initialization after script loads
+    // Find the widget script and show it
+    const widgetScript = document.querySelector('[data-name="BMC-Widget"]') as HTMLElement;
+    if (widgetScript) {
+      widgetScript.style.display = 'block';
+      console.log('Widget script found and shown');
+      
+      // Also try to show any existing widget elements
       setTimeout(() => {
-        if (window.bmcWidget) {
-          console.log('Forcing widget initialization');
-          window.bmcWidget.init();
-        }
-      }, 500);
-    };
-    
-    script.onerror = (error) => {
-      console.error('Failed to load Buy Me a Coffee script:', error);
-    };
-    
-    console.log('Appending script to body');
-    document.body.appendChild(script);
+        const widgets = document.querySelectorAll('[id*="bmc-widget"], [class*="bmc-"], [data-id="BennySE"]');
+        widgets.forEach((widget: any) => {
+          if (widget && widget.style) {
+            widget.style.display = 'block';
+            widget.style.visibility = 'visible';
+            widget.style.opacity = '1';
+          }
+        });
+        console.log(`Found and attempted to show ${widgets.length} widget elements`);
+      }, 1000);
+    } else {
+      console.log('Widget script not found');
+    }
   };
 
   useEffect(() => {
     if (isOpen) {
-      // Load widget when modal opens (game completed)
-      loadBuyMeCoffeeWidget();
+      // Show widget when modal opens (game completed)
+      showBuyMeCoffeeWidget();
     }
   }, [isOpen]);
 
