@@ -3,6 +3,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Trophy, Clock, Play, Share } from 'lucide-react';
 
+// Extend Window interface for BMC widget
+declare global {
+  interface Window {
+    bmcWidget?: any;
+  }
+}
+
 interface CompletionModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -44,41 +51,66 @@ ${currentUrl}
   };
 
   const loadBuyMeCoffeeWidget = () => {
+    console.log('Attempting to load Buy Me a Coffee widget...');
+    
     // Remove existing widget if present
     const existingWidget = document.querySelector('[data-name="BMC-Widget"]');
     if (existingWidget) {
       existingWidget.remove();
+      console.log('Removed existing widget');
     }
 
     // Clean up any existing BMC scripts
     const existingScripts = document.querySelectorAll('script[src*="buymeacoffee"]');
     existingScripts.forEach(script => script.remove());
 
-    // Add a small delay to ensure modal is fully rendered
-    setTimeout(() => {
-      const script = document.createElement('script');
-      script.setAttribute('data-name', 'BMC-Widget');
-      script.setAttribute('data-cfasync', 'false');
-      script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js';
-      script.setAttribute('data-id', 'BennySE');
-      script.setAttribute('data-description', 'Support me on Buy me a coffee!');
-      script.setAttribute('data-message', 'Hope you enjoyed this! Every day I\'ll make a new crossword ');
-      script.setAttribute('data-color', '#BD5FFF');
-      script.setAttribute('data-position', 'Right');
-      script.setAttribute('data-x_margin', '18');
-      script.setAttribute('data-y_margin', '18');
-      script.setAttribute('data-amount', '10');
-      
-      script.onload = () => {
-        console.log('Buy Me a Coffee widget loaded successfully');
-      };
-      
-      script.onerror = () => {
-        console.error('Failed to load Buy Me a Coffee widget');
-      };
-      
-      document.body.appendChild(script);
-    }, 1000);
+    // Try to initialize widget directly if the library is already loaded
+    if (window.bmcWidget) {
+      console.log('BMC Widget already available, initializing...');
+      window.bmcWidget.init({
+        id: 'BennySE',
+        description: 'Support me on Buy me a coffee!',
+        message: 'Hope you enjoyed this! Every day I\'ll make a new crossword ',
+        color: '#BD5FFF',
+        position: 'Right',
+        x_margin: 18,
+        y_margin: 18,
+        amount: 10
+      });
+      return;
+    }
+
+    // Load the script
+    const script = document.createElement('script');
+    script.setAttribute('data-name', 'BMC-Widget');
+    script.setAttribute('data-cfasync', 'false');
+    script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js';
+    script.setAttribute('data-id', 'BennySE');
+    script.setAttribute('data-description', 'Support me on Buy me a coffee!');
+    script.setAttribute('data-message', 'Hope you enjoyed this! Every day I\'ll make a new crossword ');
+    script.setAttribute('data-color', '#BD5FFF');
+    script.setAttribute('data-position', 'Right');
+    script.setAttribute('data-x_margin', '18');
+    script.setAttribute('data-y_margin', '18');
+    script.setAttribute('data-amount', '10');
+    
+    script.onload = () => {
+      console.log('Buy Me a Coffee script loaded successfully');
+      // Force widget initialization after script loads
+      setTimeout(() => {
+        if (window.bmcWidget) {
+          console.log('Forcing widget initialization');
+          window.bmcWidget.init();
+        }
+      }, 500);
+    };
+    
+    script.onerror = (error) => {
+      console.error('Failed to load Buy Me a Coffee script:', error);
+    };
+    
+    console.log('Appending script to body');
+    document.body.appendChild(script);
   };
 
   useEffect(() => {
