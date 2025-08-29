@@ -344,8 +344,8 @@ const Day3: React.FC = () => {
           />
         </div>
 
-        {/* Main content area - crossword grid */}
-        <div className="flex-1 flex flex-col items-center justify-center px-1 py-1 md:px-2 md:py-2 min-h-0 max-h-[calc(100vh-200px)]">
+        {/* Main content area - crossword grid positioned at top */}
+        <div className="flex flex-col items-center px-1 py-1 md:px-2 md:py-2">
           <div className="w-full max-w-full flex items-center justify-center">
             <CrosswordGrid
               cells={cells}
@@ -359,6 +359,9 @@ const Day3: React.FC = () => {
             />
           </div>
         </div>
+        
+        {/* Spacer to push everything else down */}
+        <div className="flex-1"></div>
         
         {/* Controls at bottom */}
         <div className="flex justify-center py-1 px-2 md:py-2 md:px-4">
