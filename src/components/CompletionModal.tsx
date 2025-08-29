@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Trophy, Clock, Play, Share, Download } from 'lucide-react';
+import { Trophy, Clock, Play, Share } from 'lucide-react';
 
 interface CompletionModalProps {
   isOpen: boolean;
@@ -29,56 +29,16 @@ export const CompletionModal: React.FC<CompletionModalProps> = ({
     return "Well done! 🎉";
   };
 
-  const generateCompletionImage = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 600;
-    canvas.height = 400;
-    const ctx = canvas.getContext('2d');
-    
-    if (!ctx) return;
-    
-    // Background gradient
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, '#6366f1');
-    gradient.addColorStop(1, '#8b5cf6');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 600, 400);
-    
-    // Title
-    ctx.fillStyle = 'white';
-    ctx.font = 'bold 36px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('minHehe Completed!', 300, 80);
-    
-    // Time
-    ctx.font = 'bold 48px monospace';
-    ctx.fillText(formatTime(completionTime), 300, 160);
-    
-    // Performance message
-    ctx.font = '24px Arial';
-    ctx.fillText(getPerformanceMessage(completionTime), 300, 220);
-    
-    // URL
-    ctx.font = '18px Arial';
-    ctx.fillStyle = '#e0e7ff';
-    ctx.fillText(window.location.href, 300, 320);
-    
-    // Download the image
-    canvas.toBlob((blob) => {
-      if (blob) {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `minHehe-completion-${formatTime(completionTime)}.png`;
-        a.click();
-        URL.revokeObjectURL(url);
-      }
-    });
-  };
-
   const handleWhatsAppShare = () => {
     const currentUrl = window.location.href;
-    const shareText = `I completed the minHehe in ${formatTime(completionTime)}! What can you do? 🧩⏱️\n\n${currentUrl}`;
+    const shareText = `🧩 I just completed the minHehe crossword in ${formatTime(completionTime)}! 
+    
+${getPerformanceMessage(completionTime)}
+
+Can you beat my time? Try it yourself:
+${currentUrl}
+
+#minHehe #Crossword #PuzzleChallenge`;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -114,26 +74,15 @@ export const CompletionModal: React.FC<CompletionModalProps> = ({
           </div>
 
           <div className="flex flex-col gap-3 items-center">
-            <div className="flex gap-3">
-              <Button 
-                onClick={handleWhatsAppShare}
-                variant="secondary"
-                className="flex items-center gap-2"
-                size="lg"
-              >
-                <Share className="w-4 h-4" />
-                Share on WhatsApp
-              </Button>
-              <Button 
-                onClick={generateCompletionImage}
-                variant="outline"
-                className="flex items-center gap-2"
-                size="lg"
-              >
-                <Download className="w-4 h-4" />
-                Save Image
-              </Button>
-            </div>
+            <Button 
+              onClick={handleWhatsAppShare}
+              variant="secondary"
+              className="flex items-center gap-2"
+              size="lg"
+            >
+              <Share className="w-4 h-4" />
+              Share on WhatsApp
+            </Button>
             
             <div className="flex gap-3">
               <Button 
