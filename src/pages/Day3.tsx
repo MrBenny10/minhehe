@@ -396,11 +396,11 @@ const Day3: React.FC = () => {
       </div>
 
       {/* Coldplay Logo between game and navigation */}
-      <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-40">
+      <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-40">
         <img 
           src="/lovable-uploads/2e1f1a16-b2f4-465f-892d-62a0aa54e6cb.png" 
           alt="Coldplay" 
-          className="w-20 h-auto opacity-90"
+          className="w-32 h-auto opacity-90"
         />
       </div>
 
