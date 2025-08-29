@@ -346,8 +346,8 @@ const Day3: React.FC = () => {
         </div>
 
         {/* Main content area - crossword grid */}
-        <div className="flex-1 flex flex-col items-center justify-center px-1 py-1 md:px-2 md:py-2 min-h-0">
-          <div className="w-full max-w-full flex-1 flex items-center justify-center">
+        <div className="flex-1 flex flex-col items-center justify-center px-1 py-1 md:px-2 md:py-2 min-h-0 max-h-[calc(100vh-200px)]">
+          <div className="w-full max-w-full flex items-center justify-center">
             <CrosswordGrid
               cells={cells}
               selectedCell={selectedCell}
@@ -359,15 +359,15 @@ const Day3: React.FC = () => {
               gridSize={13}
             />
           </div>
-          
-          {/* Coldplay Logo below grid */}
-          <div className="mt-4 mb-2 flex justify-center">
-            <img 
-              src="/lovable-uploads/2e1f1a16-b2f4-465f-892d-62a0aa54e6cb.png" 
-              alt="Coldplay" 
-              className="w-48 md:w-56 lg:w-64 h-auto opacity-90 animate-fade-in"
-            />
-          </div>
+        </div>
+        
+        {/* Coldplay Logo below grid */}
+        <div className="pb-20 flex justify-center">
+          <img 
+            src="/lovable-uploads/2e1f1a16-b2f4-465f-892d-62a0aa54e6cb.png" 
+            alt="Coldplay" 
+            className="w-32 md:w-40 lg:w-48 h-auto opacity-90"
+          />
         </div>
 
         {/* Controls at bottom */}
