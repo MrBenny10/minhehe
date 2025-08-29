@@ -6,6 +6,7 @@ import { GameTimer } from './GameTimer';
 import { GameControls } from './GameControls';
 import { CompletionModal } from './CompletionModal';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 
@@ -266,24 +267,26 @@ export const CrosswordGame: React.FC = () => {
 
   if (showLoadingScreen) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex flex-col items-center justify-center">
-        <div className="text-center animate-fade-in flex-1 flex flex-col items-center justify-center">
-          <div className="animate-scale-in">
-            <img src={minHeheLogoSrc} alt="minHehe Logo" className="h-32 w-auto mx-auto mb-6 animate-pulse" />
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex flex-col">
+        <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
+          <div className="text-center animate-fade-in">
+            <div className="animate-scale-in">
+              <img src={minHeheLogoSrc} alt="minHehe Logo" className="h-32 w-auto mx-auto mb-6 animate-pulse" />
+            </div>
+            <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
+            <p className="text-xl text-muted-foreground animate-fade-in">Fun crosswords, no wall to pay!</p>
+            <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your puzzle...</p>
           </div>
-          <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
-          <p className="text-xl text-muted-foreground animate-fade-in">Fun crosswords, no wall to pay!</p>
-          <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your puzzle...</p>
         </div>
         
-        {/* Professional footer */}
+        {/* Professional footer - positioned at bottom */}
         <div className="pb-8 text-center animate-fade-in">
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <span>Made by Benny in Sweden</span>
             <div className="flex">
               {/* Swedish flag heart - blue and yellow */}
               <div className="w-4 h-4 relative">
-                <svg viewBox="0 0 24 24" className="w-full h-full">.
+                <svg viewBox="0 0 24 24" className="w-full h-full">
                   {/* Blue heart shape */}
                   <path
                     d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
@@ -370,6 +373,14 @@ export const CrosswordGame: React.FC = () => {
         completionTime={completionTime || 0}
         onNewGame={handleStart}
       />
+
+      {/* Day navigation buttons - only shown during game */}
+      <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50 flex gap-2">
+        <Button variant="default" size="sm" disabled>Day 1</Button>
+        <Link to="/day2">
+          <Button variant="outline" size="sm">Day 2</Button>
+        </Link>
+      </div>
     </div>
   );
 };
