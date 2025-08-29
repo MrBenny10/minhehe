@@ -7,7 +7,7 @@ const Index = () => {
     <div className="relative">
       <CrosswordGame />
       {/* Navigation below grid */}
-      <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 flex gap-2">
+      <div className="fixed bottom-40 left-1/2 transform -translate-x-1/2 z-50 flex gap-2">
         <Button variant="default" size="sm" disabled>Day 1</Button>
         <Link to="/day2">
           <Button variant="outline" size="sm">Day 2</Button>
