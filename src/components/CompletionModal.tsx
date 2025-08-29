@@ -3,6 +3,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Trophy, Clock, Play, Share, Coffee } from 'lucide-react';
 
+// Extend Window interface for BMC widget
+declare global {
+  interface Window {
+    bmcWidget?: any;
+  }
+}
+
 interface CompletionModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -44,7 +51,36 @@ ${currentUrl}
   };
 
   const handleBuyMeCoffee = () => {
-    window.open('https://www.buymeacoffee.com/BennySE', '_blank');
+    // Load and show the Buy Me a Coffee widget
+    const existingScript = document.querySelector('[data-name="BMC-Widget"]');
+    if (existingScript) {
+      existingScript.remove();
+    }
+
+    const script = document.createElement('script');
+    script.setAttribute('data-name', 'BMC-Widget');
+    script.setAttribute('data-cfasync', 'false');
+    script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js';
+    script.setAttribute('data-id', 'BennySE');
+    script.setAttribute('data-description', 'Support me on Buy me a coffee!');
+    script.setAttribute('data-message', 'Hope you enjoyed this! Every day I\'ll make a new crossword');
+    script.setAttribute('data-color', '#BD5FFF');
+    script.setAttribute('data-position', 'Right');
+    script.setAttribute('data-x_margin', '18');
+    script.setAttribute('data-y_margin', '18');
+    script.setAttribute('data-amount', '10');
+    
+    script.onload = () => {
+      // Widget should appear automatically after loading
+      setTimeout(() => {
+        // Try to trigger the widget if it doesn't auto-show
+        if (window.bmcWidget && typeof window.bmcWidget.show === 'function') {
+          window.bmcWidget.show();
+        }
+      }, 500);
+    };
+    
+    document.body.appendChild(script);
   };
 
   return (
