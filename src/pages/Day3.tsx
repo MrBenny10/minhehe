@@ -317,6 +317,20 @@ const Day3: React.FC = () => {
         {/* Subtle cosmic rings */}
         <div className="absolute top-1/3 right-1/4 w-32 h-32 border border-white/10 rounded-full animate-spin-slow" />
         <div className="absolute bottom-1/3 left-1/5 w-24 h-24 border border-white/5 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse' }} />
+        
+        {/* Coldplay Logo */}
+        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30">
+          <div className="text-4xl md:text-5xl font-bold tracking-wider">
+            <span className="text-red-400">C</span>
+            <span className="text-orange-400">O</span>
+            <span className="text-yellow-400">L</span>
+            <span className="text-green-400">D</span>
+            <span className="text-blue-400">P</span>
+            <span className="text-indigo-400">L</span>
+            <span className="text-purple-400">A</span>
+            <span className="text-pink-400">Y</span>
+          </div>
+        </div>
       </div>
       {gameStarted && currentClue && (
         <div className="fixed top-0 left-0 right-0 z-40 bg-black/80 backdrop-blur-sm border-b border-white/20">
