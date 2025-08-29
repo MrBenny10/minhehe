@@ -236,7 +236,7 @@ const Day2: React.FC = () => {
 
   if (showLoadingScreen) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex flex-col justify-center items-center px-4">
         <div className="text-center animate-fade-in">
           <div className="animate-scale-in">
             <img src={minHeheLogoSrc} alt="minHehe Logo" className="h-32 w-auto mx-auto mb-6 animate-pulse" />
@@ -244,6 +244,18 @@ const Day2: React.FC = () => {
           <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
           <p className="text-xl text-muted-foreground animate-fade-in">London Edition - Day 2</p>
           <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your London puzzle...</p>
+        </div>
+        
+        {/* Professional footer - positioned below content */}
+        <div className="mt-16 text-center animate-fade-in">
+          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <span>Made by Benny in Sweden</span>
+            <div className="flex">
+              <span className="text-blue-500">💙</span>
+              <span className="text-yellow-400">💛</span>
+            </div>
+            <span>with AI</span>
+          </div>
         </div>
       </div>
     );
@@ -316,6 +328,18 @@ const Day2: React.FC = () => {
           <Button variant="outline" size="sm">Day 1</Button>
         </Link>
         <Button variant="default" size="sm" disabled>Day 2</Button>
+      </div>
+
+      {/* Professional footer */}
+      <div className="fixed bottom-2 left-1/2 transform -translate-x-1/2 z-40 text-center">
+        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+          <span>Made by Benny in Sweden</span>
+          <div className="flex">
+            <span className="text-blue-500">💙</span>
+            <span className="text-yellow-400">💛</span>
+          </div>
+          <span>with AI</span>
+        </div>
       </div>
 
       <CompletionModal
