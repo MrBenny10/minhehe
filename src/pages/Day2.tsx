@@ -16,78 +16,78 @@ const londonPuzzle: Puzzle = {
   clues: [
     // Across
     {
-      number: 5,
-      text: 'Famous London circus/square (10)',
+      number: 1,
+      text: 'Area home to Borough Market (7)',
       direction: 'across',
-      startRow: 4, // (5,2) but 0-indexed = (4,1)
+      startRow: 4, // row 5, col 2 → 0-indexed = (4,1)
       startCol: 1,
-      length: 10,
-      solution: 'PICCADILLY',
+      length: 7,
+      solution: 'BOROUGH',
     },
     {
-      number: 7,
-      text: 'Entertainment district (4)',
+      number: 2,
+      text: 'West End nightlife district (4)',
       direction: 'across',
-      startRow: 4, // (5,11) but 0-indexed = (4,10)
-      startCol: 10,
+      startRow: 4, // row 5, col 10 → 0-indexed = (4,9)
+      startCol: 9,
       length: 4,
       solution: 'SOHO',
     },
     {
-      number: 8,
-      text: 'Capital city itself (6)',
+      number: 3,
+      text: 'Scotland ___ (Met Police HQ) (4)',
       direction: 'across',
-      startRow: 7, // (8,8) but 0-indexed = (7,7)
+      startRow: 7, // row 8, col 8 → 0-indexed = (7,7)
       startCol: 7,
-      length: 6,
-      solution: 'LONDON',
+      length: 4,
+      solution: 'YARD',
     },
 
     // Down
     {
-      number: 1,
-      text: 'River running through London (6)',
-      direction: 'down',
-      startRow: 1, // (2,7) but 0-indexed = (1,6)
-      startCol: 6,
-      length: 6,
-      solution: 'THAMES',
-    },
-    {
-      number: 2,
-      text: 'As in Royal Albert Hall, Royal Family (5)',
-      direction: 'down',
-      startRow: 0, // (1,13) but 0-indexed = (0,12)
-      startCol: 12,
-      length: 5,
-      solution: 'ROYAL',
-    },
-    {
-      number: 3,
-      text: 'Market area in North London (6)',
-      direction: 'down',
-      startRow: 2, // (3,6) but 0-indexed = (2,5)
-      startCol: 5,
-      length: 6,
-      solution: 'CAMDEN',
-    },
-    {
       number: 4,
-      text: 'Famous clock tower (6)',
+      text: '___ Lane, Covent Garden street (5)',
       direction: 'down',
-      startRow: 3, // (4,4) but 0-indexed = (3,3)
+      startRow: 3, // row 4, col 4 → 0-indexed = (3,3)
       startCol: 3,
-      length: 6,
-      solution: 'BIGBEN',
+      length: 5,
+      solution: 'DRURY',
+    },
+    {
+      number: 5,
+      text: 'Word before "Bank" on the Thames (5)',
+      direction: 'down',
+      startRow: 2, // row 3, col 6 → 0-indexed = (2,5)
+      startCol: 5,
+      length: 5,
+      solution: 'SOUTH',
     },
     {
       number: 6,
-      text: 'London Underground (4)',
+      text: 'North London area & Tube station (7)',
       direction: 'down',
-      startRow: 3, // (4,11) but 0-indexed = (3,10)
+      startRow: 1, // row 2, col 8 → 0-indexed = (1,7)
+      startCol: 7,
+      length: 7,
+      solution: 'ARCHWAY',
+    },
+    {
+      number: 7,
+      text: 'Currency used in London (5)',
+      direction: 'down',
+      startRow: 3, // row 4, col 11 → 0-indexed = (3,10)
       startCol: 10,
-      length: 4,
-      solution: 'TUBE',
+      length: 5,
+      solution: 'POUND',
+    },
+    {
+      number: 8,
+      text: 'BBC broadcast medium (5)',
+      direction: 'down',
+      startRow: 0, // row 1, col 13 → 0-indexed = (0,12)
+      startCol: 12,
+      length: 5,
+      solution: 'RADIO',
     },
   ],
 };
