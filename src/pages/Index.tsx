@@ -17,6 +17,18 @@ const Index = () => {
           <Button variant="outline" size="sm">Day 3</Button>
         </Link>
       </div>
+
+      {/* Professional footer */}
+      <div className="fixed bottom-2 left-1/2 transform -translate-x-1/2 z-40 text-center">
+        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+          <span>Made by Benny in Sweden</span>
+          <div className="flex">
+            <span className="text-blue-500">💙</span>
+            <span className="text-yellow-400">💛</span>
+          </div>
+          <span>with AI</span>
+        </div>
+      </div>
     </div>
   );
 };
