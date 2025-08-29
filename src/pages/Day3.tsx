@@ -378,16 +378,16 @@ const Day3: React.FC = () => {
       </div>
 
       {/* Coldplay Logo between game and navigation */}
-      <div className="fixed bottom-28 left-1/2 transform -translate-x-1/2 z-40">
+      <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-40">
         <img 
           src="/lovable-uploads/2e1f1a16-b2f4-465f-892d-62a0aa54e6cb.png" 
           alt="Coldplay" 
-          className="w-24 h-auto opacity-90"
+          className="w-20 h-auto opacity-90"
         />
       </div>
 
       {/* Navigation below grid */}
-      <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50 flex gap-2">
+      <div className="fixed bottom-12 left-1/2 transform -translate-x-1/2 z-50 flex gap-2">
         <Link to="/">
           <Button variant="outline" size="sm">Day 1</Button>
         </Link>
@@ -398,7 +398,7 @@ const Day3: React.FC = () => {
       </div>
 
       {/* Professional footer */}
-      <div className="fixed bottom-2 left-1/2 transform -translate-x-1/2 z-40 text-center">
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-40 text-center">
         <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
           <span>Made by Benny in Sweden</span>
           <div className="flex">
