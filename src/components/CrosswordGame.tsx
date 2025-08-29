@@ -267,20 +267,18 @@ export const CrosswordGame: React.FC = () => {
 
   if (showLoadingScreen) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex flex-col">
-        <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
-          <div className="text-center animate-fade-in">
-            <div className="animate-scale-in">
-              <img src={minHeheLogoSrc} alt="minHehe Logo" className="h-32 w-auto mx-auto mb-6 animate-pulse" />
-            </div>
-            <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
-            <p className="text-xl text-muted-foreground animate-fade-in">Fun crosswords, no wall to pay!</p>
-            <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your puzzle...</p>
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex flex-col justify-center items-center px-4">
+        <div className="text-center animate-fade-in">
+          <div className="animate-scale-in">
+            <img src={minHeheLogoSrc} alt="minHehe Logo" className="h-32 w-auto mx-auto mb-6 animate-pulse" />
           </div>
+          <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
+          <p className="text-xl text-muted-foreground animate-fade-in">Fun crosswords, no wall to pay!</p>
+          <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your puzzle...</p>
         </div>
         
-        {/* Professional footer - positioned at bottom */}
-        <div className="pb-8 text-center animate-fade-in">
+        {/* Professional footer - positioned below content */}
+        <div className="mt-16 text-center animate-fade-in">
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <span>Made by Benny in Sweden</span>
             <div className="flex">
