@@ -319,17 +319,12 @@ const Day3: React.FC = () => {
         <div className="absolute bottom-1/3 left-1/5 w-24 h-24 border border-white/5 rounded-full animate-spin-slow" style={{ animationDirection: 'reverse' }} />
         
         {/* Coldplay Logo */}
-        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30">
-          <div className="text-4xl md:text-5xl font-bold tracking-wider">
-            <span className="text-red-400">C</span>
-            <span className="text-orange-400">O</span>
-            <span className="text-yellow-400">L</span>
-            <span className="text-green-400">D</span>
-            <span className="text-blue-400">P</span>
-            <span className="text-indigo-400">L</span>
-            <span className="text-purple-400">A</span>
-            <span className="text-pink-400">Y</span>
-          </div>
+        <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30">
+          <img 
+            src="/lovable-uploads/5cb77257-5a1f-46aa-bd6d-96d97706f49f.png" 
+            alt="Coldplay - Music of the Spheres World Tour" 
+            className="w-64 md:w-80 lg:w-96 h-auto opacity-80 animate-fade-in"
+          />
         </div>
       </div>
       {gameStarted && currentClue && (
