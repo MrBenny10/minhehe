@@ -12,82 +12,82 @@ import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 import type { Clue, Cell, Puzzle } from '@/components/CrosswordGame';
 
 const londonPuzzle: Puzzle = {
-  size: 13, // 13 cols × 8 rows
+  size: 13, // 13 cols × 8 rows  
   clues: [
     // Across
     {
-      number: 4,
-      text: 'Famous London river (6)',
+      number: 5,
+      text: 'Famous London circus/square (10)',
       direction: 'across',
-      startRow: 3,
+      startRow: 4, // (5,2) but 0-indexed = (4,1)
       startCol: 1,
-      length: 6,
-      solution: 'THAMES',
+      length: 10,
+      solution: 'PICCADILLY',
     },
     {
-      number: 6,
-      text: 'Underground transport (4)',
+      number: 7,
+      text: 'Entertainment district (4)',
       direction: 'across',
-      startRow: 5,
-      startCol: 8,
+      startRow: 4, // (5,11) but 0-indexed = (4,10)
+      startCol: 10,
       length: 4,
-      solution: 'TUBE',
+      solution: 'SOHO',
     },
     {
       number: 8,
-      text: 'Traditional British beverage (3)',
+      text: 'Capital city itself (6)',
       direction: 'across',
-      startRow: 7,
-      startCol: 2,
-      length: 3,
-      solution: 'TEA',
+      startRow: 7, // (8,8) but 0-indexed = (7,7)
+      startCol: 7,
+      length: 6,
+      solution: 'LONDON',
     },
 
     // Down
     {
       number: 1,
-      text: 'Historic fortress by the Thames (5)',
+      text: 'River running through London (6)',
       direction: 'down',
-      startRow: 0,
-      startCol: 2,
-      length: 5,
-      solution: 'TOWER',
+      startRow: 1, // (2,7) but 0-indexed = (1,6)
+      startCol: 6,
+      length: 6,
+      solution: 'THAMES',
     },
     {
       number: 2,
-      text: 'The capital city (6)',
+      text: 'As in Royal Albert Hall, Royal Family (5)',
       direction: 'down',
-      startRow: 1,
-      startCol: 6,
-      length: 6,
-      solution: 'LONDON',
+      startRow: 0, // (1,13) but 0-indexed = (0,12)
+      startCol: 12,
+      length: 5,
+      solution: 'ROYAL',
     },
     {
       number: 3,
-      text: 'Royal head of state (5)',
+      text: 'Market area in North London (6)',
       direction: 'down',
-      startRow: 2,
-      startCol: 10,
-      length: 5,
-      solution: 'QUEEN',
-    },
-    {
-      number: 5,
-      text: 'Famous park in central London (4)',
-      direction: 'down',
-      startRow: 3,
-      startCol: 4,
-      length: 4,
-      solution: 'HYDE',
-    },
-    {
-      number: 7,
-      text: 'Spanning the Thames, often with towers (6)',
-      direction: 'down',
-      startRow: 4,
-      startCol: 8,
+      startRow: 2, // (3,6) but 0-indexed = (2,5)
+      startCol: 5,
       length: 6,
-      solution: 'BRIDGE',
+      solution: 'CAMDEN',
+    },
+    {
+      number: 4,
+      text: 'Famous clock tower (6)',
+      direction: 'down',
+      startRow: 3, // (4,4) but 0-indexed = (3,3)
+      startCol: 3,
+      length: 6,
+      solution: 'BIGBEN',
+    },
+    {
+      number: 6,
+      text: 'London Underground (4)',
+      direction: 'down',
+      startRow: 3, // (4,11) but 0-indexed = (3,10)
+      startCol: 10,
+      length: 4,
+      solution: 'TUBE',
     },
   ],
 };
