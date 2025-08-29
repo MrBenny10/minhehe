@@ -361,8 +361,8 @@ const Day3: React.FC = () => {
           </div>
         </div>
         
-        {/* Coldplay Logo below grid */}
-        <div className="pb-20 flex justify-center">
+        {/* Coldplay Logo perfectly centered between grid and buttons */}
+        <div className="flex justify-center items-center py-6">
           <img 
             src="/lovable-uploads/2e1f1a16-b2f4-465f-892d-62a0aa54e6cb.png" 
             alt="Coldplay" 
