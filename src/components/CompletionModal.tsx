@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Trophy, Clock, Play, Share } from 'lucide-react';
@@ -42,6 +42,36 @@ ${currentUrl}
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
     window.open(whatsappUrl, '_blank');
   };
+
+  const loadBuyMeCoffeeWidget = () => {
+    // Remove existing widget if present
+    const existingWidget = document.querySelector('[data-name="BMC-Widget"]');
+    if (existingWidget) {
+      existingWidget.remove();
+    }
+
+    // Load the Buy Me a Coffee widget
+    const script = document.createElement('script');
+    script.setAttribute('data-name', 'BMC-Widget');
+    script.setAttribute('data-cfasync', 'false');
+    script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js';
+    script.setAttribute('data-id', 'BennySE');
+    script.setAttribute('data-description', 'Support me on Buy me a coffee!');
+    script.setAttribute('data-message', 'Hope you enjoyed this! Every day I\'ll make a new crossword ');
+    script.setAttribute('data-color', '#BD5FFF');
+    script.setAttribute('data-position', 'Right');
+    script.setAttribute('data-x_margin', '18');
+    script.setAttribute('data-y_margin', '18');
+    script.setAttribute('data-amount', '10');
+    document.body.appendChild(script);
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      // Load widget when modal opens (game completed)
+      loadBuyMeCoffeeWidget();
+    }
+  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
