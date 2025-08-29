@@ -86,7 +86,9 @@ ${currentUrl}
   };
 
   useEffect(() => {
+    console.log('CompletionModal useEffect triggered, isOpen:', isOpen);
     if (isOpen) {
+      console.log('Modal is open, loading Buy Me a Coffee widget...');
       // Load widget when modal opens (game completed)
       loadBuyMeCoffeeWidget();
     }
