@@ -290,7 +290,7 @@ const Day3: React.FC = () => {
   return (
     <div className="h-screen relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900">
       {/* Cosmic background with floating planets - behind everything */}
-      <div className="absolute inset-0 overflow-hidden -z-10">
+      <div className="absolute inset-0 overflow-visible z-0">
         {/* Animated stars scattered throughout */}
         <div className="absolute inset-0">
           {[...Array(50)].map((_, i) => (
@@ -307,20 +307,20 @@ const Day3: React.FC = () => {
           ))}
         </div>
         
-        {/* Floating planets - top area */}
-        <div className="absolute top-20 left-16 w-16 h-16 rounded-full bg-gradient-to-br from-red-400 to-red-600 animate-float shadow-2xl shadow-red-500/40" style={{ animationDelay: '0.5s' }} />
-        <div className="absolute top-32 right-12 w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 animate-float shadow-2xl shadow-cyan-500/40" style={{ animationDelay: '2.5s' }} />
-        <div className="absolute top-16 left-1/3 w-20 h-20 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 animate-float shadow-2xl shadow-indigo-500/40" style={{ animationDelay: '1.2s' }} />
+        {/* Floating planets - top area - make them very visible */}
+        <div className="absolute top-20 left-16 w-16 h-16 rounded-full bg-blue-500 animate-float shadow-2xl z-10" style={{ animationDelay: '0.5s' }} />
+        <div className="absolute top-32 right-12 w-12 h-12 rounded-full bg-pink-500 animate-float shadow-2xl z-10" style={{ animationDelay: '2.5s' }} />
+        <div className="absolute top-16 left-1/3 w-20 h-20 rounded-full bg-purple-500 animate-float shadow-2xl z-10" style={{ animationDelay: '1.2s' }} />
         
-        {/* Floating planets - bottom area */}
-        <div className="absolute bottom-40 left-10 w-18 h-18 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 animate-float shadow-2xl shadow-blue-500/40" style={{ animationDelay: '0s' }} />
-        <div className="absolute bottom-32 right-20 w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 animate-float shadow-2xl shadow-purple-500/40" style={{ animationDelay: '1s' }} />
-        <div className="absolute bottom-24 left-1/4 w-22 h-22 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 animate-float shadow-2xl shadow-yellow-500/50" style={{ animationDelay: '2s' }} />
-        <div className="absolute bottom-16 right-16 w-14 h-14 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 animate-float shadow-2xl shadow-green-500/40" style={{ animationDelay: '1.5s' }} />
+        {/* Floating planets - bottom area - make them very visible */}
+        <div className="absolute bottom-40 left-10 w-18 h-18 rounded-full bg-green-500 animate-float shadow-2xl z-10" style={{ animationDelay: '0s' }} />
+        <div className="absolute bottom-32 right-20 w-16 h-16 rounded-full bg-red-500 animate-float shadow-2xl z-10" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-24 left-1/4 w-22 h-22 rounded-full bg-yellow-500 animate-float shadow-2xl z-10" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-16 right-16 w-14 h-14 rounded-full bg-cyan-500 animate-float shadow-2xl z-10" style={{ animationDelay: '1.5s' }} />
         
-        {/* Additional floating elements */}
-        <div className="absolute top-1/4 right-1/4 w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 animate-float shadow-2xl shadow-pink-500/40" style={{ animationDelay: '3s' }} />
-        <div className="absolute bottom-1/2 left-12 w-15 h-15 rounded-full bg-gradient-to-br from-violet-400 to-purple-600 animate-float shadow-2xl shadow-violet-500/40" style={{ animationDelay: '0.8s' }} />
+        {/* Additional floating elements - make them very visible */}
+        <div className="absolute top-1/4 right-1/4 w-10 h-10 rounded-full bg-orange-500 animate-float shadow-2xl z-10" style={{ animationDelay: '3s' }} />
+        <div className="absolute bottom-1/2 left-12 w-15 h-15 rounded-full bg-indigo-500 animate-float shadow-2xl z-10" style={{ animationDelay: '0.8s' }} />
         
         {/* Subtle cosmic rings scattered */}
         <div className="absolute top-1/3 left-1/4 w-20 h-20 border border-white/4 rounded-full animate-spin-slow" />
