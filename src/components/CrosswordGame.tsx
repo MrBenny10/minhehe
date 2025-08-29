@@ -5,6 +5,7 @@ import { CluesPanel } from './CluesPanel';
 import { GameTimer } from './GameTimer';
 import { GameControls } from './GameControls';
 import { CompletionModal } from './CompletionModal';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 
@@ -265,7 +266,7 @@ export const CrosswordGame: React.FC = () => {
 
   if (showLoadingScreen) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex flex-col items-center justify-center relative">
         <div className="text-center animate-fade-in flex-1 flex flex-col items-center justify-center">
           <div className="animate-scale-in">
             <img src={minHeheLogoSrc} alt="minHehe Logo" className="h-32 w-auto mx-auto mb-6 animate-pulse" />
@@ -273,6 +274,12 @@ export const CrosswordGame: React.FC = () => {
           <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
           <p className="text-xl text-muted-foreground animate-fade-in">Fun crosswords, no wall to pay!</p>
           <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your puzzle...</p>
+        </div>
+
+        {/* Day navigation buttons on loading screen */}
+        <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 z-50 flex gap-2 animate-fade-in">
+          <Button variant="default" size="sm" disabled>Day 1</Button>
+          <Button variant="outline" size="sm" onClick={() => window.location.href = '/day2'}>Day 2</Button>
         </div>
         
         {/* Professional footer */}
