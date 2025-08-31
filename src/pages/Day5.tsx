@@ -92,223 +92,267 @@ const crispsPuzzle: Puzzle = {
   ]
 };
 
-const Day5 = () => {
+const Day5: React.FC = () => {
   const [cells, setCells] = useState<Cell[]>([]);
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
-  const [currentClue, setCurrentClue] = useState<Clue | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [showingErrors, setShowingErrors] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [completionTime, setCompletionTime] = useState<number | null>(null);
+  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+  const [currentClue, setCurrentClue] = useState<Clue | null>(null);
 
+  // Initialize grid
   const initializeGrid = useCallback(() => {
-    const gridData = Array.from({ length: 8 * 13 }, (_, index) => {
-      const row = Math.floor(index / 13);
-      const col = index % 13;
-      
-      // Grid layout based on the specified pattern (8 rows × 13 cols)
-      const gridPattern = [
-        ". . . . . W . . . . . . D",
-        ". . . . . A . M . . . . O", 
-        ". . . . . L . O . . . . R",
-        ". . . B . K . N . . B . I",
-        ". Q U A V E R S . S A L T",
-        ". . . C . R . T . . K . O",
-        ". . . O . S . E . . E . S",
-        ". . . N . . . R E A D Y ."
-      ];
-      
-      const char = gridPattern[row].split(' ')[col];
-      const isBlocked = char === '.';
-      
-      // Find clue number for this cell
-      let number: number | undefined;
-      crispsPuzzle.clues.forEach(clue => {
-        if (clue.startRow === row && clue.startCol === col) {
-          number = clue.number;
-        }
-      });
+    const newCells: Cell[] = [];
+    const cols = 13; // 13 columns
+    const rows = 8;  // 8 rows
+    
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        newCells.push({
+          id: `${row}-${col}`,
+          row,
+          col,
+          value: '',
+          answer: '',
+          isBlocked: true,
+        });
+      }
+    }
 
-      return {
-        id: `${row}-${col}`,
-        row,
-        col,
-        value: '',
-        isBlocked,
-        answer: isBlocked ? '' : char,
-        number
-      };
+    crispsPuzzle.clues.forEach((clue) => {
+      for (let i = 0; i < clue.length; i++) {
+        const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
+        const c = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
+        const idx = r * cols + c;
+        if (newCells[idx] && r < rows && c < cols) {
+          newCells[idx].isBlocked = false;
+          newCells[idx].answer = clue.solution[i];
+          if (i === 0) newCells[idx].number = clue.number;
+        }
+      }
     });
 
-    setCells(gridData);
+    setCells(newCells);
   }, []);
 
-  React.useEffect(() => {
-    initializeGrid();
-  }, [initializeGrid]);
+  const isValidAnswer = useCallback((cell: Cell, value: string) => {
+    const cluesForCell = crispsPuzzle.clues.filter(clue => {
+      if (clue.direction === 'across') {
+        return cell.row === clue.startRow && cell.col >= clue.startCol && cell.col < clue.startCol + clue.length;
+      }
+      return cell.col === clue.startCol && cell.row >= clue.startRow && cell.row < clue.startRow + clue.length;
+    });
 
-  const isValidAnswer = useCallback((cellId: string, value: string): boolean => {
-    const cell = cells.find(c => c.id === cellId);
-    if (!cell || cell.isBlocked) return false;
-    return cell.answer.toLowerCase() === value.toLowerCase();
-  }, [cells]);
+    return cluesForCell.some(clue => {
+      const position = clue.direction === 'across' 
+        ? cell.col - clue.startCol 
+        : cell.row - clue.startRow;
+      
+      const solutions = [clue.solution, ...(clue.alternateSolutions || [])];
+      return solutions.some(solution => solution[position] === value.toUpperCase());
+    });
+  }, []);
 
   const handleCellUpdate = useCallback((cellId: string, value: string) => {
-    if (!isValidAnswer(cellId, value) && value !== '') return;
-    
-    const newCells = cells.map(cell => 
-      cell.id === cellId ? { ...cell, value } : cell
-    );
-    setCells(newCells);
-
-    // Check if puzzle is completed
-    const isComplete = newCells.every(cell => 
-      cell.isBlocked || cell.value !== ''
-    );
-    
-    if (isComplete && !gameCompleted) {
-      setGameCompleted(true);
-      setShowCompletionModal(true);
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
+    setCells(prev => {
+      const next = prev.map(cell =>
+        cell.id === cellId ? { ...cell, value: value.toUpperCase() } : cell
+      );
+      
+      const complete = next.every(cell => {
+        if (cell.isBlocked) return true;
+        return isValidAnswer(cell, cell.value);
       });
-    }
-  }, [cells, isValidAnswer, gameCompleted]);
+      
+      if (complete && !gameCompleted) {
+        setGameCompleted(true);
+        setShowCompletionModal(true);
+        setCompletionTime(timeElapsed);
+        setTimeout(() => {
+          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }, 100);
+      }
+      return next;
+    });
+  }, [gameCompleted, timeElapsed, isValidAnswer]);
 
   const handleCellSelect = useCallback((cellId: string) => {
     setSelectedCell(cellId);
-    
-    const cell = cells.find(c => c.id === cellId);
-    if (!cell) return;
-    
-    // Find clue that includes this cell
-    const clue = crispsPuzzle.clues.find(c => {
-      if (c.direction === 'across') {
-        return cell.row === c.startRow && cell.col >= c.startCol && cell.col < c.startCol + c.length;
-      } else {
-        return cell.col === c.startCol && cell.row >= c.startRow && cell.row < c.startRow + c.length;
+    const [row, col] = cellId.split('-').map(Number);
+    const matches = crispsPuzzle.clues.filter(clue => {
+      if (clue.direction === 'across') {
+        return row === clue.startRow && col >= clue.startCol && col < clue.startCol + clue.length;
       }
+      return col === clue.startCol && row >= clue.startRow && row < clue.startRow + clue.length;
     });
-    
-    setCurrentClue(clue || null);
-  }, [cells]);
+    if (matches.length > 0) {
+      let chosen = matches[0];
+      if (currentClue && matches.some(c => c.direction === currentClue.direction)) {
+        chosen = matches.find(c => c.direction === currentClue.direction) || matches[0];
+      }
+      setCurrentClue(chosen);
+    }
+  }, [currentClue]);
 
   const handleStart = useCallback(() => {
+    initializeGrid();
     setGameStarted(true);
     setGameCompleted(false);
     setShowCompletionModal(false);
+    setCompletionTime(null);
+    setShowingErrors(false);
     setTimeElapsed(0);
-    initializeGrid();
+    setCurrentClue(crispsPuzzle.clues[0]); // Auto-select first clue
+    // Auto-select first cell of first clue
+    const firstClue = crispsPuzzle.clues[0];
+    setSelectedCell(`${firstClue.startRow}-${firstClue.startCol}`);
   }, [initializeGrid]);
 
-  const handleCheckAnswers = useCallback(() => {
-    // Check if all answers are correct
-    const isComplete = cells.every(cell => 
-      cell.isBlocked || (cell.value !== '' && isValidAnswer(cell.id, cell.value))
-    );
-    
+  const handleCheck = useCallback(() => {
+    setShowingErrors(true);
+    const isComplete = cells.every(cell => {
+      if (cell.isBlocked) return true;
+      return isValidAnswer(cell, cell.value);
+    });
     if (isComplete) {
       setGameCompleted(true);
       setShowCompletionModal(true);
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+      setCompletionTime(timeElapsed);
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-  }, [cells, isValidAnswer]);
+  }, [cells, timeElapsed, isValidAnswer]);
+
+  React.useEffect(() => {
+    // Check for test parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const testParam = urlParams.get('test');
+    
+    if (testParam === 'complete') {
+      // Skip loading screen and trigger completion modal
+      setShowLoadingScreen(false);
+      setGameStarted(true);
+      setGameCompleted(true);
+      setShowCompletionModal(true);
+      setCompletionTime(123); // Test time of 2:03
+      return;
+    }
+    
+    const t = setTimeout(() => {
+      setShowLoadingScreen(false);
+      handleStart();
+    }, 2500);
+    return () => clearTimeout(t);
+  }, [handleStart]);
 
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted">
-      {/* Header */}
-      <header className="bg-card/80 backdrop-blur-sm border-b border-border/50 sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <img 
-                src={minHeheLogoSrc} 
-                alt="MinHeHe Logo" 
-                className="w-10 h-10 rounded-lg shadow-sm"
-              />
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                  Day 5: UK Crisps
-                </h1>
-                <p className="text-sm text-muted-foreground">
-                  Crispy crossword challenge
-                </p>
+  if (showLoadingScreen) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex flex-col justify-center items-center px-4">
+        <div className="text-center animate-fade-in">
+          <div className="animate-scale-in">
+            <img src={minHeheLogoSrc} alt="minHehe Logo" className="h-32 w-auto mx-auto mb-6 animate-pulse" />
+          </div>
+          <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
+          <p className="text-xl text-muted-foreground animate-fade-in">UK Crisps Edition - Day 5</p>
+          <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your crunchy puzzle...</p>
+        </div>
+        
+        {/* Professional footer - positioned below content */}
+        <div className="mt-16 text-center animate-fade-in">
+          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <span>Made by Benny in Sweden</span>
+            <div className="flex">
+              {/* Swedish flag heart - blue and yellow */}
+              <div className="w-4 h-4 relative">
+                <svg viewBox="0 0 24 24" className="w-full h-full">
+                  {/* Blue heart shape */}
+                  <path
+                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                    fill="#006AA7"
+                    className="animate-pulse"
+                  />
+                  {/* Yellow cross pattern */}
+                  <rect x="9" y="2" width="6" height="20" fill="#FECC00" />
+                  <rect x="2" y="9" width="20" height="6" fill="#FECC00" />
+                </svg>
               </div>
             </div>
-            
-            {gameStarted && (
-              <GameTimer 
-                timeElapsed={timeElapsed} 
-                setTimeElapsed={setTimeElapsed}
-                isRunning={gameStarted && !gameCompleted}
-                gameCompleted={gameCompleted}
-              />
-            )}
+            <span>with AI</span>
           </div>
         </div>
-      </header>
+      </div>
+    );
+  }
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-7xl mx-auto">
-          {!gameStarted ? (
-            <div className="text-center py-12">
-              <div className="max-w-2xl mx-auto">
-                <h2 className="text-3xl font-bold mb-6">🥔 UK Crisps Crossword</h2>
-                <p className="text-lg text-muted-foreground mb-8">
-                  Test your knowledge of British crisp brands and flavours in this crunchy crossword challenge!
-                </p>
-                <Button onClick={handleStart} size="lg" className="px-8">
-                  Start Puzzle
-                </Button>
-              </div>
+  return (
+    <div className="h-screen bg-gradient-to-br from-background via-background to-muted overflow-hidden">
+      {gameStarted && currentClue && (
+        <div className="fixed top-0 left-0 right-0 z-40 bg-background/98 backdrop-blur-sm border-b border-border">
+          <div className="px-2 py-1.5 md:px-4 md:py-2">
+            <div className="flex items-center gap-2 text-xs md:text-sm">
+              <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+                {currentClue.number}{currentClue.direction === 'across' ? 'A' : 'D'}
+              </span>
+              <p className="text-foreground font-medium truncate">{currentClue.text}</p>
             </div>
-          ) : (
-            <div className="grid lg:grid-cols-3 gap-8">
-              {/* Crossword Grid */}
-              <div className="lg:col-span-2">
-                <div className="bg-card rounded-xl border border-border shadow-lg p-6">
-                  <CrosswordGrid
-                    cells={cells}
-                    selectedCell={selectedCell}
-                    currentClue={currentClue}
-                    onCellUpdate={handleCellUpdate}
-                    onCellSelect={handleCellSelect}
-                    showingErrors={false}
-                    gameStarted={gameStarted}
-                  />
-                </div>
-              </div>
-
-              {/* Clues and Controls */}
-              <div className="space-y-6">
-                <CluesPanel 
-                  clues={crispsPuzzle.clues} 
-                />
-                
-                <GameControls 
-                  gameStarted={gameStarted}
-                  gameCompleted={gameCompleted}
-                  onStartGame={handleStart}
-                  onCheckAnswers={handleCheckAnswers}
-                />
-              </div>
-            </div>
-          )}
+          </div>
         </div>
-      </main>
+      )}
 
-      {/* Navigation */}
-      <div className="fixed bottom-6 left-6 flex gap-2 z-50">
+      <div className="flex flex-col h-full">
+        {/* Timer at top */}
+        <div className={cn(
+          "flex justify-center py-1 px-2 md:py-2 md:px-4", 
+          gameStarted && currentClue ? "pt-10 md:pt-12" : "pt-1 md:pt-2"
+        )}>
+          <GameTimer
+            timeElapsed={timeElapsed}
+            setTimeElapsed={setTimeElapsed}
+            isRunning={gameStarted && !gameCompleted}
+            gameCompleted={gameCompleted}
+          />
+        </div>
+
+        {/* Main content area - crossword grid */}
+        <div className="flex-1 flex flex-col items-center justify-center px-1 py-1 md:px-2 md:py-2 min-h-0">
+          <div className="w-full max-w-full flex-1 flex items-center justify-center">
+            <CrosswordGrid
+              cells={cells}
+              selectedCell={selectedCell}
+              onCellSelect={handleCellSelect}
+              onCellUpdate={handleCellUpdate}
+              showingErrors={showingErrors}
+              gameStarted={gameStarted}
+              currentClue={currentClue}
+              gridSize={13}
+            />
+          </div>
+        </div>
+
+        {/* Controls at bottom */}
+        <div className="flex justify-center py-1 px-2 md:py-2 md:px-4">
+          <GameControls
+            gameStarted={gameStarted}
+            gameCompleted={gameCompleted}
+            onStartGame={handleStart}
+            onCheckAnswers={handleCheck}
+          />
+        </div>
+
+        {/* Clues panel - hidden on mobile, accessible via modal/drawer if needed */}
+        <div className="hidden lg:block fixed right-4 top-1/2 transform -translate-y-1/2 w-80">
+          <CluesPanel clues={crispsPuzzle.clues} />
+        </div>
+      </div>
+
+      {/* Navigation below grid */}
+      <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50 flex gap-2">
         <Link to="/">
-          <Button variant="outline" size="sm">Home</Button>
+          <Button variant="outline" size="sm">Day 1</Button>
         </Link>
         <Link to="/day2">
           <Button variant="outline" size="sm">Day 2</Button>
@@ -323,18 +367,33 @@ const Day5 = () => {
       </div>
 
       {/* Professional footer */}
-      <footer className="mt-12 py-8 border-t border-border/50 bg-card/30">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-sm text-muted-foreground">
-            Day 5 • UK Crisps Crossword Challenge • MinHeHe Games
-          </p>
+      <div className="fixed bottom-2 left-1/2 transform -translate-x-1/2 z-40 text-center">
+        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+          <span>Made by Benny in Sweden</span>
+          <div className="flex">
+            {/* Swedish flag heart - blue and yellow */}
+            <div className="w-4 h-4 relative">
+              <svg viewBox="0 0 24 24" className="w-full h-full">
+                {/* Blue heart shape */}
+                <path
+                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                  fill="#006AA7"
+                  className="animate-pulse"
+                />
+                {/* Yellow cross pattern */}
+                <rect x="9" y="2" width="6" height="20" fill="#FECC00" />
+                <rect x="2" y="9" width="20" height="6" fill="#FECC00" />
+              </svg>
+            </div>
+          </div>
+          <span>with AI</span>
         </div>
-      </footer>
+      </div>
 
       <CompletionModal
         isOpen={showCompletionModal}
         onClose={() => setShowCompletionModal(false)}
-        completionTime={timeElapsed}
+        completionTime={completionTime || 0}
         onNewGame={handleStart}
       />
     </div>
