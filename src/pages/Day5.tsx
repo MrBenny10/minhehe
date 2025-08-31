@@ -289,7 +289,36 @@ const Day5: React.FC = () => {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-br from-background via-background to-muted overflow-hidden">
+    <div className="h-screen bg-gradient-to-br from-background via-background to-muted overflow-hidden relative">
+      {/* Falling crisps animation */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute text-4xl opacity-60"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${8 + Math.random() * 4}s`,
+            }}
+          >
+            <div className="animate-[fall_linear_infinite]">
+              {['🥔', '🧀', '🌽', '🥨'][Math.floor(Math.random() * 4)]}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Crisp bag at bottom */}
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-0 pointer-events-none">
+        <div className="text-8xl opacity-40 mb-4">
+          📦
+        </div>
+        <div className="text-center text-xs text-muted-foreground/50 font-medium">
+          Collecting crisps...
+        </div>
+      </div>
+
       {gameStarted && currentClue && (
         <div className="fixed top-0 left-0 right-0 z-40 bg-background/98 backdrop-blur-sm border-b border-border">
           <div className="px-2 py-1.5 md:px-4 md:py-2">
