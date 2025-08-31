@@ -360,6 +360,9 @@ const Day4: React.FC = () => {
           <Button variant="outline" size="sm">Day 3</Button>
         </Link>
         <Button variant="default" size="sm" disabled>Day 4</Button>
+        <Link to="/day5">
+          <Button variant="outline" size="sm">Day 5</Button>
+        </Link>
       </div>
 
       {/* Professional footer */}
