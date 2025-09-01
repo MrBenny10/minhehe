@@ -78,6 +78,7 @@ const Day6: React.FC = () => {
 
   // Initialize grid
   const initializeGrid = useCallback(() => {
+    console.log('Initializing Day 6 grid...');
     const newCells: Cell[] = [];
     const gridSize = 7;
     
@@ -96,21 +97,47 @@ const Day6: React.FC = () => {
     }
 
     // Define the specific active cells based on the crossword pattern
-    const activeCells = [
-      // BELT (down): col 2, rows 0-3
-      [0, 2], [1, 2], [2, 2], [3, 2],
-      // CATWALK (across): row 3, cols 0-6
-      [3, 0], [3, 1], [3, 2], [3, 3], [3, 4], [3, 5], [3, 6],
-      // COAT (down): col 0, rows 3-6
-      [3, 0], [4, 0], [5, 0], [6, 0],
-      // LACE (down): col 5, rows 3-6
-      [3, 5], [4, 5], [5, 5], [6, 5],
-      // TIEDYE (across): row 6, cols 0-5
-      [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5]
-    ];
+    // Grid pattern:
+    // ..B....
+    // ..E....
+    // ..L....
+    // CATWALK
+    // O....A.
+    // A....C.
+    // TIEDYE.
+    
+    const activeCells = new Set<string>();
+    
+    // BELT (down): col 2, rows 0-3
+    for (let row = 0; row <= 3; row++) {
+      activeCells.add(`${row}-2`);
+    }
+    
+    // CATWALK (across): row 3, cols 0-6
+    for (let col = 0; col <= 6; col++) {
+      activeCells.add(`3-${col}`);
+    }
+    
+    // COAT (down): col 0, rows 3-6
+    for (let row = 3; row <= 6; row++) {
+      activeCells.add(`${row}-0`);
+    }
+    
+    // LACE (down): col 5, rows 3-6
+    for (let row = 3; row <= 6; row++) {
+      activeCells.add(`${row}-5`);
+    }
+    
+    // TIEDYE (across): row 6, cols 0-5
+    for (let col = 0; col <= 5; col++) {
+      activeCells.add(`6-${col}`);
+    }
+
+    console.log('Active cells:', Array.from(activeCells));
 
     // Mark active cells as unblocked
-    activeCells.forEach(([row, col]) => {
+    activeCells.forEach((cellId: string) => {
+      const [row, col] = cellId.split('-').map(Number);
       const idx = row * gridSize + col;
       if (newCells[idx]) {
         newCells[idx].isBlocked = false;
@@ -130,6 +157,7 @@ const Day6: React.FC = () => {
       }
     });
 
+    console.log('Cells after initialization:', newCells.filter(c => !c.isBlocked).map(c => ({ id: c.id, answer: c.answer, number: c.number })));
     setCells(newCells);
   }, []);
 
