@@ -22,6 +22,9 @@ const Index = () => {
         <Link to="/day5">
           <Button variant="outline" size="sm">Day 5</Button>
         </Link>
+        <Link to="/day6">
+          <Button variant="outline" size="sm">Day 6</Button>
+        </Link>
       </div>
 
       {/* Professional footer */}

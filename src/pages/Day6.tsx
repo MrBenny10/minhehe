@@ -11,88 +11,88 @@ import { cn } from '@/lib/utils';
 import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 import type { Clue, Cell, Puzzle } from '@/components/CrosswordGame';
 
-const dessertPuzzle: Puzzle = {
-  size: 13, // 13 cols × 8 rows  
+const fashionPuzzle: Puzzle = {
+  size: 7, // 7×7 grid
   clues: [
     // Across
     {
       number: 1,
-      text: 'Cream-filled pastries with chocolate topping (7)',
+      text: 'Global fast-fashion retailer (4)',
       direction: 'across',
-      startRow: 4, // row 5, col 2 → 0-indexed = (4,1)
+      startRow: 0, // row 1, col 2 → 0-indexed = (0,1)
       startCol: 1,
-      length: 7,
-      solution: 'ECLAIRS',
+      length: 4,
+      solution: 'ZARA',
     },
     {
       number: 2,
-      text: 'Open-faced pastry with fruit or custard (4)',
+      text: 'Tailored jacket (6)',
       direction: 'across',
-      startRow: 4, // row 5, col 10 → 0-indexed = (4,9)
-      startCol: 9,
-      length: 4,
-      solution: 'TART',
+      startRow: 2, // row 3, col 1 → 0-indexed = (2,0)
+      startCol: 0,
+      length: 6,
+      solution: 'BLAZER',
     },
     {
       number: 3,
-      text: 'Pearled starch used in some puddings (4)',
+      text: 'Roomy carryall, often canvas or leather (4)',
       direction: 'across',
-      startRow: 7, // row 8, col 8 → 0-indexed = (7,7)
-      startCol: 7,
+      startRow: 4, // row 5, col 2 → 0-indexed = (4,1)
+      startCol: 1,
       length: 4,
-      solution: 'SAGO',
+      solution: 'TOTE',
+    },
+    {
+      number: 4,
+      text: 'Garment worn from the waist (5)',
+      direction: 'across',
+      startRow: 6, // row 7, col 2 → 0-indexed = (6,1)
+      startCol: 1,
+      length: 5,
+      solution: 'SKIRT',
     },
 
     // Down
     {
-      number: 4,
-      text: 'Shiny sugar coating (5)',
-      direction: 'down',
-      startRow: 3, // row 4, col 4 → 0-indexed = (3,3)
-      startCol: 3,
-      length: 5,
-      solution: 'GLAZE',
-    },
-    {
       number: 5,
-      text: 'Sweet topping spread on cakes (5)',
+      text: 'Front panel seen on some overalls (3)',
       direction: 'down',
-      startRow: 2, // row 3, col 6 → 0-indexed = (2,5)
-      startCol: 5,
-      length: 5,
-      solution: 'ICING',
+      startRow: 2, // row 3, col 1 → 0-indexed = (2,0)
+      startCol: 0,
+      length: 3,
+      solution: 'BIB',
     },
     {
       number: 6,
-      text: 'Airy whipped desserts (7)',
+      text: 'Delicate openwork fabric (4)',
       direction: 'down',
-      startRow: 1, // row 2, col 8 → 0-indexed = (1,7)
-      startCol: 7,
-      length: 7,
-      solution: 'MOUSSES',
+      startRow: 2, // row 3, col 2 → 0-indexed = (2,1)
+      startCol: 1,
+      length: 4,
+      solution: 'LACE',
     },
     {
       number: 7,
-      text: 'Bean behind chocolate (5)',
+      text: 'Bold geometric pattern seen in prints (5)',
       direction: 'down',
-      startRow: 3, // row 4, col 11 → 0-indexed = (3,10)
-      startCol: 10,
+      startRow: 0, // row 1, col 4 → 0-indexed = (0,3)
+      startCol: 3,
       length: 5,
-      solution: 'CACAO',
+      solution: 'AZTEC',
     },
     {
       number: 8,
-      text: 'Ring-shaped fried treat (5)',
+      text: 'Outdoor brand that often crosses into streetwear (3)',
       direction: 'down',
-      startRow: 0, // row 1, col 13 → 0-indexed = (0,12)
-      startCol: 12,
-      length: 5,
-      solution: 'DONUT',
+      startRow: 2, // row 3, col 6 → 0-indexed = (2,5)
+      startCol: 5,
+      length: 3,
+      solution: 'REI',
     },
   ],
 };
 
-const Day4: React.FC = () => {
+const Day6: React.FC = () => {
   const [cells, setCells] = useState<Cell[]>([]);
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
@@ -107,8 +107,8 @@ const Day4: React.FC = () => {
   // Initialize grid
   const initializeGrid = useCallback(() => {
     const newCells: Cell[] = [];
-    const cols = 13; // 13 columns
-    const rows = 8;  // 8 rows
+    const cols = 7; // 7 columns
+    const rows = 7; // 7 rows
     
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
@@ -123,7 +123,7 @@ const Day4: React.FC = () => {
       }
     }
 
-    dessertPuzzle.clues.forEach((clue) => {
+    fashionPuzzle.clues.forEach((clue) => {
       for (let i = 0; i < clue.length; i++) {
         const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
         const c = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
@@ -140,7 +140,7 @@ const Day4: React.FC = () => {
   }, []);
 
   const isValidAnswer = useCallback((cell: Cell, value: string) => {
-    const cluesForCell = dessertPuzzle.clues.filter(clue => {
+    const cluesForCell = fashionPuzzle.clues.filter(clue => {
       if (clue.direction === 'across') {
         return cell.row === clue.startRow && cell.col >= clue.startCol && cell.col < clue.startCol + clue.length;
       }
@@ -183,7 +183,7 @@ const Day4: React.FC = () => {
   const handleCellSelect = useCallback((cellId: string) => {
     setSelectedCell(cellId);
     const [row, col] = cellId.split('-').map(Number);
-    const matches = dessertPuzzle.clues.filter(clue => {
+    const matches = fashionPuzzle.clues.filter(clue => {
       if (clue.direction === 'across') {
         return row === clue.startRow && col >= clue.startCol && col < clue.startCol + clue.length;
       }
@@ -206,9 +206,9 @@ const Day4: React.FC = () => {
     setCompletionTime(null);
     setShowingErrors(false);
     setTimeElapsed(0);
-    setCurrentClue(dessertPuzzle.clues[0]); // Auto-select first clue
+    setCurrentClue(fashionPuzzle.clues[0]); // Auto-select first clue
     // Auto-select first cell of first clue
-    const firstClue = dessertPuzzle.clues[0];
+    const firstClue = fashionPuzzle.clues[0];
     setSelectedCell(`${firstClue.startRow}-${firstClue.startCol}`);
   }, [initializeGrid]);
 
@@ -256,8 +256,8 @@ const Day4: React.FC = () => {
             <img src={minHeheLogoSrc} alt="minHehe Logo" className="h-32 w-auto mx-auto mb-6 animate-pulse" />
           </div>
           <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
-          <p className="text-xl text-muted-foreground animate-fade-in">Dessert Edition - Day 4</p>
-          <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your sweet puzzle...</p>
+          <p className="text-xl text-muted-foreground animate-fade-in">Fashion Edition - Day 6</p>
+          <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your stylish puzzle...</p>
         </div>
         
         {/* Professional footer - positioned below content */}
@@ -327,7 +327,7 @@ const Day4: React.FC = () => {
               showingErrors={showingErrors}
               gameStarted={gameStarted}
               currentClue={currentClue}
-              gridSize={13}
+              gridSize={7}
             />
           </div>
         </div>
@@ -344,7 +344,7 @@ const Day4: React.FC = () => {
 
         {/* Clues panel - hidden on mobile, accessible via modal/drawer if needed */}
         <div className="hidden lg:block fixed right-4 top-1/2 transform -translate-y-1/2 w-80">
-          <CluesPanel clues={dessertPuzzle.clues} />
+          <CluesPanel clues={fashionPuzzle.clues} />
         </div>
       </div>
 
@@ -359,13 +359,13 @@ const Day4: React.FC = () => {
         <Link to="/day3">
           <Button variant="outline" size="sm">Day 3</Button>
         </Link>
-        <Button variant="default" size="sm" disabled>Day 4</Button>
+        <Link to="/day4">
+          <Button variant="outline" size="sm">Day 4</Button>
+        </Link>
         <Link to="/day5">
           <Button variant="outline" size="sm">Day 5</Button>
         </Link>
-        <Link to="/day6">
-          <Button variant="outline" size="sm">Day 6</Button>
-        </Link>
+        <Button variant="default" size="sm" disabled>Day 6</Button>
       </div>
 
       {/* Professional footer */}
@@ -402,4 +402,4 @@ const Day4: React.FC = () => {
   );
 };
 
-export default Day4;
+export default Day6;
