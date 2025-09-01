@@ -11,88 +11,60 @@ import { cn } from '@/lib/utils';
 import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 import type { Clue, Cell, Puzzle } from '@/components/CrosswordGame';
 
-const dessertPuzzle: Puzzle = {
-  size: 13, // 13 cols × 8 rows  
+const fashionPuzzle: Puzzle = {
+  size: 7,
   clues: [
     // Across
     {
       number: 1,
-      text: 'Cream-filled pastries with chocolate topping (7)',
+      text: "Runway seen at fashion week (7)",
       direction: 'across',
-      startRow: 4, // row 5, col 2 → 0-indexed = (4,1)
-      startCol: 1,
+      startRow: 3, // 0-indexed: row 4 = 3
+      startCol: 0, // 0-indexed: col 1 = 0
       length: 7,
-      solution: 'ECLAIRS',
+      solution: "CATWALK"
     },
+    // Down
     {
       number: 2,
-      text: 'Open-faced pastry with fruit or custard (4)',
-      direction: 'across',
-      startRow: 4, // row 5, col 10 → 0-indexed = (4,9)
-      startCol: 9,
-      length: 4,
-      solution: 'TART',
+      text: "Loose, gathered garment or top (5)",
+      direction: 'down',
+      startRow: 0, // 0-indexed: row 1 = 0
+      startCol: 0, // 0-indexed: col 1 = 0
+      length: 5,
+      solution: "SMOCK"
     },
     {
       number: 3,
-      text: 'Pearled starch used in some puddings (4)',
-      direction: 'across',
-      startRow: 7, // row 8, col 8 → 0-indexed = (7,7)
-      startCol: 7,
-      length: 4,
-      solution: 'SAGO',
+      text: "Accessories with buckles (5)",
+      direction: 'down',
+      startRow: 0, // 0-indexed: row 1 = 0
+      startCol: 2, // 0-indexed: col 3 = 2
+      length: 5,
+      solution: "BELTS"
     },
-
-    // Down
     {
       number: 4,
-      text: 'Shiny sugar coating (5)',
+      text: "Neckwear in silk or wool (5)",
       direction: 'down',
-      startRow: 3, // row 4, col 4 → 0-indexed = (3,3)
-      startCol: 3,
+      startRow: 1, // 0-indexed: row 2 = 1
+      startCol: 4, // 0-indexed: col 5 = 4
       length: 5,
-      solution: 'GLAZE',
+      solution: "SCARF"
     },
     {
       number: 5,
-      text: 'Sweet topping spread on cakes (5)',
+      text: "Garment worn from the waist (5)",
       direction: 'down',
-      startRow: 2, // row 3, col 6 → 0-indexed = (2,5)
-      startCol: 5,
+      startRow: 2, // 0-indexed: row 3 = 2
+      startCol: 6, // 0-indexed: col 7 = 6
       length: 5,
-      solution: 'ICING',
-    },
-    {
-      number: 6,
-      text: 'Airy whipped desserts (7)',
-      direction: 'down',
-      startRow: 1, // row 2, col 8 → 0-indexed = (1,7)
-      startCol: 7,
-      length: 7,
-      solution: 'MOUSSES',
-    },
-    {
-      number: 7,
-      text: 'Bean behind chocolate (5)',
-      direction: 'down',
-      startRow: 3, // row 4, col 11 → 0-indexed = (3,10)
-      startCol: 10,
-      length: 5,
-      solution: 'CACAO',
-    },
-    {
-      number: 8,
-      text: 'Ring-shaped fried treat (5)',
-      direction: 'down',
-      startRow: 0, // row 1, col 13 → 0-indexed = (0,12)
-      startCol: 12,
-      length: 5,
-      solution: 'DONUT',
-    },
+      solution: "SKIRT"
+    }
   ],
 };
 
-const Day4: React.FC = () => {
+const Day6: React.FC = () => {
   const [cells, setCells] = useState<Cell[]>([]);
   const [selectedCell, setSelectedCell] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
@@ -107,11 +79,10 @@ const Day4: React.FC = () => {
   // Initialize grid
   const initializeGrid = useCallback(() => {
     const newCells: Cell[] = [];
-    const cols = 13; // 13 columns
-    const rows = 8;  // 8 rows
+    const gridSize = 7;
     
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
+    for (let row = 0; row < gridSize; row++) {
+      for (let col = 0; col < gridSize; col++) {
         newCells.push({
           id: `${row}-${col}`,
           row,
@@ -123,12 +94,12 @@ const Day4: React.FC = () => {
       }
     }
 
-    dessertPuzzle.clues.forEach((clue) => {
+    fashionPuzzle.clues.forEach((clue) => {
       for (let i = 0; i < clue.length; i++) {
         const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
         const c = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
-        const idx = r * cols + c;
-        if (newCells[idx] && r < rows && c < cols) {
+        const idx = r * gridSize + c;
+        if (newCells[idx] && r < gridSize && c < gridSize) {
           newCells[idx].isBlocked = false;
           newCells[idx].answer = clue.solution[i];
           if (i === 0) newCells[idx].number = clue.number;
@@ -140,7 +111,7 @@ const Day4: React.FC = () => {
   }, []);
 
   const isValidAnswer = useCallback((cell: Cell, value: string) => {
-    const cluesForCell = dessertPuzzle.clues.filter(clue => {
+    const cluesForCell = fashionPuzzle.clues.filter(clue => {
       if (clue.direction === 'across') {
         return cell.row === clue.startRow && cell.col >= clue.startCol && cell.col < clue.startCol + clue.length;
       }
@@ -183,7 +154,7 @@ const Day4: React.FC = () => {
   const handleCellSelect = useCallback((cellId: string) => {
     setSelectedCell(cellId);
     const [row, col] = cellId.split('-').map(Number);
-    const matches = dessertPuzzle.clues.filter(clue => {
+    const matches = fashionPuzzle.clues.filter(clue => {
       if (clue.direction === 'across') {
         return row === clue.startRow && col >= clue.startCol && col < clue.startCol + clue.length;
       }
@@ -206,9 +177,8 @@ const Day4: React.FC = () => {
     setCompletionTime(null);
     setShowingErrors(false);
     setTimeElapsed(0);
-    setCurrentClue(dessertPuzzle.clues[0]); // Auto-select first clue
-    // Auto-select first cell of first clue
-    const firstClue = dessertPuzzle.clues[0];
+    setCurrentClue(fashionPuzzle.clues[0]);
+    const firstClue = fashionPuzzle.clues[0];
     setSelectedCell(`${firstClue.startRow}-${firstClue.startCol}`);
   }, [initializeGrid]);
 
@@ -227,20 +197,6 @@ const Day4: React.FC = () => {
   }, [cells, timeElapsed, isValidAnswer]);
 
   React.useEffect(() => {
-    // Check for test parameter in URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const testParam = urlParams.get('test');
-    
-    if (testParam === 'complete') {
-      // Skip loading screen and trigger completion modal
-      setShowLoadingScreen(false);
-      setGameStarted(true);
-      setGameCompleted(true);
-      setShowCompletionModal(true);
-      setCompletionTime(123); // Test time of 2:03
-      return;
-    }
-    
     const t = setTimeout(() => {
       setShowLoadingScreen(false);
       handleStart();
@@ -256,25 +212,21 @@ const Day4: React.FC = () => {
             <img src={minHeheLogoSrc} alt="minHehe Logo" className="h-32 w-auto mx-auto mb-6 animate-pulse" />
           </div>
           <h1 className="text-6xl font-bold text-foreground mb-4 animate-fade-in">minHehe</h1>
-          <p className="text-xl text-muted-foreground animate-fade-in">Dessert Edition - Day 4</p>
-          <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your sweet puzzle...</p>
+          <p className="text-xl text-muted-foreground animate-fade-in">Fashion Edition - Day 6</p>
+          <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your fashion puzzle...</p>
         </div>
         
-        {/* Professional footer - positioned below content */}
         <div className="mt-16 text-center animate-fade-in">
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <span>Made by Benny in Sweden</span>
             <div className="flex">
-              {/* Swedish flag heart - blue and yellow */}
               <div className="w-4 h-4 relative">
                 <svg viewBox="0 0 24 24" className="w-full h-full">
-                  {/* Blue heart shape */}
                   <path
                     d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
                     fill="#006AA7"
                     className="animate-pulse"
                   />
-                  {/* Yellow cross pattern */}
                   <rect x="9" y="2" width="6" height="20" fill="#FECC00" />
                   <rect x="2" y="9" width="20" height="6" fill="#FECC00" />
                 </svg>
@@ -303,7 +255,6 @@ const Day4: React.FC = () => {
       )}
 
       <div className="flex flex-col h-full">
-        {/* Timer at top */}
         <div className={cn(
           "flex justify-center py-1 px-2 md:py-2 md:px-4", 
           gameStarted && currentClue ? "pt-10 md:pt-12" : "pt-1 md:pt-2"
@@ -316,7 +267,6 @@ const Day4: React.FC = () => {
           />
         </div>
 
-        {/* Main content area - crossword grid */}
         <div className="flex-1 flex flex-col items-center justify-center px-1 py-1 md:px-2 md:py-2 min-h-0">
           <div className="w-full max-w-full flex-1 flex items-center justify-center">
             <CrosswordGrid
@@ -327,12 +277,11 @@ const Day4: React.FC = () => {
               showingErrors={showingErrors}
               gameStarted={gameStarted}
               currentClue={currentClue}
-              gridSize={13}
+              gridSize={7}
             />
           </div>
         </div>
 
-        {/* Controls at bottom */}
         <div className="flex justify-center py-1 px-2 md:py-2 md:px-4">
           <GameControls
             gameStarted={gameStarted}
@@ -342,13 +291,12 @@ const Day4: React.FC = () => {
           />
         </div>
 
-        {/* Clues panel - hidden on mobile, accessible via modal/drawer if needed */}
         <div className="hidden lg:block fixed right-4 top-1/2 transform -translate-y-1/2 w-80">
-          <CluesPanel clues={dessertPuzzle.clues} />
+          <CluesPanel clues={fashionPuzzle.clues} />
         </div>
       </div>
-
-      {/* Navigation below grid */}
+      
+      {/* Navigation */}
       <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50 flex gap-2">
         <Link to="/">
           <Button variant="outline" size="sm">Day 1</Button>
@@ -359,13 +307,13 @@ const Day4: React.FC = () => {
         <Link to="/day3">
           <Button variant="outline" size="sm">Day 3</Button>
         </Link>
-        <Button variant="default" size="sm" disabled>Day 4</Button>
+        <Link to="/day4">
+          <Button variant="outline" size="sm">Day 4</Button>
+        </Link>
         <Link to="/day5">
           <Button variant="outline" size="sm">Day 5</Button>
         </Link>
-        <Link to="/day6">
-          <Button variant="outline" size="sm">Day 6</Button>
-        </Link>
+        <Button variant="secondary" size="sm" disabled>Day 6</Button>
       </div>
 
       {/* Professional footer */}
@@ -402,4 +350,4 @@ const Day4: React.FC = () => {
   );
 };
 
-export default Day4;
+export default Day6;
