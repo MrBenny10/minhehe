@@ -24,42 +24,42 @@ const fashionPuzzle: Puzzle = {
       length: 7,
       solution: "CATWALK"
     },
-    // Down
     {
       number: 2,
-      text: "Loose, gathered garment or top (5)",
-      direction: 'down',
-      startRow: 0, // 0-indexed: row 1 = 0
+      text: "Psychedelic fabric style, revived in streetwear (6)",
+      direction: 'across',
+      startRow: 6, // 0-indexed: row 7 = 6
       startCol: 0, // 0-indexed: col 1 = 0
-      length: 5,
-      solution: "SMOCK"
+      length: 6,
+      solution: "TIEDYE"
     },
+    // Down
     {
       number: 3,
-      text: "Accessories with buckles (5)",
+      text: "Outerwear layer (4)",
       direction: 'down',
-      startRow: 0, // 0-indexed: row 1 = 0
-      startCol: 2, // 0-indexed: col 3 = 2
-      length: 5,
-      solution: "BELTS"
+      startRow: 3, // 0-indexed: row 4 = 3
+      startCol: 0, // 0-indexed: col 1 = 0
+      length: 4,
+      solution: "COAT"
     },
     {
       number: 4,
-      text: "Neckwear in silk or wool (5)",
+      text: "Accessory with a buckle (4)",
       direction: 'down',
-      startRow: 1, // 0-indexed: row 2 = 1
-      startCol: 4, // 0-indexed: col 5 = 4
-      length: 5,
-      solution: "SCARF"
+      startRow: 0, // 0-indexed: row 1 = 0
+      startCol: 2, // 0-indexed: col 3 = 2
+      length: 4,
+      solution: "BELT"
     },
     {
       number: 5,
-      text: "Garment worn from the waist (5)",
+      text: "Delicate openwork fabric (4)",
       direction: 'down',
-      startRow: 2, // 0-indexed: row 3 = 2
-      startCol: 6, // 0-indexed: col 7 = 6
-      length: 5,
-      solution: "SKIRT"
+      startRow: 3, // 0-indexed: row 4 = 3
+      startCol: 5, // 0-indexed: col 6 = 5
+      length: 4,
+      solution: "LACE"
     }
   ],
 };
