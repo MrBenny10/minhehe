@@ -81,6 +81,7 @@ const Day6: React.FC = () => {
     const newCells: Cell[] = [];
     const gridSize = 7;
     
+    // Initialize all cells as blocked first
     for (let row = 0; row < gridSize; row++) {
       for (let col = 0; col < gridSize; col++) {
         newCells.push({
@@ -94,13 +95,35 @@ const Day6: React.FC = () => {
       }
     }
 
+    // Define the specific active cells based on the crossword pattern
+    const activeCells = [
+      // BELT (down): col 2, rows 0-3
+      [0, 2], [1, 2], [2, 2], [3, 2],
+      // CATWALK (across): row 3, cols 0-6
+      [3, 0], [3, 1], [3, 2], [3, 3], [3, 4], [3, 5], [3, 6],
+      // COAT (down): col 0, rows 3-6
+      [3, 0], [4, 0], [5, 0], [6, 0],
+      // LACE (down): col 5, rows 3-6
+      [3, 5], [4, 5], [5, 5], [6, 5],
+      // TIEDYE (across): row 6, cols 0-5
+      [6, 0], [6, 1], [6, 2], [6, 3], [6, 4], [6, 5]
+    ];
+
+    // Mark active cells as unblocked
+    activeCells.forEach(([row, col]) => {
+      const idx = row * gridSize + col;
+      if (newCells[idx]) {
+        newCells[idx].isBlocked = false;
+      }
+    });
+
+    // Set answers and numbers for each clue
     fashionPuzzle.clues.forEach((clue) => {
       for (let i = 0; i < clue.length; i++) {
         const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
         const c = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
         const idx = r * gridSize + c;
-        if (newCells[idx] && r < gridSize && c < gridSize) {
-          newCells[idx].isBlocked = false;
+        if (newCells[idx] && r < gridSize && c < gridSize && !newCells[idx].isBlocked) {
           newCells[idx].answer = clue.solution[i];
           if (i === 0) newCells[idx].number = clue.number;
         }
