@@ -36,12 +36,12 @@ const fashionPuzzle: Puzzle = {
     // Down
     {
       number: 3,
-      text: "Outerwear layer (4)",
+      text: "Delicate openwork fabric (4)",
       direction: 'down',
       startRow: 3, // 0-indexed: row 4 = 3
-      startCol: 0, // 0-indexed: col 1 = 0
+      startCol: 5, // 0-indexed: col 6 = 5
       length: 4,
-      solution: "COAT"
+      solution: "LACE"
     },
     {
       number: 4,
@@ -54,12 +54,12 @@ const fashionPuzzle: Puzzle = {
     },
     {
       number: 5,
-      text: "Delicate openwork fabric (4)",
+      text: "Outerwear layer (4)",
       direction: 'down',
       startRow: 3, // 0-indexed: row 4 = 3
-      startCol: 5, // 0-indexed: col 6 = 5
+      startCol: 0, // 0-indexed: col 1 = 0
       length: 4,
-      solution: "LACE"
+      solution: "COAT"
     }
   ],
 };
