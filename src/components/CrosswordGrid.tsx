@@ -10,7 +10,9 @@ interface CrosswordGridProps {
   showingErrors: boolean;
   gameStarted: boolean;
   currentClue?: any;
-  gridSize?: number; // Add gridSize prop
+  gridSize?: number; // For square grids (backward compatibility)
+  gridCols?: number; // For rectangular grids
+  gridRows?: number; // For rectangular grids
 }
 
 export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
@@ -21,8 +23,13 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   showingErrors,
   gameStarted,
   currentClue,
-  gridSize = 5
+  gridSize = 5,
+  gridCols,
+  gridRows
 }) => {
+  // Use specific cols/rows if provided, otherwise fall back to gridSize for square grids
+  const cols = gridCols || gridSize;
+  const rows = gridRows || gridSize;
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -40,7 +47,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       if (currentClue.direction === 'across') {
         // Move right for across clues, skipping correct cells
         let checkCol = cell.col + 1;
-        while (checkCol < gridSize) {
+        while (checkCol < cols) {
           const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
           if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
             nextCell = candidateCell;
@@ -51,7 +58,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       } else if (currentClue.direction === 'down') {
         // Move down for down clues, skipping correct cells
         let checkRow = cell.row + 1;
-        while (checkRow < gridSize) {
+        while (checkRow < rows) {
           const candidateCell = cells.find(c => c.row === checkRow && c.col === cell.col && !c.isBlocked);
           if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
             nextCell = candidateCell;
@@ -155,7 +162,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
       const nextCol = selectedCellData.col + 1;
-      if (nextCol < gridSize) {
+      if (nextCol < cols) {
         const nextCell = cells.find(c => c.row === selectedCellData.row && c.col === nextCol && !c.isBlocked);
         if (nextCell) onCellSelect(nextCell.id);
       }
@@ -169,7 +176,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       const nextRow = selectedCellData.row + 1;
-      if (nextRow < gridSize) {
+      if (nextRow < rows) {
         const nextCell = cells.find(c => c.row === nextRow && c.col === selectedCellData.col && !c.isBlocked);
         if (nextCell) onCellSelect(nextCell.id);
       }
@@ -240,7 +247,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
       const nextCol = cell.col + 1;
-      if (nextCol < gridSize) {
+      if (nextCol < cols) {
         const nextCell = cells.find(c => c.row === cell.row && c.col === nextCol && !c.isBlocked);
         if (nextCell) onCellSelect(nextCell.id);
       }
@@ -254,7 +261,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       const nextRow = cell.row + 1;
-      if (nextRow < gridSize) {
+      if (nextRow < rows) {
         const nextCell = cells.find(c => c.row === nextRow && c.col === cell.col && !c.isBlocked);
         if (nextCell) onCellSelect(nextCell.id);
       }
@@ -315,12 +322,16 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       <div 
         className="grid gap-0.5 p-1 md:gap-1 md:p-2 bg-background border-2 border-grid-border rounded-lg"
         style={{ 
-          gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
-          gridTemplateRows: `repeat(${gridSize}, 1fr)`,
+          gridTemplateColumns: `repeat(${cols}, 1fr)`,
+          gridTemplateRows: `repeat(${rows}, 1fr)`,
           // Mobile: use full viewport calculations
-          width: `min(98vw, (100vh - 120px))`,
-          height: `min(98vw, 100vh - 120px)`,
-          aspectRatio: '1/1',
+          width: cols === rows 
+            ? `min(98vw, (100vh - 120px))` 
+            : `min(98vw, (100vh - 120px) * ${cols}/${rows})`,
+          height: cols === rows 
+            ? `min(98vw, 100vh - 120px)` 
+            : `min(98vw * ${rows}/${cols}, 100vh - 120px)`,
+          aspectRatio: `${cols}/${rows}`,
         }}
       >
         {cells.map((cell) => {
