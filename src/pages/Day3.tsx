@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import { CrosswordGrid } from '@/components/CrosswordGrid';
 import { CluesPanel } from '@/components/CluesPanel';
@@ -104,6 +104,7 @@ const Day3: React.FC = () => {
   const [completionTime, setCompletionTime] = useState<number | null>(null);
   const [showLoadingScreen, setShowLoadingScreen] = useState(true);
   const [currentClue, setCurrentClue] = useState<Clue | null>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   // Initialize grid
   const initializeGrid = useCallback(() => {
@@ -248,6 +249,16 @@ const Day3: React.FC = () => {
     }, 2500);
     return () => clearTimeout(t);
   }, [handleStart]);
+
+  useEffect(() => {
+    // Scroll to the right to show latest days first
+    if (scrollAreaRef.current) {
+      const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollElement) {
+        scrollElement.scrollLeft = scrollElement.scrollWidth;
+      }
+    }
+  }, []);
 
   if (showLoadingScreen) {
     return (
@@ -408,7 +419,7 @@ const Day3: React.FC = () => {
 
       {/* Navigation */}
       <div className="fixed bottom-12 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
-        <ScrollArea className="w-full whitespace-nowrap rounded-md bg-background/80 backdrop-blur-sm border p-1">
+        <ScrollArea ref={scrollAreaRef} className="w-full whitespace-nowrap rounded-md bg-background/80 backdrop-blur-sm border p-1">
           <div className="flex gap-2">
             <Link to="/">
               <Button variant="outline" size="sm" className="shrink-0">Day 1</Button>

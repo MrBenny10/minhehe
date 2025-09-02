@@ -2,15 +2,28 @@ import { CrosswordGame } from '@/components/CrosswordGame';
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Link } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 
 const Index = () => {
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Scroll to the right to show latest days first
+    if (scrollAreaRef.current) {
+      const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollElement) {
+        scrollElement.scrollLeft = scrollElement.scrollWidth;
+      }
+    }
+  }, []);
+
   return (
     <div className="relative">
       <CrosswordGame />
       
       {/* Navigation */}
       <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
-        <ScrollArea className="w-full whitespace-nowrap rounded-md bg-background/80 backdrop-blur-sm border p-1">
+        <ScrollArea ref={scrollAreaRef} className="w-full whitespace-nowrap rounded-md bg-background/80 backdrop-blur-sm border p-1">
           <div className="flex gap-2">
             <Button variant="secondary" size="sm" disabled className="shrink-0">Day 1</Button>
             <Link to="/day2">
