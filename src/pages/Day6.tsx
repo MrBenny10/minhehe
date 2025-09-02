@@ -258,31 +258,29 @@ const Day6: React.FC = () => {
   }, [handleStart]);
 
   useEffect(() => {
-    // Scroll to Day 6 button with multiple attempts for mobile reliability
+    // Scroll to Day 6 button using scrollIntoView for better mobile support
     const scrollToActiveButton = () => {
       if (scrollAreaRef.current) {
-        const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
         const activeButton = scrollAreaRef.current.querySelector('button[disabled]') as HTMLElement;
-        if (scrollElement && activeButton) {
-          // For Day 6 (last button), scroll to the far right
-          const maxScrollLeft = scrollElement.scrollWidth - scrollElement.clientWidth;
-          scrollElement.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
+        if (activeButton) {
+          activeButton.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'nearest', 
+            inline: 'center' 
+          });
           return true;
         }
       }
       return false;
     };
 
-    // Try multiple times with increasing delays
-    const attempts = [500, 1000, 1500];
-    const timers: NodeJS.Timeout[] = [];
-    
-    attempts.forEach((delay) => {
-      const timer = setTimeout(() => {
-        scrollToActiveButton();
-      }, delay);
-      timers.push(timer);
-    });
+    // Try immediately and then with delays for mobile reliability
+    const timers = [
+      setTimeout(() => scrollToActiveButton(), 100),
+      setTimeout(() => scrollToActiveButton(), 500),
+      setTimeout(() => scrollToActiveButton(), 1000),
+      setTimeout(() => scrollToActiveButton(), 2000)
+    ];
 
     return () => timers.forEach(timer => clearTimeout(timer));
   }, []);
