@@ -333,12 +333,14 @@ const Day7: React.FC = () => {
     <div className="h-screen bg-gradient-to-br from-background via-background to-muted overflow-hidden">
       {gameStarted && currentClue && (
         <div className="fixed top-0 left-0 right-0 z-40 bg-background/98 backdrop-blur-sm border-b border-border">
-          <div className="px-2 py-1.5 md:px-4 md:py-2">
-            <div className="flex items-center gap-2 text-xs md:text-sm">
-              <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+          <div className="px-2 py-2 md:px-4 md:py-3 pr-20 md:pr-24">
+            <div className="flex items-center gap-2 text-xs md:text-sm min-h-[2rem] md:min-h-[2.5rem]">
+              <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded shrink-0">
                 {currentClue.number}{currentClue.direction === 'across' ? 'A' : 'D'}
               </span>
-              <p className="text-foreground font-medium truncate">{currentClue.text}</p>
+              <p className="text-foreground font-medium leading-tight line-clamp-2 flex-1">
+                {currentClue.text}
+              </p>
             </div>
           </div>
         </div>
@@ -358,7 +360,7 @@ const Day7: React.FC = () => {
         {/* Main game area with more space - moved higher on mobile for Day 7 */}
         <div className={cn(
           "flex-1 flex flex-col items-center px-1 py-1 md:px-2 md:py-2 min-h-0",
-          gameStarted && currentClue ? "pt-8 justify-start md:pt-14 md:justify-center" : "pt-1 justify-start md:pt-4 md:justify-center"
+          gameStarted && currentClue ? "pt-12 justify-start md:pt-16 md:justify-center" : "pt-1 justify-start md:pt-4 md:justify-center"
         )}>
           <div className="w-full max-w-full flex-1 flex items-center justify-center">
             <CrosswordGrid
