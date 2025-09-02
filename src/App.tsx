@@ -9,6 +9,7 @@ import Day3 from "./pages/Day3";
 import Day4 from "./pages/Day4";
 import Day5 from "./pages/Day5";
 import Day6 from "./pages/Day6";
+import Day7 from "./pages/Day7";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/day4" element={<Day4 />} />
           <Route path="/day5" element={<Day5 />} />
           <Route path="/day6" element={<Day6 />} />
+          <Route path="/day7" element={<Day7 />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
