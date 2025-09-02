@@ -344,8 +344,8 @@ const Day6: React.FC = () => {
         </div>
       )}
 
-      {/* Timer in top right */}
-      <div className="fixed top-2 right-2 z-50">
+      {/* Timer in top right - smaller for Day 6 */}
+      <div className="fixed top-1 right-1 z-50 scale-75 md:scale-100 md:top-2 md:right-2">
         <GameTimer
           timeElapsed={timeElapsed}
           setTimeElapsed={setTimeElapsed}
@@ -355,10 +355,10 @@ const Day6: React.FC = () => {
       </div>
 
       <div className="flex flex-col h-full">
-        {/* Main game area with more space */}
+        {/* Main game area with more space - moved higher on mobile for Day 6 */}
         <div className={cn(
-          "flex-1 flex flex-col items-center justify-center px-1 py-1 md:px-2 md:py-2 min-h-0",
-          gameStarted && currentClue ? "pt-12 md:pt-14" : "pt-2 md:pt-4"
+          "flex-1 flex flex-col items-center px-1 py-1 md:px-2 md:py-2 min-h-0",
+          gameStarted && currentClue ? "pt-8 justify-start md:pt-14 md:justify-center" : "pt-1 justify-start md:pt-4 md:justify-center"
         )}>
           <div className="w-full max-w-full flex-1 flex items-center justify-center">
             <CrosswordGrid
