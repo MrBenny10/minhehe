@@ -258,22 +258,33 @@ const Day6: React.FC = () => {
   }, [handleStart]);
 
   useEffect(() => {
-    // Small delay to ensure ScrollArea content is fully rendered
-    const timer = setTimeout(() => {
+    // Scroll to Day 6 button with multiple attempts for mobile reliability
+    const scrollToActiveButton = () => {
       if (scrollAreaRef.current) {
         const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
         const activeButton = scrollAreaRef.current.querySelector('button[disabled]') as HTMLElement;
         if (scrollElement && activeButton) {
-          // Mobile-friendly scroll calculation
-          const containerWidth = scrollElement.clientWidth;
-          const buttonLeft = activeButton.offsetLeft;
-          const buttonWidth = activeButton.offsetWidth;
-          const scrollLeft = buttonLeft - (containerWidth / 2) + (buttonWidth / 2);
-          scrollElement.scrollTo({ left: Math.max(0, scrollLeft), behavior: 'smooth' });
+          // For Day 6 (last button), scroll to the far right
+          const maxScrollLeft = scrollElement.scrollWidth - scrollElement.clientWidth;
+          scrollElement.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
+          return true;
         }
       }
-    }, 300);
-    return () => clearTimeout(timer);
+      return false;
+    };
+
+    // Try multiple times with increasing delays
+    const attempts = [500, 1000, 1500];
+    const timers: NodeJS.Timeout[] = [];
+    
+    attempts.forEach((delay) => {
+      const timer = setTimeout(() => {
+        scrollToActiveButton();
+      }, delay);
+      timers.push(timer);
+    });
+
+    return () => timers.forEach(timer => clearTimeout(timer));
   }, []);
 
   if (showLoadingScreen) {
