@@ -17,15 +17,6 @@ const fashionPuzzle: Puzzle = {
     // Across
     {
       number: 1,
-      text: "Fashion footwear staple (5)",
-      direction: 'across',
-      startRow: 0, // row 1 = 0
-      startCol: 0, // col 1 = 0
-      length: 5,
-      solution: "BOOTS"
-    },
-    {
-      number: 2,
       text: "Runway seen at fashion week (7)",
       direction: 'across',
       startRow: 3, // row 4 = 3
@@ -34,7 +25,7 @@ const fashionPuzzle: Puzzle = {
       solution: "CATWALK"
     },
     {
-      number: 3,
+      number: 2,
       text: "Psychedelic fabric style (6)",
       direction: 'across',
       startRow: 6, // row 7 = 6
@@ -44,8 +35,17 @@ const fashionPuzzle: Puzzle = {
     },
     // Down
     {
+      number: 3,
+      text: "Fashion footwear staple (5)",
+      direction: 'down',
+      startRow: 0, // row 1 = 0
+      startCol: 2, // col 3 = 2
+      length: 5,
+      solution: "BOOTS"
+    },
+    {
       number: 4,
-      text: "Outerwear layer (4)",
+      text: "Outerwear garment (4)",
       direction: 'down',
       startRow: 3, // row 4 = 3
       startCol: 0, // col 1 = 0
@@ -57,7 +57,7 @@ const fashionPuzzle: Puzzle = {
       text: "Delicate openwork fabric (4)",
       direction: 'down',
       startRow: 3, // row 4 = 3
-      startCol: 3, // col 4 = 3
+      startCol: 5, // col 6 = 5
       length: 4,
       solution: "LACE"
     }
@@ -98,19 +98,19 @@ const Day6: React.FC = () => {
 
     // Define the specific active cells based on the crossword pattern
     // Grid pattern:
-    // BOOTS..
-    // .......
-    // .......
+    // ..B....
+    // ..O....
+    // ..O....
     // CATWALK
-    // .......
-    // .......
+    // ..S..A.
+    // ..T..C.
     // TIEDYE.
     
     const activeCells = new Set<string>();
     
-    // BOOTS (across): row 0, cols 0-4
-    for (let col = 0; col <= 4; col++) {
-      activeCells.add(`0-${col}`);
+    // BOOTS (down): col 2, rows 0-4
+    for (let row = 0; row <= 4; row++) {
+      activeCells.add(`${row}-2`);
     }
     
     // CATWALK (across): row 3, cols 0-6
@@ -128,9 +128,9 @@ const Day6: React.FC = () => {
       activeCells.add(`${row}-0`);
     }
     
-    // LACE (down): col 3, rows 3-6
+    // LACE (down): col 5, rows 3-6
     for (let row = 3; row <= 6; row++) {
-      activeCells.add(`${row}-3`);
+      activeCells.add(`${row}-5`);
     }
 
     console.log('Active cells:', Array.from(activeCells));
