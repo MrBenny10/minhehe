@@ -251,13 +251,16 @@ const Day3: React.FC = () => {
   }, [handleStart]);
 
   useEffect(() => {
-    // Scroll to the right to show latest days first
-    if (scrollAreaRef.current) {
-      const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-      if (scrollElement) {
-        scrollElement.scrollLeft = scrollElement.scrollWidth;
+    // Small delay to ensure ScrollArea content is fully rendered
+    const timer = setTimeout(() => {
+      if (scrollAreaRef.current) {
+        const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+        if (scrollElement) {
+          scrollElement.scrollLeft = scrollElement.scrollWidth - scrollElement.clientWidth;
+        }
       }
-    }
+    }, 100);
+    return () => clearTimeout(timer);
   }, []);
 
   if (showLoadingScreen) {
