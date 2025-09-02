@@ -17,49 +17,49 @@ const fashionPuzzle: Puzzle = {
     // Across
     {
       number: 1,
+      text: "Fashion footwear staple (5)",
+      direction: 'across',
+      startRow: 0, // row 1 = 0
+      startCol: 0, // col 1 = 0
+      length: 5,
+      solution: "BOOTS"
+    },
+    {
+      number: 2,
       text: "Runway seen at fashion week (7)",
       direction: 'across',
-      startRow: 3, // 0-indexed: row 4 = 3
-      startCol: 0, // 0-indexed: col 1 = 0
+      startRow: 3, // row 4 = 3
+      startCol: 0, // col 1 = 0
       length: 7,
       solution: "CATWALK"
     },
     {
-      number: 2,
-      text: "Psychedelic fabric style, revived in streetwear (6)",
+      number: 3,
+      text: "Psychedelic fabric style (6)",
       direction: 'across',
-      startRow: 6, // 0-indexed: row 7 = 6
-      startCol: 0, // 0-indexed: col 1 = 0
+      startRow: 6, // row 7 = 6
+      startCol: 0, // col 1 = 0
       length: 6,
       solution: "TIEDYE"
     },
     // Down
     {
-      number: 3,
-      text: "Delicate openwork fabric (4)",
-      direction: 'down',
-      startRow: 3, // 0-indexed: row 4 = 3
-      startCol: 5, // 0-indexed: col 6 = 5
-      length: 4,
-      solution: "LACE"
-    },
-    {
       number: 4,
-      text: "Accessory with a buckle (4)",
+      text: "Outerwear layer (4)",
       direction: 'down',
-      startRow: 0, // 0-indexed: row 1 = 0
-      startCol: 2, // 0-indexed: col 3 = 2
+      startRow: 3, // row 4 = 3
+      startCol: 0, // col 1 = 0
       length: 4,
-      solution: "BELT"
+      solution: "COAT"
     },
     {
       number: 5,
-      text: "Outerwear layer (4)",
+      text: "Delicate openwork fabric (4)",
       direction: 'down',
-      startRow: 3, // 0-indexed: row 4 = 3
-      startCol: 0, // 0-indexed: col 1 = 0
+      startRow: 3, // row 4 = 3
+      startCol: 3, // col 4 = 3
       length: 4,
-      solution: "COAT"
+      solution: "LACE"
     }
   ],
 };
@@ -98,19 +98,19 @@ const Day6: React.FC = () => {
 
     // Define the specific active cells based on the crossword pattern
     // Grid pattern:
-    // ..B....
-    // ..E....
-    // ..L....
+    // BOOTS..
+    // .......
+    // .......
     // CATWALK
-    // O....A.
-    // A....C.
+    // .......
+    // .......
     // TIEDYE.
     
     const activeCells = new Set<string>();
     
-    // BELT (down): col 2, rows 0-3
-    for (let row = 0; row <= 3; row++) {
-      activeCells.add(`${row}-2`);
+    // BOOTS (across): row 0, cols 0-4
+    for (let col = 0; col <= 4; col++) {
+      activeCells.add(`0-${col}`);
     }
     
     // CATWALK (across): row 3, cols 0-6
@@ -118,19 +118,19 @@ const Day6: React.FC = () => {
       activeCells.add(`3-${col}`);
     }
     
+    // TIEDYE (across): row 6, cols 0-5
+    for (let col = 0; col <= 5; col++) {
+      activeCells.add(`6-${col}`);
+    }
+    
     // COAT (down): col 0, rows 3-6
     for (let row = 3; row <= 6; row++) {
       activeCells.add(`${row}-0`);
     }
     
-    // LACE (down): col 5, rows 3-6
+    // LACE (down): col 3, rows 3-6
     for (let row = 3; row <= 6; row++) {
-      activeCells.add(`${row}-5`);
-    }
-    
-    // TIEDYE (across): row 6, cols 0-5
-    for (let col = 0; col <= 5; col++) {
-      activeCells.add(`6-${col}`);
+      activeCells.add(`${row}-3`);
     }
 
     console.log('Active cells:', Array.from(activeCells));
