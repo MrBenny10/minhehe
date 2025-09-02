@@ -50,6 +50,9 @@ const Index = () => {
             <Link to="/day6">
               <Button variant="outline" size="sm" className="shrink-0">Day 6</Button>
             </Link>
+            <Link to="/day7">
+              <Button variant="outline" size="sm" className="shrink-0">Day 7</Button>
+            </Link>
           </div>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
