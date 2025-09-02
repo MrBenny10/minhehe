@@ -12,8 +12,12 @@ const Index = () => {
     const timer = setTimeout(() => {
       if (scrollAreaRef.current) {
         const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-        if (scrollElement) {
-          scrollElement.scrollLeft = scrollElement.scrollWidth - scrollElement.clientWidth;
+        const activeButton = scrollAreaRef.current.querySelector('button[disabled]') as HTMLElement; // Day 1 is disabled/active
+        if (scrollElement && activeButton) {
+          const buttonRect = activeButton.getBoundingClientRect();
+          const scrollRect = scrollElement.getBoundingClientRect();
+          const scrollLeft = activeButton.offsetLeft - (scrollRect.width / 2) + (buttonRect.width / 2);
+          scrollElement.scrollLeft = Math.max(0, scrollLeft);
         }
       }
     }, 100);
