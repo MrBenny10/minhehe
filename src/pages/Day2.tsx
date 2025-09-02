@@ -254,12 +254,18 @@ const Day2: React.FC = () => {
     // Small delay to ensure ScrollArea content is fully rendered
     const timer = setTimeout(() => {
       if (scrollAreaRef.current) {
+        const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
         const activeButton = scrollAreaRef.current.querySelector('button[disabled]') as HTMLElement;
-        if (activeButton) {
-          activeButton.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        if (scrollElement && activeButton) {
+          // Mobile-friendly scroll calculation
+          const containerWidth = scrollElement.clientWidth;
+          const buttonLeft = activeButton.offsetLeft;
+          const buttonWidth = activeButton.offsetWidth;
+          const scrollLeft = buttonLeft - (containerWidth / 2) + (buttonWidth / 2);
+          scrollElement.scrollTo({ left: Math.max(0, scrollLeft), behavior: 'smooth' });
         }
       }
-    }, 200);
+    }, 300);
     return () => clearTimeout(timer);
   }, []);
 
