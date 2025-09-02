@@ -1,5 +1,6 @@
 import { CrosswordGame } from '@/components/CrosswordGame';
 import { Button } from '@/components/ui/button';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Link } from 'react-router-dom';
 
 const Index = () => {
@@ -8,23 +9,28 @@ const Index = () => {
       <CrosswordGame />
       
       {/* Navigation */}
-      <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50 flex gap-2">
-        <Button variant="secondary" size="sm" disabled>Day 1</Button>
-        <Link to="/day2">
-          <Button variant="outline" size="sm">Day 2</Button>
-        </Link>
-        <Link to="/day3">
-          <Button variant="outline" size="sm">Day 3</Button>
-        </Link>
-        <Link to="/day4">
-          <Button variant="outline" size="sm">Day 4</Button>
-        </Link>
-        <Link to="/day5">
-          <Button variant="outline" size="sm">Day 5</Button>
-        </Link>
-        <Link to="/day6">
-          <Button variant="outline" size="sm">Day 6</Button>
-        </Link>
+      <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
+        <ScrollArea className="w-full whitespace-nowrap rounded-md bg-background/80 backdrop-blur-sm border p-1">
+          <div className="flex gap-2">
+            <Button variant="secondary" size="sm" disabled className="shrink-0">Day 1</Button>
+            <Link to="/day2">
+              <Button variant="outline" size="sm" className="shrink-0">Day 2</Button>
+            </Link>
+            <Link to="/day3">
+              <Button variant="outline" size="sm" className="shrink-0">Day 3</Button>
+            </Link>
+            <Link to="/day4">
+              <Button variant="outline" size="sm" className="shrink-0">Day 4</Button>
+            </Link>
+            <Link to="/day5">
+              <Button variant="outline" size="sm" className="shrink-0">Day 5</Button>
+            </Link>
+            <Link to="/day6">
+              <Button variant="outline" size="sm" className="shrink-0">Day 6</Button>
+            </Link>
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
 
       {/* Professional footer */}
