@@ -258,28 +258,37 @@ const Day6: React.FC = () => {
   }, [handleStart]);
 
   useEffect(() => {
-    // Scroll to Day 6 button using scrollIntoView for better mobile support
-    const scrollToActiveButton = () => {
+    // Force scroll to Day 6 button (rightmost position) for mobile
+    const scrollToDay6 = () => {
       if (scrollAreaRef.current) {
-        const activeButton = scrollAreaRef.current.querySelector('button[disabled]') as HTMLElement;
-        if (activeButton) {
-          activeButton.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'nearest', 
-            inline: 'center' 
-          });
-          return true;
-        }
+        // Try multiple selectors to find the scroll container
+        const viewports = [
+          scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]'),
+          scrollAreaRef.current.querySelector('.scrollArea'),
+          scrollAreaRef.current.querySelector('[data-orientation="horizontal"]'),
+          scrollAreaRef.current.firstElementChild
+        ].filter(Boolean) as HTMLElement[];
+
+        viewports.forEach(viewport => {
+          if (viewport && viewport.scrollTo) {
+            // Scroll to maximum right position for Day 6
+            const maxScroll = viewport.scrollWidth - viewport.clientWidth;
+            console.log('Scrolling viewport to:', maxScroll, 'scrollWidth:', viewport.scrollWidth, 'clientWidth:', viewport.clientWidth);
+            viewport.scrollLeft = maxScroll;
+            viewport.scrollTo({ left: maxScroll, behavior: 'smooth' });
+          }
+        });
       }
-      return false;
     };
 
-    // Try immediately and then with delays for mobile reliability
+    // Multiple aggressive attempts with different timings
     const timers = [
-      setTimeout(() => scrollToActiveButton(), 100),
-      setTimeout(() => scrollToActiveButton(), 500),
-      setTimeout(() => scrollToActiveButton(), 1000),
-      setTimeout(() => scrollToActiveButton(), 2000)
+      setTimeout(scrollToDay6, 0),
+      setTimeout(scrollToDay6, 100),
+      setTimeout(scrollToDay6, 300),
+      setTimeout(scrollToDay6, 500),
+      setTimeout(scrollToDay6, 1000),
+      setTimeout(scrollToDay6, 2000)
     ];
 
     return () => timers.forEach(timer => clearTimeout(timer));
