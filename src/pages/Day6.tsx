@@ -261,16 +261,12 @@ const Day6: React.FC = () => {
     // Small delay to ensure ScrollArea content is fully rendered
     const timer = setTimeout(() => {
       if (scrollAreaRef.current) {
-        const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
-        const activeButton = scrollAreaRef.current.querySelector('button[disabled]') as HTMLElement; // Day 6 is disabled/active
-        if (scrollElement && activeButton) {
-          const buttonRect = activeButton.getBoundingClientRect();
-          const scrollRect = scrollElement.getBoundingClientRect();
-          const scrollLeft = activeButton.offsetLeft - (scrollRect.width / 2) + (buttonRect.width / 2);
-          scrollElement.scrollLeft = Math.max(0, scrollLeft);
+        const activeButton = scrollAreaRef.current.querySelector('button[disabled]') as HTMLElement;
+        if (activeButton) {
+          activeButton.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
       }
-    }, 100);
+    }, 200);
     return () => clearTimeout(timer);
   }, []);
 
