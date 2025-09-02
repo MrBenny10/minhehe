@@ -333,19 +333,21 @@ const Day7: React.FC = () => {
     <div className="h-screen bg-gradient-to-br from-background via-background to-muted overflow-hidden">
       {gameStarted && currentClue && (
         <div className="fixed top-0 left-0 right-0 z-40 bg-background/98 backdrop-blur-sm border-b border-border">
-          <div className="px-2 py-2 md:px-4 md:py-3 pr-20 md:pr-24">
-            <div className="flex items-center gap-2 text-xs md:text-sm min-h-[2.5rem] md:min-h-[3rem]">
-              <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded shrink-0 self-start mt-0.5">
+          <div className="px-2 py-1.5 md:px-4 md:py-2 pr-16 md:pr-20">
+            <div className="flex items-start gap-2 text-xs md:text-sm min-h-[3rem] md:min-h-[3.5rem]">
+              <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded shrink-0 mt-1">
                 {currentClue.number}{currentClue.direction === 'across' ? 'A' : 'D'}
               </span>
-              <p className="text-foreground font-medium leading-tight flex-1 break-words whitespace-normal overflow-hidden" 
-                 style={{ 
-                   display: '-webkit-box', 
-                   WebkitLineClamp: 2, 
-                   WebkitBoxOrient: 'vertical' 
-                 }}>
-                {currentClue.text}
-              </p>
+              <div className="flex-1 min-w-0 py-1">
+                <p className="text-foreground font-medium leading-snug break-words hyphens-auto" 
+                   style={{ 
+                     wordWrap: 'break-word',
+                     overflowWrap: 'break-word',
+                     lineHeight: '1.3'
+                   }}>
+                  {currentClue.text}
+                </p>
+              </div>
             </div>
           </div>
         </div>
