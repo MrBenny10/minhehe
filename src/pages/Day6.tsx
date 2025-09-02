@@ -344,20 +344,22 @@ const Day6: React.FC = () => {
         </div>
       )}
 
-      <div className="flex flex-col h-full">
-        <div className={cn(
-          "flex justify-center py-1 px-2 md:py-2 md:px-4", 
-          gameStarted && currentClue ? "pt-10 md:pt-12" : "pt-1 md:pt-2"
-        )}>
-          <GameTimer
-            timeElapsed={timeElapsed}
-            setTimeElapsed={setTimeElapsed}
-            isRunning={gameStarted && !gameCompleted}
-            gameCompleted={gameCompleted}
-          />
-        </div>
+      {/* Timer in top right */}
+      <div className="fixed top-2 right-2 z-50">
+        <GameTimer
+          timeElapsed={timeElapsed}
+          setTimeElapsed={setTimeElapsed}
+          isRunning={gameStarted && !gameCompleted}
+          gameCompleted={gameCompleted}
+        />
+      </div>
 
-        <div className="flex-1 flex flex-col items-center justify-center px-1 py-1 md:px-2 md:py-2 min-h-0">
+      <div className="flex flex-col h-full">
+        {/* Main game area with more space */}
+        <div className={cn(
+          "flex-1 flex flex-col items-center justify-center px-1 py-1 md:px-2 md:py-2 min-h-0",
+          gameStarted && currentClue ? "pt-12 md:pt-14" : "pt-2 md:pt-4"
+        )}>
           <div className="w-full max-w-full flex-1 flex items-center justify-center">
             <CrosswordGrid
               cells={cells}
