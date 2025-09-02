@@ -13,6 +13,7 @@ interface CrosswordGridProps {
   gridSize?: number; // For square grids (backward compatibility)
   gridCols?: number; // For rectangular grids
   gridRows?: number; // For rectangular grids
+  fontSize?: 'sm' | 'md' | 'lg' | 'xl'; // Font size variant
 }
 
 export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
@@ -25,11 +26,20 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   currentClue,
   gridSize = 5,
   gridCols,
-  gridRows
+  gridRows,
+  fontSize = 'sm'
 }) => {
   // Use specific cols/rows if provided, otherwise fall back to gridSize for square grids
   const cols = gridCols || gridSize;
   const rows = gridRows || gridSize;
+  
+  // Font size variants
+  const fontSizeClasses = {
+    sm: 'text-[0.7rem] md:text-xs lg:text-sm',
+    md: 'text-xs md:text-sm lg:text-base',
+    lg: 'text-sm md:text-base lg:text-lg',
+    xl: 'text-base md:text-lg lg:text-xl'
+  };
   const hiddenInputRef = useRef<HTMLInputElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -361,7 +371,8 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                 // Mobile: Use div that looks like input but doesn't trigger keyboard
                 <div
                   className={cn(
-                    "w-full h-full text-center text-[0.7rem] md:text-xs lg:text-sm font-mono font-bold border-2 rounded-sm",
+                    "w-full h-full text-center font-mono font-bold border-2 rounded-sm",
+                    fontSizeClasses[fontSize],
                     "cursor-pointer select-none uppercase touch-manipulation flex items-center justify-center",
                     {
                       "bg-grid-cell border-grid-border text-grid-text": status === 'active',
@@ -411,7 +422,8 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
                   }}
                   readOnly={cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()}
                   className={cn(
-                    "w-full h-full text-center text-[0.7rem] md:text-xs lg:text-sm font-mono font-bold border-2 rounded-sm",
+                    "w-full h-full text-center font-mono font-bold border-2 rounded-sm",
+                    fontSizeClasses[fontSize],
                     "focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200",
                     "cursor-pointer select-none uppercase",
                     {

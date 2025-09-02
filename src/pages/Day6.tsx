@@ -329,6 +329,7 @@ const Day6: React.FC = () => {
               gameStarted={gameStarted}
               currentClue={currentClue}
               gridSize={7}
+              fontSize="lg"
             />
           </div>
         </div>
