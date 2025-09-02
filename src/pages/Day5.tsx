@@ -328,7 +328,8 @@ const Day5: React.FC = () => {
               showingErrors={showingErrors}
               gameStarted={gameStarted}
               currentClue={currentClue}
-              gridSize={13}
+              gridCols={13}
+              gridRows={8}
             />
           </div>
         </div>
