@@ -13,73 +13,91 @@ import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 import type { Clue, Cell, Puzzle } from '@/components/CrosswordGame';
 
 const exercisePuzzle: Puzzle = {
-  size: 13, // 13 cols × 8 rows  
+  size: 11, // 11 cols × 10 rows  
   clues: [
     // Across
     {
       number: 1,
-      text: 'One who might push your limits, or just lace up (7)',
-      direction: 'across',
-      startRow: 4, // TRAINER intersects with CORE(I), ENDURE(N), MUSCLE(E)
-      startCol: 1,
-      length: 7,
-      solution: 'TRAINER',
-    },
-    {
-      number: 2,
       text: 'Exercise with depth; slang for "nothing at all" (5)',
       direction: 'across',
-      startRow: 4, // SQUAT intersects with STRETCH(T)
-      startCol: 8,
+      startRow: 1,
+      startCol: 1,
       length: 5,
       solution: 'SQUAT',
     },
     {
-      number: 3,
-      text: 'Work that leaves you breathless (6)',
+      number: 2,
+      text: 'Cardio machine for running in place (9)',
       direction: 'across',
-      startRow: 7, // CARDIO intersects with MUSCLE(C)
-      startCol: 7,
-      length: 6,
-      solution: 'CARDIO',
+      startRow: 4,
+      startCol: 1,
+      length: 9,
+      solution: 'TREADMILL',
+    },
+    {
+      number: 3,
+      text: 'Core exercise holding a straight position (5)',
+      direction: 'across',
+      startRow: 6,
+      startCol: 6,
+      length: 5,
+      solution: 'PLANK',
+    },
+    {
+      number: 4,
+      text: 'Core exercise holding a straight position (5)',
+      direction: 'across',
+      startRow: 9,
+      startCol: 1,
+      length: 5,
+      solution: 'PLANK',
     },
 
     // Down
     {
-      number: 4,
-      text: 'Abs and stabilizers, or the center of an apple (4)',
-      direction: 'down',
-      startRow: 3, // CORE intersects with TRAINER(I) at (4,3)
-      startCol: 3,
-      length: 4,
-      solution: 'CORE',
-    },
-    {
       number: 5,
-      text: 'What marathoners must do mile after mile (6)',
+      text: 'Forward leg exercise (5)',
       direction: 'down',
-      startRow: 1, // ENDURE intersects with TRAINER(N) at (4,6)
-      startCol: 6,
-      length: 6,
-      solution: 'ENDURE',
+      startRow: 0,
+      startCol: 3,
+      length: 5,
+      solution: 'LUNGE',
     },
     {
       number: 6,
-      text: 'Tissue for power, or a way to "force" something (6)',
+      text: 'Cycling class or ball rotation (4)',
       direction: 'down',
-      startRow: 2, // MUSCLE intersects with TRAINER(E) at (4,7) and CARDIO(C) at (7,7)
-      startCol: 7,
-      length: 6,
-      solution: 'MUSCLE',
+      startRow: 2,
+      startCol: 6,
+      length: 4,
+      solution: 'SPIN',
     },
     {
       number: 7,
-      text: 'Elongation before exertion, or a long period (7)',
+      text: 'Upper body pulling exercise (3)',
       direction: 'down',
-      startRow: 0, // STRETCH intersects with SQUAT(T) at (4,12)
-      startCol: 12,
-      length: 7,
-      solution: 'STRETCH',
+      startRow: 1,
+      startCol: 8,
+      length: 3,
+      solution: 'DIP',
+    },
+    {
+      number: 8,
+      text: 'Heavy lifting or strength exercise (3)',
+      direction: 'down',
+      startRow: 1,
+      startCol: 10,
+      length: 3,
+      solution: 'REP',
+    },
+    {
+      number: 9,
+      text: 'Body support or fitness goal (3)',
+      direction: 'down',
+      startRow: 7,
+      startCol: 0,
+      length: 3,
+      solution: 'ABS',
     }
   ]
 };
@@ -100,8 +118,8 @@ const Day8: React.FC = () => {
   // Initialize grid
   const initializeGrid = useCallback(() => {
     const newCells: Cell[] = [];
-    const cols = 13; // 13 columns
-    const rows = 8;  // 8 rows
+    const cols = 11; // 11 columns
+    const rows = 10; // 10 rows
     
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
@@ -352,8 +370,8 @@ const Day8: React.FC = () => {
               showingErrors={showingErrors}
               gameStarted={gameStarted}
               currentClue={currentClue}
-              gridCols={13}
-              gridRows={8}
+              gridCols={11}
+              gridRows={10}
             />
           </div>
         </div>
