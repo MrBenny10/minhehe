@@ -421,6 +421,9 @@ const Day7: React.FC = () => {
               <Button variant="outline" size="sm" className="shrink-0">Day 6</Button>
             </Link>
             <Button variant="secondary" size="sm" disabled className="shrink-0">Day 7</Button>
+            <Link to="/day8">
+              <Button variant="outline" size="sm" className="shrink-0">Day 8</Button>
+            </Link>
           </div>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>

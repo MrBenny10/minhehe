@@ -20,7 +20,7 @@ const exercisePuzzle: Puzzle = {
       number: 1,
       text: 'One who might push your limits, or just lace up (7)',
       direction: 'across',
-      startRow: 4, // row 5, col 2 → 0-indexed = (4,1)
+      startRow: 4, // TRAINER intersects with CORE(I), ENDURE(N), MUSCLE(E)
       startCol: 1,
       length: 7,
       solution: 'TRAINER',
@@ -29,8 +29,8 @@ const exercisePuzzle: Puzzle = {
       number: 2,
       text: 'Exercise with depth; slang for "nothing at all" (5)',
       direction: 'across',
-      startRow: 4, // row 5, col 11 → 0-indexed = (4,10)
-      startCol: 10,
+      startRow: 4, // SQUAT intersects with STRETCH(T)
+      startCol: 8,
       length: 5,
       solution: 'SQUAT',
     },
@@ -38,7 +38,7 @@ const exercisePuzzle: Puzzle = {
       number: 3,
       text: 'Work that leaves you breathless (6)',
       direction: 'across',
-      startRow: 7, // row 8, col 8 → 0-indexed = (7,7)
+      startRow: 7, // CARDIO intersects with MUSCLE(C)
       startCol: 7,
       length: 6,
       solution: 'CARDIO',
@@ -49,7 +49,7 @@ const exercisePuzzle: Puzzle = {
       number: 4,
       text: 'Abs and stabilizers, or the center of an apple (4)',
       direction: 'down',
-      startRow: 3, // row 4, col 4 → 0-indexed = (3,3)
+      startRow: 3, // CORE intersects with TRAINER(I) at (4,3)
       startCol: 3,
       length: 4,
       solution: 'CORE',
@@ -58,7 +58,7 @@ const exercisePuzzle: Puzzle = {
       number: 5,
       text: 'What marathoners must do mile after mile (6)',
       direction: 'down',
-      startRow: 1, // row 2, col 7 → 0-indexed = (1,6)
+      startRow: 1, // ENDURE intersects with TRAINER(N) at (4,6)
       startCol: 6,
       length: 6,
       solution: 'ENDURE',
@@ -67,7 +67,7 @@ const exercisePuzzle: Puzzle = {
       number: 6,
       text: 'Tissue for power, or a way to "force" something (6)',
       direction: 'down',
-      startRow: 3, // row 4, col 8 → 0-indexed = (3,7)
+      startRow: 2, // MUSCLE intersects with TRAINER(E) at (4,7) and CARDIO(C) at (7,7)
       startCol: 7,
       length: 6,
       solution: 'MUSCLE',
@@ -76,7 +76,7 @@ const exercisePuzzle: Puzzle = {
       number: 7,
       text: 'Elongation before exertion, or a long period (7)',
       direction: 'down',
-      startRow: 0, // row 1, col 13 → 0-indexed = (0,12)
+      startRow: 0, // STRETCH intersects with SQUAT(T) at (4,12)
       startCol: 12,
       length: 7,
       solution: 'STRETCH',
