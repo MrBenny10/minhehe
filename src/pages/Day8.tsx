@@ -269,9 +269,20 @@ const Day8: React.FC = () => {
     setCompletionTime(null);
     setShowingErrors(false);
     setTimeElapsed(0);
-    setCurrentClue(gymPuzzle.clues[0]);
-    const firstClue = gymPuzzle.clues[0];
-    setSelectedCell(`${firstClue.startRow}-${firstClue.startCol}`);
+    
+    // Always start at top-left corner (0,0)
+    setSelectedCell('0-0');
+    
+    // Find the clue that starts at or includes position (0,0)
+    const topLeftClue = gymPuzzle.clues.find(clue => {
+      if (clue.direction === 'across') {
+        return clue.startRow === 0 && clue.startCol <= 0 && clue.startCol + clue.length > 0;
+      } else {
+        return clue.startCol === 0 && clue.startRow <= 0 && clue.startRow + clue.length > 0;
+      }
+    }) || gymPuzzle.clues[0]; // Fallback to first clue if none found
+    
+    setCurrentClue(topLeftClue);
   }, [initializeGrid]);
 
   const handleCheck = useCallback(() => {
