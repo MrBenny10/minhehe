@@ -166,7 +166,13 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         
         // Check if this completes the current position correctly
         if (value.toUpperCase() === selectedCellData.answer.toUpperCase()) {
-          autoAdvanceToNext(selectedCellData);
+          // Create updated cell data for the auto-advance logic
+          const updatedCellData = { ...selectedCellData, value: value.toUpperCase() };
+          
+          // Use a small delay to ensure state has updated
+          setTimeout(() => {
+            autoAdvanceToNext(updatedCellData);
+          }, 10);
         }
       } else if (value === '') {
         onCellUpdate(selectedCell, value);
