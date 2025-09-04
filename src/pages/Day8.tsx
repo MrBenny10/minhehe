@@ -58,7 +58,7 @@ const gymPuzzle: Puzzle = {
       text: "Place to recover with steam after a heavy workout.",
       direction: 'down',
       startRow: 0, // row 1 = 0
-      startCol: 2, // col 3 = 2
+      startCol: 4, // col 5 = 4 (moved two columns right)
       length: 3,
       solution: "SPA"
     },
@@ -134,10 +134,10 @@ const Day8: React.FC = () => {
     activeCells.add(`2-0`); // A
     activeCells.add(`3-0`); // D
     
-    // SPA (2D down): col 2, rows 0-1, then A at row 2 col 2 
-    activeCells.add(`0-2`); // S
-    activeCells.add(`1-2`); // P  
-    activeCells.add(`2-2`); // A (intersects with ASHTA)
+    // SPA (2D down): col 4, rows 0-2 
+    activeCells.add(`0-4`); // S
+    activeCells.add(`1-4`); // P  
+    activeCells.add(`2-4`); // A (intersects with ASHTA's final A)
     
     // TONE (3D down): starts at top right corner (0,6), then continues straight down
     activeCells.add(`0-6`); // T
