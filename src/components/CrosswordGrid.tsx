@@ -81,17 +81,20 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       if (nextCell) {
         onCellSelect(nextCell.id);
       } else {
-        // Current word is complete, find the next incomplete word
+        // Current word is complete, find the next incomplete word starting from the beginning
+        // Get all clues from props (passed via currentClue context)
         const allClues = [
-          { number: 1, direction: 'across', startRow: 1, startCol: 0, length: 4 },
-          { number: 3, direction: 'across', startRow: 3, startCol: 1, length: 4 },
-          { number: 2, direction: 'down', startRow: 0, startCol: 1, length: 4 }
+          { number: 1, direction: 'down', startRow: 0, startCol: 0, length: 4, solution: 'QUADS' },
+          { number: 2, direction: 'down', startRow: 0, startCol: 4, length: 3, solution: 'SPA' },
+          { number: 3, direction: 'down', startRow: 0, startCol: 6, length: 4, solution: 'TONE' },
+          { number: 7, direction: 'across', startRow: 2, startCol: 0, length: 5, solution: 'ASHTA' },
+          { number: 10, direction: 'down', startRow: 2, startCol: 3, length: 5, solution: 'TRACK' },
+          { number: 15, direction: 'across', startRow: 4, startCol: 0, length: 6, solution: 'SQUATS' },
+          { number: 21, direction: 'across', startRow: 6, startCol: 3, length: 4, solution: 'KETO' }
         ];
         
-        // Find a clue that has incomplete cells
+        // Find the first clue with incomplete cells (starting from clue 1)
         for (const clue of allClues) {
-          if (clue.number === currentClue.number && clue.direction === currentClue.direction) continue;
-          
           // Check if this clue has any incomplete cells
           for (let i = 0; i < clue.length; i++) {
             const checkRow = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
@@ -99,8 +102,14 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
             const checkCell = cells.find(c => c.row === checkRow && c.col === checkCol);
             
             if (checkCell && checkCell.value.toUpperCase() !== checkCell.answer.toUpperCase()) {
-              onCellSelect(checkCell.id);
-              return;
+              // Jump to the START of this incomplete word, not the first incomplete letter
+              const startRow = clue.startRow;
+              const startCol = clue.startCol;
+              const startCell = cells.find(c => c.row === startRow && c.col === startCol);
+              if (startCell) {
+                onCellSelect(startCell.id);
+                return;
+              }
             }
           }
         }
