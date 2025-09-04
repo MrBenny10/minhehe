@@ -117,10 +117,10 @@ const Day8: React.FC = () => {
     }
 
     // Define the specific active cells based on the exact crossword pattern from template
-    // Grid pattern:
+    // Grid pattern (from the user's image):
     // Q . S . T . .
     // U . P . O . .  
-    // A S H T A . N
+    // A S A T A . N
     // D . . R . . E
     // S Q U A T S .
     // . . . C . . .
@@ -134,18 +134,18 @@ const Day8: React.FC = () => {
     activeCells.add(`2-0`); // A
     activeCells.add(`3-0`); // D
     
-    // SPA (2D down): col 2, rows 0-2 
+    // SPA (2D down): col 2, rows 0-1, then A at row 2 col 2 
     activeCells.add(`0-2`); // S
-    activeCells.add(`1-2`); // P
-    activeCells.add(`2-2`); // A (need to adjust ASHTA to use different H position)
+    activeCells.add(`1-2`); // P  
+    activeCells.add(`2-2`); // A (intersects with ASHTA)
     
-    // TONE (3D down): col 4, rows 0-2, then col 6 rows 2-3
+    // TONE (3D down): starts at top right corner (0,4), then continues down and jumps to (2,6), (3,6)
     activeCells.add(`0-4`); // T
     activeCells.add(`1-4`); // O
     activeCells.add(`2-6`); // N
     activeCells.add(`3-6`); // E
     
-    // ASATA (7A across): row 2, cols 0-4 (A from SPA intersection at 2-2)
+    // ASATA (7A across): row 2, cols 0-4
     activeCells.add(`2-0`); // A (shared with QUADS)
     activeCells.add(`2-1`); // S
     activeCells.add(`2-2`); // A (shared with SPA)
