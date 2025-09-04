@@ -67,7 +67,7 @@ const exercisePuzzle: Puzzle = {
       number: 5,
       text: 'Step forward with one leg to train balance and strength (5)',
       direction: 'down',
-      startRow: 1,
+      startRow: 2,
       startCol: 6,
       length: 5,
       solution: 'LUNGE',
