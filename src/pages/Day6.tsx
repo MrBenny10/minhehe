@@ -412,9 +412,6 @@ const Day6: React.FC = () => {
             <Link to="/day7">
               <Button variant="outline" size="sm" className="shrink-0">Day 7</Button>
             </Link>
-            <Link to="/day8">
-              <Button variant="outline" size="sm" className="shrink-0">Day 8</Button>
-            </Link>
           </div>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>

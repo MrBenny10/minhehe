@@ -334,14 +334,13 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         style={{ 
           gridTemplateColumns: `repeat(${cols}, 1fr)`,
           gridTemplateRows: `repeat(${rows}, 1fr)`,
-          // Mobile: ensure grid fits within viewport with proper padding
+          // Mobile: use full viewport calculations
           width: cols === rows 
-            ? `min(95vw, (100vh - 160px))` 
-            : `min(95vw, (100vh - 160px) * ${Math.min(cols/rows, 1.2)})`,
+            ? `min(98vw, (100vh - 120px))` 
+            : `min(98vw, (100vh - 120px) * ${cols}/${rows})`,
           height: cols === rows 
-            ? `min(95vw, 100vh - 160px)` 
-            : `min(95vw * ${rows}/${cols}, 100vh - 160px)`,
-          maxWidth: '100%',
+            ? `min(98vw, 100vh - 120px)` 
+            : `min(98vw * ${rows}/${cols}, 100vh - 120px)`,
           aspectRatio: `${cols}/${rows}`,
         }}
       >
