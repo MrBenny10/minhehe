@@ -102,7 +102,6 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         
         // Only jump to next word if current word is truly complete
         if (isCurrentClueComplete) {
-          console.log("Current clue is complete, looking for next incomplete cell");
           // Find the first cell that has an incomplete answer, starting from top-left
           let foundNextCell = null;
           
@@ -111,20 +110,14 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
             for (let col = 0; col < cols && !foundNextCell; col++) {
               const candidateCell = cells.find(c => c.row === row && c.col === col && !c.isBlocked);
               if (candidateCell && (!candidateCell.value || candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase())) {
-                console.log(`Found incomplete cell at (${row}, ${col}): ${candidateCell.answer}`);
                 foundNextCell = candidateCell;
               }
             }
           }
           
           if (foundNextCell) {
-            console.log(`Jumping to next incomplete cell: ${foundNextCell.id}`);
             onCellSelect(foundNextCell.id);
-          } else {
-            console.log("No incomplete cells found - puzzle might be complete!");
           }
-        } else {
-          console.log("Current clue is NOT complete yet");
         }
       }
     }
@@ -152,13 +145,30 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     const value = e.target.value.slice(-1);
     const selectedCellData = cells.find(c => c.id === selectedCell);
     
-    console.log(`Mobile input: "${value}" in cell ${selectedCell}, currentClue: ${currentClue?.solution}`);
     
     if (selectedCellData && !selectedCellData.isBlocked) {
-      if (value.match(/[a-zA-Z]/) || value === '') {
+      // If cell is already correct, skip to next cell instead of allowing input
+      if (selectedCellData.value && selectedCellData.value.toUpperCase() === selectedCellData.answer.toUpperCase() && value.match(/[a-zA-Z]/)) {
+        // Only auto-advance if we're moving within the current word, not jumping to a new word
+        if (currentClue) {
+          let hasNextCellInWord = false;
+          if (currentClue.direction === 'across') {
+            const nextCol = selectedCellData.col + 1;
+            const nextCell = cells.find(c => c.row === selectedCellData.row && c.col === nextCol && !c.isBlocked);
+            hasNextCellInWord = !!nextCell;
+          } else if (currentClue.direction === 'down') {
+            const nextRow = selectedCellData.row + 1;
+            const nextCell = cells.find(c => c.row === nextRow && c.col === selectedCellData.col && !c.isBlocked);
+            hasNextCellInWord = !!nextCell;
+          }
+          
+          if (hasNextCellInWord) {
+            autoAdvanceToNext(selectedCellData);
+          }
+        }
+      } else if (value.match(/[a-zA-Z]/) || value === '') {
         onCellUpdate(selectedCell, value);
         if (value) {
-          console.log(`Mobile auto-advance from cell: ${selectedCell}`);
           autoAdvanceToNext(selectedCellData);
         }
       }
@@ -256,7 +266,6 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
 
     if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
       e.preventDefault();
-      console.log(`Typing: ${e.key} in cell ${cell.id} (${cell.row},${cell.col}), currentClue: ${currentClue?.solution}`);
       onCellUpdate(cell.id, e.key);
       
       // Use the helper function for auto-advance
