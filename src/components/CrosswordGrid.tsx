@@ -102,15 +102,29 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         
         // Only jump to next word if current word is truly complete
         if (isCurrentClueComplete) {
-          // Find the first cell that has an incomplete answer, starting from top-left
+          // First try to find the start of an incomplete word (cells with numbers)
           let foundNextCell = null;
           
-          // Search row by row, column by column for the first incomplete cell
+          // Priority 1: Look for numbered cells (word starts) that are incomplete
           for (let row = 0; row < rows && !foundNextCell; row++) {
             for (let col = 0; col < cols && !foundNextCell; col++) {
               const candidateCell = cells.find(c => c.row === row && c.col === col && !c.isBlocked);
-              if (candidateCell && (!candidateCell.value || candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase())) {
+              if (candidateCell && 
+                  candidateCell.number && // Has a clue number (word start)
+                  (!candidateCell.value || candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase())) {
                 foundNextCell = candidateCell;
+              }
+            }
+          }
+          
+          // Priority 2: If no incomplete word starts found, find any incomplete cell
+          if (!foundNextCell) {
+            for (let row = 0; row < rows && !foundNextCell; row++) {
+              for (let col = 0; col < cols && !foundNextCell; col++) {
+                const candidateCell = cells.find(c => c.row === row && c.col === col && !c.isBlocked);
+                if (candidateCell && (!candidateCell.value || candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase())) {
+                  foundNextCell = candidateCell;
+                }
               }
             }
           }
