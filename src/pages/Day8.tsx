@@ -23,7 +23,7 @@ const gymPuzzle: Puzzle = {
       startRow: 2, // row 3 = 2
       startCol: 0, // col 1 = 0
       length: 5,
-      solution: "ASHTA"
+      solution: "ASATA"
     },
     {
       number: 15,
@@ -66,8 +66,8 @@ const gymPuzzle: Puzzle = {
       number: 3,
       text: "Fitness goal often paired with \"muscle.\"",
       direction: 'down',
-      startRow: 0, // row 1 = 0
-      startCol: 4, // col 5 = 4
+      startRow: 0, // T at (0,4), O at (1,4), N at (2,6), E at (3,6)
+      startCol: 4, // starting col, but N and E are at col 6
       length: 4,
       solution: "TONE"
     },
@@ -116,56 +116,62 @@ const Day8: React.FC = () => {
       }
     }
 
-    // Define the specific active cells based on the crossword pattern
-    // Grid pattern from image:
-    // Q..S.T.
-    // U..P.O.
-    // ASHTA.N
-    // D..R..E
-    // SQUATS.
-    // ...C...
-    // .KETO..
+    // Define the specific active cells based on the exact crossword pattern from template
+    // Grid pattern:
+    // Q . S . T . .
+    // U . P . O . .  
+    // A S H T A . N
+    // D . . R . . E
+    // S Q U A T S .
+    // . . . C . . .
+    // . K E T O . .
     
     const activeCells = new Set<string>();
     
-    // QUADS (down): col 0, rows 0-3
-    for (let row = 0; row <= 3; row++) {
-      activeCells.add(`${row}-0`);
-    }
+    // QUADS (1D down): col 0, rows 0-3
+    activeCells.add(`0-0`); // Q
+    activeCells.add(`1-0`); // U
+    activeCells.add(`2-0`); // A
+    activeCells.add(`3-0`); // D
     
-    // SPA (down): col 2, rows 0-2
-    for (let row = 0; row <= 2; row++) {
-      activeCells.add(`${row}-2`);
-    }
+    // SPA (2D down): col 2, rows 0-2 
+    activeCells.add(`0-2`); // S
+    activeCells.add(`1-2`); // P
+    activeCells.add(`2-2`); // A (need to adjust ASHTA to use different H position)
     
-    // TONE (down): col 4, rows 0-3
-    for (let row = 0; row <= 3; row++) {
-      activeCells.add(`${row}-4`);
-    }
+    // TONE (3D down): col 4, rows 0-2, then col 6 rows 2-3
+    activeCells.add(`0-4`); // T
+    activeCells.add(`1-4`); // O
+    activeCells.add(`2-6`); // N
+    activeCells.add(`3-6`); // E
     
-    // ASHTA (across): row 2, cols 0-4
-    for (let col = 0; col <= 4; col++) {
-      activeCells.add(`2-${col}`);
-    }
+    // ASATA (7A across): row 2, cols 0-4 (A from SPA intersection at 2-2)
+    activeCells.add(`2-0`); // A (shared with QUADS)
+    activeCells.add(`2-1`); // S
+    activeCells.add(`2-2`); // A (shared with SPA)
+    activeCells.add(`2-3`); // T (shared with TRACK)  
+    activeCells.add(`2-4`); // A
     
-    // TRACK (down): col 3, rows 2-6
-    for (let row = 2; row <= 6; row++) {
-      activeCells.add(`${row}-3`);
-    }
+    // TRACK (10D down): row 2 col 3, then rows 3-5 col 3, then row 6 col 1
+    activeCells.add(`2-3`); // T (shared with ASHTA)
+    activeCells.add(`3-3`); // R
+    activeCells.add(`4-3`); // A (shared with SQUATS)
+    activeCells.add(`5-3`); // C
+    activeCells.add(`6-1`); // K (part of KETO too)
     
-    // SQUATS (across): row 4, cols 0-5
-    for (let col = 0; col <= 5; col++) {
-      activeCells.add(`4-${col}`);
-    }
+    // SQUATS (15A across): row 4, cols 0-5
+    activeCells.add(`4-0`); // S (shared with QUADS)
+    activeCells.add(`4-1`); // Q
+    activeCells.add(`4-2`); // U
+    activeCells.add(`4-3`); // A (shared with TRACK)
+    activeCells.add(`4-4`); // T
+    activeCells.add(`4-5`); // S
     
-    // KETO (across): row 6, cols 1-4
-    for (let col = 1; col <= 4; col++) {
-      activeCells.add(`6-${col}`);
-    }
-    
-    // Additional cells for N and E (completing TONE)
-    activeCells.add(`2-6`); // N from TONE
-    activeCells.add(`3-6`); // E from TRACK
+    // KETO (21A across): row 6, cols 1-4
+    activeCells.add(`6-1`); // K (shared with TRACK)
+    activeCells.add(`6-2`); // E
+    activeCells.add(`6-3`); // T
+    activeCells.add(`6-4`); // O
 
     console.log('Active cells:', Array.from(activeCells));
 
@@ -180,13 +186,32 @@ const Day8: React.FC = () => {
 
     // Set answers and numbers for each clue
     gymPuzzle.clues.forEach((clue) => {
-      for (let i = 0; i < clue.length; i++) {
-        const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
-        const c = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
-        const idx = r * gridSize + c;
-        if (newCells[idx] && r < gridSize && c < gridSize && !newCells[idx].isBlocked) {
-          newCells[idx].answer = clue.solution[i];
-          if (i === 0) newCells[idx].number = clue.number;
+      if (clue.number === 3) {
+        // Special handling for TONE (3D) - non-linear positioning
+        const positions = [
+          { r: 0, c: 4 }, // T
+          { r: 1, c: 4 }, // O  
+          { r: 2, c: 6 }, // N
+          { r: 3, c: 6 }  // E
+        ];
+        
+        positions.forEach((pos, i) => {
+          const idx = pos.r * gridSize + pos.c;
+          if (newCells[idx] && !newCells[idx].isBlocked) {
+            newCells[idx].answer = clue.solution[i];
+            if (i === 0) newCells[idx].number = clue.number;
+          }
+        });
+      } else {
+        // Regular linear positioning for other clues
+        for (let i = 0; i < clue.length; i++) {
+          const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
+          const c = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
+          const idx = r * gridSize + c;
+          if (newCells[idx] && r < gridSize && c < gridSize && !newCells[idx].isBlocked) {
+            newCells[idx].answer = clue.solution[i];
+            if (i === 0) newCells[idx].number = clue.number;
+          }
         }
       }
     });
@@ -197,6 +222,17 @@ const Day8: React.FC = () => {
 
   const isValidAnswer = useCallback((cell: Cell, value: string) => {
     const cluesForCell = gymPuzzle.clues.filter(clue => {
+      if (clue.number === 3) {
+        // Special handling for TONE (3D) - check if cell is in any of the TONE positions
+        const tonePositions = [
+          { r: 0, c: 4 }, // T
+          { r: 1, c: 4 }, // O  
+          { r: 2, c: 6 }, // N
+          { r: 3, c: 6 }  // E
+        ];
+        return tonePositions.some(pos => pos.r === cell.row && pos.c === cell.col);
+      }
+      
       if (clue.direction === 'across') {
         return cell.row === clue.startRow && cell.col >= clue.startCol && cell.col < clue.startCol + clue.length;
       }
@@ -204,6 +240,18 @@ const Day8: React.FC = () => {
     });
 
     return cluesForCell.some(clue => {
+      if (clue.number === 3) {
+        // Special validation for TONE
+        const tonePositions = [
+          { r: 0, c: 4 }, // T
+          { r: 1, c: 4 }, // O  
+          { r: 2, c: 6 }, // N
+          { r: 3, c: 6 }  // E
+        ];
+        const positionIndex = tonePositions.findIndex(pos => pos.r === cell.row && pos.c === cell.col);
+        return positionIndex >= 0 && clue.solution[positionIndex] === value.toUpperCase();
+      }
+      
       const position = clue.direction === 'across' 
         ? cell.col - clue.startCol 
         : cell.row - clue.startRow;
