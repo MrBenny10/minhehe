@@ -39,7 +39,7 @@ const gymPuzzle: Puzzle = {
       text: "Diet plan high in fat and low in carbs, popular in weight loss circles.",
       direction: 'across',
       startRow: 6, // row 7 = 6
-      startCol: 1, // col 2 = 1
+      startCol: 3, // col 4 = 3 (starts from TRACK's K)
       length: 4,
       solution: "KETO"
     },
@@ -152,12 +152,12 @@ const Day8: React.FC = () => {
     activeCells.add(`2-3`); // T (shared with TRACK)  
     activeCells.add(`2-4`); // A
     
-    // TRACK (10D down): row 2 col 3, then rows 3-5 col 3, then row 6 col 1
+    // TRACK (10D down): row 2 col 3, then rows 3-6 col 3
     activeCells.add(`2-3`); // T (shared with ASHTA)
     activeCells.add(`3-3`); // R
     activeCells.add(`4-3`); // A (shared with SQUATS)
     activeCells.add(`5-3`); // C
-    activeCells.add(`6-1`); // K (part of KETO too)
+    activeCells.add(`6-3`); // K (part of KETO too)
     
     // SQUATS (15A across): row 4, cols 0-5
     activeCells.add(`4-0`); // S (shared with QUADS)
@@ -167,11 +167,11 @@ const Day8: React.FC = () => {
     activeCells.add(`4-4`); // T
     activeCells.add(`4-5`); // S
     
-    // KETO (21A across): row 6, cols 1-4
-    activeCells.add(`6-1`); // K (shared with TRACK)
-    activeCells.add(`6-2`); // E
-    activeCells.add(`6-3`); // T
-    activeCells.add(`6-4`); // O
+    // KETO (21A across): row 6, cols 3-6 (starts from TRACK's K, ends at bottom right)
+    activeCells.add(`6-3`); // K (shared with TRACK)
+    activeCells.add(`6-4`); // E
+    activeCells.add(`6-5`); // T
+    activeCells.add(`6-6`); // O
 
     console.log('Active cells:', Array.from(activeCells));
 
