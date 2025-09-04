@@ -66,8 +66,8 @@ const gymPuzzle: Puzzle = {
       number: 3,
       text: "Fitness goal often paired with \"muscle.\"",
       direction: 'down',
-      startRow: 0, // T at (0,4), O at (1,4), N at (2,6), E at (3,6)
-      startCol: 4, // starting col, but N and E are at col 6
+      startRow: 0, // T at (0,6), O at (1,6), N at (2,6), E at (3,6)
+      startCol: 6, // starting at top right corner
       length: 4,
       solution: "TONE"
     },
@@ -118,8 +118,8 @@ const Day8: React.FC = () => {
 
     // Define the specific active cells based on the exact crossword pattern from template
     // Grid pattern (from the user's image):
-    // Q . S . T . .
-    // U . P . O . .  
+    // Q . S . . . T
+    // U . P . . . O  
     // A S H T A . N
     // D . . R . . E
     // S Q U A T S .
@@ -139,9 +139,9 @@ const Day8: React.FC = () => {
     activeCells.add(`1-2`); // P  
     activeCells.add(`2-2`); // A (intersects with ASHTA)
     
-    // TONE (3D down): starts at top right corner (0,4), then continues down and jumps to (2,6), (3,6)
-    activeCells.add(`0-4`); // T
-    activeCells.add(`1-4`); // O
+    // TONE (3D down): starts at top right corner (0,6), then continues straight down
+    activeCells.add(`0-6`); // T
+    activeCells.add(`1-6`); // O
     activeCells.add(`2-6`); // N
     activeCells.add(`3-6`); // E
     
@@ -186,32 +186,14 @@ const Day8: React.FC = () => {
 
     // Set answers and numbers for each clue
     gymPuzzle.clues.forEach((clue) => {
-      if (clue.number === 3) {
-        // Special handling for TONE (3D) - non-linear positioning
-        const positions = [
-          { r: 0, c: 4 }, // T
-          { r: 1, c: 4 }, // O  
-          { r: 2, c: 6 }, // N
-          { r: 3, c: 6 }  // E
-        ];
-        
-        positions.forEach((pos, i) => {
-          const idx = pos.r * gridSize + pos.c;
-          if (newCells[idx] && !newCells[idx].isBlocked) {
-            newCells[idx].answer = clue.solution[i];
-            if (i === 0) newCells[idx].number = clue.number;
-          }
-        });
-      } else {
-        // Regular linear positioning for other clues
-        for (let i = 0; i < clue.length; i++) {
-          const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
-          const c = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
-          const idx = r * gridSize + c;
-          if (newCells[idx] && r < gridSize && c < gridSize && !newCells[idx].isBlocked) {
-            newCells[idx].answer = clue.solution[i];
-            if (i === 0) newCells[idx].number = clue.number;
-          }
+      // Regular linear positioning for all clues now that TONE is fixed
+      for (let i = 0; i < clue.length; i++) {
+        const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
+        const c = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
+        const idx = r * gridSize + c;
+        if (newCells[idx] && r < gridSize && c < gridSize && !newCells[idx].isBlocked) {
+          newCells[idx].answer = clue.solution[i];
+          if (i === 0) newCells[idx].number = clue.number;
         }
       }
     });
@@ -222,17 +204,6 @@ const Day8: React.FC = () => {
 
   const isValidAnswer = useCallback((cell: Cell, value: string) => {
     const cluesForCell = gymPuzzle.clues.filter(clue => {
-      if (clue.number === 3) {
-        // Special handling for TONE (3D) - check if cell is in any of the TONE positions
-        const tonePositions = [
-          { r: 0, c: 4 }, // T
-          { r: 1, c: 4 }, // O  
-          { r: 2, c: 6 }, // N
-          { r: 3, c: 6 }  // E
-        ];
-        return tonePositions.some(pos => pos.r === cell.row && pos.c === cell.col);
-      }
-      
       if (clue.direction === 'across') {
         return cell.row === clue.startRow && cell.col >= clue.startCol && cell.col < clue.startCol + clue.length;
       }
@@ -240,18 +211,6 @@ const Day8: React.FC = () => {
     });
 
     return cluesForCell.some(clue => {
-      if (clue.number === 3) {
-        // Special validation for TONE
-        const tonePositions = [
-          { r: 0, c: 4 }, // T
-          { r: 1, c: 4 }, // O  
-          { r: 2, c: 6 }, // N
-          { r: 3, c: 6 }  // E
-        ];
-        const positionIndex = tonePositions.findIndex(pos => pos.r === cell.row && pos.c === cell.col);
-        return positionIndex >= 0 && clue.solution[positionIndex] === value.toUpperCase();
-      }
-      
       const position = clue.direction === 'across' 
         ? cell.col - clue.startCol 
         : cell.row - clue.startRow;
