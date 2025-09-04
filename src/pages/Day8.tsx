@@ -13,80 +13,80 @@ import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 import type { Clue, Cell, Puzzle } from '@/components/CrosswordGame';
 
 const exercisePuzzle: Puzzle = {
-  size: 11, // 11 cols × 10 rows  
+  size: 10, // 10 cols × 10 rows  
   clues: [
     // Across
     {
-      number: 1,
-      text: 'Exercise with depth; slang for "nothing at all" (5)',
+      number: 2,
+      text: 'Classic strength move, bend knees then rise (5)',
       direction: 'across',
       startRow: 1,
-      startCol: 2,
+      startCol: 1,
       length: 5,
       solution: 'SQUAT',
     },
     {
-      number: 2,
-      text: 'Cardio machine for running in place (9)',
+      number: 6,
+      text: 'Intense cardio class on a bike (4)',
       direction: 'across',
-      startRow: 4,
+      startRow: 3,
+      startCol: 3,
+      length: 4,
+      solution: 'SPIN',
+    },
+    {
+      number: 8,
+      text: 'Indoor running machine (9)',
+      direction: 'across',
+      startRow: 5,
       startCol: 0,
       length: 9,
       solution: 'TREADMILL',
     },
     {
-      number: 3,
-      text: 'Core exercise holding a straight position (5)',
+      number: 12,
+      text: 'Core exercise holding body rigid (5)',
       direction: 'across',
-      startRow: 6,
-      startCol: 5,
+      startRow: 7,
+      startCol: 3,
       length: 5,
       solution: 'PLANK',
     },
 
     // Down
     {
-      number: 4,
-      text: 'Forward leg exercise (5)',
+      number: 3,
+      text: 'Structured practice exercise, often repeated (5)',
       direction: 'down',
-      startRow: 0,
-      startCol: 3,
+      startRow: 1,
+      startCol: 7,
+      length: 5,
+      solution: 'DRILL',
+    },
+    {
+      number: 5,
+      text: 'Step forward with one leg to train balance and strength (5)',
+      direction: 'down',
+      startRow: 1,
+      startCol: 6,
       length: 5,
       solution: 'LUNGE',
     },
     {
-      number: 5,
-      text: 'Cycling class or ball rotation (4)',
+      number: 9,
+      text: 'Muscle at the back of the upper arm (6)',
       direction: 'down',
-      startRow: 1,
-      startCol: 6,
-      length: 4,
-      solution: 'SPIN',
-    },
-    {
-      number: 6,
-      text: 'Upper body pulling exercise (3)',
-      direction: 'down',
-      startRow: 1,
-      startCol: 8,
-      length: 3,
-      solution: 'DIP',
-    },
-    {
-      number: 7,
-      text: 'Heavy lifting or strength exercise (3)',
-      direction: 'down',
-      startRow: 1,
-      startCol: 10,
-      length: 3,
-      solution: 'REP',
-    },
-    {
-      number: 8,
-      text: 'Body support or fitness goal (3)',
-      direction: 'down',
-      startRow: 7,
+      startRow: 5,
       startCol: 0,
+      length: 6,
+      solution: 'TRICEP',
+    },
+    {
+      number: 15,
+      text: 'Six-pack muscles, informally (3)',
+      direction: 'down',
+      startRow: 8,
+      startCol: 7,
       length: 3,
       solution: 'ABS',
     }
@@ -109,7 +109,7 @@ const Day8: React.FC = () => {
   // Initialize grid
   const initializeGrid = useCallback(() => {
     const newCells: Cell[] = [];
-    const cols = 11; // 11 columns
+    const cols = 10; // 10 columns
     const rows = 10; // 10 rows
     
     for (let row = 0; row < rows; row++) {
@@ -361,7 +361,7 @@ const Day8: React.FC = () => {
               showingErrors={showingErrors}
               gameStarted={gameStarted}
               currentClue={currentClue}
-              gridCols={11}
+              gridCols={10}
               gridRows={10}
             />
           </div>
