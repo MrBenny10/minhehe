@@ -51,21 +51,14 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   }, []);
   // Helper function for auto-advance logic
   const autoAdvanceToNext = useCallback((cell: Cell) => {
-    console.log(`=== AUTO ADVANCE DEBUG ===`);
-    console.log(`Called for cell: ${cell.id} (${cell.row}, ${cell.col})`);
-    console.log(`Current clue: ${currentClue?.number}${currentClue?.direction} - ${currentClue?.solution}`);
-    console.log(`Cell value: "${cell.value}", Cell answer: "${cell.answer}"`);
-    
     if (currentClue) {
       let nextCell = null;
       
       if (currentClue.direction === 'across') {
         // Move right for across clues, skipping already correct cells
         let checkCol = cell.col + 1;
-        console.log(`Across clue: looking for next cell after col ${cell.col}`);
         while (checkCol < cols) {
           const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
-          console.log(`  Checking col ${checkCol}: found=${!!candidateCell}`);
           if (candidateCell) {
             // Skip if cell is already correct (green), continue looking
             if (!candidateCell.value || candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
@@ -152,40 +145,23 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     const value = e.target.value.slice(-1);
     const selectedCellData = cells.find(c => c.id === selectedCell);
     
-    console.log(`=== MOBILE INPUT DEBUG ===`);
-    console.log(`Input: "${value}" in cell ${selectedCell}`);
-    console.log(`Current clue: ${currentClue?.solution}`);
-    console.log(`Cell data:`, selectedCellData);
-    console.log(`Expected answer: "${selectedCellData?.answer}"`);
-    console.log(`Current cell value: "${selectedCellData?.value}"`);
-    
     if (selectedCellData && !selectedCellData.isBlocked) {
       if (value.match(/[a-zA-Z]/)) {
-        console.log(`Processing letter input: "${value}"`);
-        
         // Update the cell first
         onCellUpdate(selectedCell, value);
-        console.log(`Cell updated with: "${value}"`);
         
         // Check if this completes the current position correctly
-        const isCorrect = value.toUpperCase() === selectedCellData.answer.toUpperCase();
-        console.log(`Is "${value.toUpperCase()}" === "${selectedCellData.answer.toUpperCase()}"? ${isCorrect}`);
-        
-        if (isCorrect) {
-          console.log(`Correct letter! Calling autoAdvanceToNext...`);
+        if (value.toUpperCase() === selectedCellData.answer.toUpperCase()) {
           autoAdvanceToNext(selectedCellData);
-        } else {
-          console.log(`Incorrect letter, staying in place`);
         }
       } else if (value === '') {
-        console.log(`Empty value, clearing cell`);
         onCellUpdate(selectedCell, value);
       }
     }
     
     // Clear the hidden input
     e.target.value = '';
-  }, [selectedCell, cells, onCellUpdate, autoAdvanceToNext, gameStarted, currentClue]);
+  }, [selectedCell, cells, onCellUpdate, autoAdvanceToNext, gameStarted]);
 
   const handleMobileKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!selectedCell || !gameStarted) return;
