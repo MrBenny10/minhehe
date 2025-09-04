@@ -102,6 +102,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         
         // Only jump to next word if current word is truly complete
         if (isCurrentClueComplete) {
+          console.log("Current clue is complete, looking for next incomplete cell");
           // Find the first cell that has an incomplete answer, starting from top-left
           let foundNextCell = null;
           
@@ -110,14 +111,20 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
             for (let col = 0; col < cols && !foundNextCell; col++) {
               const candidateCell = cells.find(c => c.row === row && c.col === col && !c.isBlocked);
               if (candidateCell && (!candidateCell.value || candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase())) {
+                console.log(`Found incomplete cell at (${row}, ${col}): ${candidateCell.answer}`);
                 foundNextCell = candidateCell;
               }
             }
           }
           
           if (foundNextCell) {
+            console.log(`Jumping to next incomplete cell: ${foundNextCell.id}`);
             onCellSelect(foundNextCell.id);
+          } else {
+            console.log("No incomplete cells found - puzzle might be complete!");
           }
+        } else {
+          console.log("Current clue is NOT complete yet");
         }
       }
     }
@@ -246,6 +253,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
 
     if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
       e.preventDefault();
+      console.log(`Typing: ${e.key} in cell ${cell.id} (${cell.row},${cell.col}), currentClue: ${currentClue?.solution}`);
       onCellUpdate(cell.id, e.key);
       
       // Use the helper function for auto-advance
