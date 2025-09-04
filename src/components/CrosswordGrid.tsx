@@ -60,14 +60,11 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         while (checkCol < cols) {
           const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
           if (candidateCell) {
-            // Skip if cell is already correct, continue looking
-            if (candidateCell.value && candidateCell.value.toUpperCase() === candidateCell.answer.toUpperCase()) {
-              checkCol++;
-              continue;
+            // Skip if cell is already correct (green), continue looking
+            if (!candidateCell.value || candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
+              nextCell = candidateCell;
+              break;
             }
-            // Found an empty or incorrect cell
-            nextCell = candidateCell;
-            break;
           }
           checkCol++;
         }
@@ -77,14 +74,11 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         while (checkRow < rows) {
           const candidateCell = cells.find(c => c.row === checkRow && c.col === cell.col && !c.isBlocked);
           if (candidateCell) {
-            // Skip if cell is already correct, continue looking
-            if (candidateCell.value && candidateCell.value.toUpperCase() === candidateCell.answer.toUpperCase()) {
-              checkRow++;
-              continue;
+            // Skip if cell is already correct (green), continue looking
+            if (!candidateCell.value || candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
+              nextCell = candidateCell;
+              break;
             }
-            // Found an empty or incorrect cell
-            nextCell = candidateCell;
-            break;
           }
           checkRow++;
         }
