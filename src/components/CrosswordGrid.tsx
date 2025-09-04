@@ -51,19 +51,14 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   }, []);
   // Helper function for auto-advance logic
   const autoAdvanceToNext = useCallback((cell: Cell) => {
-    console.log(`AutoAdvance called for cell: ${cell.id} (${cell.row}, ${cell.col})`);
-    console.log(`Current clue: ${currentClue?.number}${currentClue?.direction} - ${currentClue?.solution}`);
-    
     if (currentClue) {
       let nextCell = null;
       
       if (currentClue.direction === 'across') {
         // Move right for across clues, skipping already correct cells
         let checkCol = cell.col + 1;
-        console.log(`Looking for next cell after col ${cell.col}, checking col ${checkCol}`);
         while (checkCol < cols) {
           const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
-          console.log(`Checking candidate cell at (${cell.row}, ${checkCol}):`, candidateCell);
           if (candidateCell) {
             // Skip if cell is already correct (green), continue looking
             if (!candidateCell.value || candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
@@ -227,20 +222,33 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     if (cell.value && cell.value.toUpperCase() === cell.answer.toUpperCase()) {
       if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
         e.preventDefault();
-        // Auto-advance to next available cell
-        autoAdvanceToNext(cell);
+        // Only auto-advance if we're moving within the current word, not jumping to a new word
+        // This prevents double-triggering when a word is already complete
+        if (currentClue) {
+          let hasNextCellInWord = false;
+          if (currentClue.direction === 'across') {
+            const nextCol = cell.col + 1;
+            const nextCell = cells.find(c => c.row === cell.row && c.col === nextCol && !c.isBlocked);
+            hasNextCellInWord = !!nextCell;
+          } else if (currentClue.direction === 'down') {
+            const nextRow = cell.row + 1;
+            const nextCell = cells.find(c => c.row === nextRow && c.col === cell.col && !c.isBlocked);
+            hasNextCellInWord = !!nextCell;
+          }
+          
+          if (hasNextCellInWord) {
+            autoAdvanceToNext(cell);
+          }
+        }
         return;
       }
     }
 
     if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
       e.preventDefault();
-      console.log(`Typing letter: ${e.key} in cell: ${cell.id} (${cell.row}, ${cell.col})`);
-      console.log(`Current clue: ${currentClue?.number}${currentClue?.direction} - ${currentClue?.solution}`);
       onCellUpdate(cell.id, e.key);
       
       // Use the helper function for auto-advance
-      console.log(`About to auto-advance from cell: ${cell.id}`);
       autoAdvanceToNext(cell);
     } else if (e.key === 'Backspace') {
       e.preventDefault();
