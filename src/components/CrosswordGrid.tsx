@@ -51,14 +51,21 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
   }, []);
   // Helper function for auto-advance logic
   const autoAdvanceToNext = useCallback((cell: Cell) => {
+    console.log(`=== AUTO ADVANCE DEBUG ===`);
+    console.log(`Called for cell: ${cell.id} (${cell.row}, ${cell.col})`);
+    console.log(`Current clue: ${currentClue?.number}${currentClue?.direction} - ${currentClue?.solution}`);
+    console.log(`Cell value: "${cell.value}", Cell answer: "${cell.answer}"`);
+    
     if (currentClue) {
       let nextCell = null;
       
       if (currentClue.direction === 'across') {
         // Move right for across clues, skipping already correct cells
         let checkCol = cell.col + 1;
+        console.log(`Across clue: looking for next cell after col ${cell.col}`);
         while (checkCol < cols) {
           const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
+          console.log(`  Checking col ${checkCol}: found=${!!candidateCell}`);
           if (candidateCell) {
             // Skip if cell is already correct (green), continue looking
             if (!candidateCell.value || candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
@@ -145,10 +152,12 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
     const value = e.target.value.slice(-1);
     const selectedCellData = cells.find(c => c.id === selectedCell);
     
+    console.log(`Mobile input: "${value}" in cell ${selectedCell}, currentClue: ${currentClue?.solution}`);
     
     if (selectedCellData && !selectedCellData.isBlocked) {
       // If cell is already correct, skip to next cell instead of allowing input
       if (selectedCellData.value && selectedCellData.value.toUpperCase() === selectedCellData.answer.toUpperCase() && value.match(/[a-zA-Z]/)) {
+        console.log(`Cell ${selectedCell} already correct, checking for next cell in word...`);
         // Only auto-advance if we're moving within the current word, not jumping to a new word
         if (currentClue) {
           let hasNextCellInWord = false;
@@ -156,17 +165,23 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
             const nextCol = selectedCellData.col + 1;
             const nextCell = cells.find(c => c.row === selectedCellData.row && c.col === nextCol && !c.isBlocked);
             hasNextCellInWord = !!nextCell;
+            console.log(`Across: next col would be ${nextCol}, cell exists: ${hasNextCellInWord}`);
           } else if (currentClue.direction === 'down') {
             const nextRow = selectedCellData.row + 1;
             const nextCell = cells.find(c => c.row === nextRow && c.col === selectedCellData.col && !c.isBlocked);
             hasNextCellInWord = !!nextCell;
+            console.log(`Down: next row would be ${nextRow}, cell exists: ${hasNextCellInWord}`);
           }
           
           if (hasNextCellInWord) {
+            console.log(`Has next cell in word, auto-advancing...`);
             autoAdvanceToNext(selectedCellData);
+          } else {
+            console.log(`No next cell in word, NOT auto-advancing`);
           }
         }
       } else if (value.match(/[a-zA-Z]/) || value === '') {
+        console.log(`Setting value "${value}" and auto-advancing...`);
         onCellUpdate(selectedCell, value);
         if (value) {
           autoAdvanceToNext(selectedCellData);
