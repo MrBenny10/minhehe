@@ -23,7 +23,7 @@ const gymPuzzle: Puzzle = {
       startRow: 2, // row 3 = 2
       startCol: 0, // col 1 = 0
       length: 5,
-      solution: "ASATA"
+      solution: "ASHTA"
     },
     {
       number: 15,
@@ -120,7 +120,7 @@ const Day8: React.FC = () => {
     // Grid pattern (from the user's image):
     // Q . S . T . .
     // U . P . O . .  
-    // A S A T A . N
+    // A S H T A . N
     // D . . R . . E
     // S Q U A T S .
     // . . . C . . .
@@ -145,10 +145,10 @@ const Day8: React.FC = () => {
     activeCells.add(`2-6`); // N
     activeCells.add(`3-6`); // E
     
-    // ASATA (7A across): row 2, cols 0-4
+    // ASHTA (7A across): row 2, cols 0-4
     activeCells.add(`2-0`); // A (shared with QUADS)
     activeCells.add(`2-1`); // S
-    activeCells.add(`2-2`); // A (shared with SPA)
+    activeCells.add(`2-2`); // H (changed from A to H)
     activeCells.add(`2-3`); // T (shared with TRACK)  
     activeCells.add(`2-4`); // A
     
