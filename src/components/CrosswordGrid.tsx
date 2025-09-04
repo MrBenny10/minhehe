@@ -81,31 +81,51 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       if (nextCell) {
         onCellSelect(nextCell.id);
       } else {
-        // Current word is complete, find the next incomplete word starting from the beginning
-        // Get all clues from props (passed via currentClue context)
-        const allClues = [
-          { number: 1, direction: 'down', startRow: 0, startCol: 0, length: 4, solution: 'QUADS' },
-          { number: 2, direction: 'down', startRow: 0, startCol: 4, length: 3, solution: 'SPA' },
-          { number: 3, direction: 'down', startRow: 0, startCol: 6, length: 4, solution: 'TONE' },
-          { number: 7, direction: 'across', startRow: 2, startCol: 0, length: 5, solution: 'ASHTA' },
-          { number: 10, direction: 'down', startRow: 2, startCol: 3, length: 5, solution: 'TRACK' },
-          { number: 15, direction: 'across', startRow: 4, startCol: 0, length: 6, solution: 'SQUATS' },
-          { number: 21, direction: 'across', startRow: 6, startCol: 3, length: 4, solution: 'KETO' }
-        ];
+        // Current word is complete, check if the current clue is fully complete
+        let isCurrentClueComplete = true;
+        for (let i = 0; i < currentClue.length; i++) {
+          const checkRow = currentClue.direction === 'across' ? currentClue.startRow : currentClue.startRow + i;
+          const checkCol = currentClue.direction === 'across' ? currentClue.startCol + i : currentClue.startCol;
+          const checkCell = cells.find(c => c.row === checkRow && c.col === checkCol);
+          
+          if (checkCell && checkCell.value.toUpperCase() !== checkCell.answer.toUpperCase()) {
+            isCurrentClueComplete = false;
+            break;
+          }
+        }
         
-        // Find the first clue with incomplete cells (starting from clue 1)
-        for (const clue of allClues) {
-          // Check if this clue has any incomplete cells
-          for (let i = 0; i < clue.length; i++) {
-            const checkRow = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
-            const checkCol = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
-            const checkCell = cells.find(c => c.row === checkRow && c.col === checkCol);
+        // Only jump to next word if current word is truly complete
+        if (isCurrentClueComplete) {
+          // Get all clues and find the first incomplete one starting from the beginning
+          const allClues = [
+            { number: 1, direction: 'down', startRow: 0, startCol: 0, length: 4, solution: 'QUADS' },
+            { number: 2, direction: 'down', startRow: 0, startCol: 4, length: 3, solution: 'SPA' },
+            { number: 3, direction: 'down', startRow: 0, startCol: 6, length: 4, solution: 'TONE' },
+            { number: 7, direction: 'across', startRow: 2, startCol: 0, length: 5, solution: 'ASHTA' },
+            { number: 10, direction: 'down', startRow: 2, startCol: 3, length: 5, solution: 'TRACK' },
+            { number: 15, direction: 'across', startRow: 4, startCol: 0, length: 6, solution: 'SQUATS' },
+            { number: 21, direction: 'across', startRow: 6, startCol: 3, length: 4, solution: 'KETO' }
+          ];
+          
+          // Find the first clue with any incomplete cells
+          for (const clue of allClues) {
+            let hasIncompleteCell = false;
             
-            if (checkCell && checkCell.value.toUpperCase() !== checkCell.answer.toUpperCase()) {
-              // Jump to the START of this incomplete word, not the first incomplete letter
-              const startRow = clue.startRow;
-              const startCol = clue.startCol;
-              const startCell = cells.find(c => c.row === startRow && c.col === startCol);
+            // Check if this clue has any incomplete cells
+            for (let i = 0; i < clue.length; i++) {
+              const checkRow = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
+              const checkCol = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
+              const checkCell = cells.find(c => c.row === checkRow && c.col === checkCol);
+              
+              if (checkCell && (!checkCell.value || checkCell.value.toUpperCase() !== checkCell.answer.toUpperCase())) {
+                hasIncompleteCell = true;
+                break;
+              }
+            }
+            
+            // If this clue has incomplete cells, jump to its start
+            if (hasIncompleteCell) {
+              const startCell = cells.find(c => c.row === clue.startRow && c.col === clue.startCol);
               if (startCell) {
                 onCellSelect(startCell.id);
                 return;
@@ -115,7 +135,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         }
       }
     }
-  }, [cells, currentClue, onCellSelect]);
+  }, [cells, currentClue, onCellSelect, cols, rows]);
 
   const handleCellClick = useCallback((cell: Cell) => {
     if (!cell.isBlocked && gameStarted) {
