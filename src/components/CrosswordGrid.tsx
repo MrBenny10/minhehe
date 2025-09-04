@@ -55,22 +55,34 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
       let nextCell = null;
       
       if (currentClue.direction === 'across') {
-        // Move right for across clues, skipping correct cells
+        // Move right for across clues, skipping already correct cells
         let checkCol = cell.col + 1;
         while (checkCol < cols) {
           const candidateCell = cells.find(c => c.row === cell.row && c.col === checkCol && !c.isBlocked);
-          if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
+          if (candidateCell) {
+            // Skip if cell is already correct, continue looking
+            if (candidateCell.value && candidateCell.value.toUpperCase() === candidateCell.answer.toUpperCase()) {
+              checkCol++;
+              continue;
+            }
+            // Found an empty or incorrect cell
             nextCell = candidateCell;
             break;
           }
           checkCol++;
         }
       } else if (currentClue.direction === 'down') {
-        // Move down for down clues, skipping correct cells
+        // Move down for down clues, skipping already correct cells
         let checkRow = cell.row + 1;
         while (checkRow < rows) {
           const candidateCell = cells.find(c => c.row === checkRow && c.col === cell.col && !c.isBlocked);
-          if (candidateCell && candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase()) {
+          if (candidateCell) {
+            // Skip if cell is already correct, continue looking
+            if (candidateCell.value && candidateCell.value.toUpperCase() === candidateCell.answer.toUpperCase()) {
+              checkRow++;
+              continue;
+            }
+            // Found an empty or incorrect cell
             nextCell = candidateCell;
             break;
           }
