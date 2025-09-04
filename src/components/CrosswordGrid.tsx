@@ -94,7 +94,7 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
           const checkCol = currentClue.direction === 'across' ? currentClue.startCol + i : currentClue.startCol;
           const checkCell = cells.find(c => c.row === checkRow && c.col === checkCol);
           
-          if (checkCell && checkCell.value.toUpperCase() !== checkCell.answer.toUpperCase()) {
+          if (checkCell && (!checkCell.value || checkCell.value.toUpperCase() !== checkCell.answer.toUpperCase())) {
             isCurrentClueComplete = false;
             break;
           }
@@ -102,41 +102,21 @@ export const CrosswordGrid: React.FC<CrosswordGridProps> = ({
         
         // Only jump to next word if current word is truly complete
         if (isCurrentClueComplete) {
-          // Get all clues and find the first incomplete one starting from the beginning
-          const allClues = [
-            { number: 1, direction: 'down', startRow: 0, startCol: 0, length: 4, solution: 'QUADS' },
-            { number: 2, direction: 'down', startRow: 0, startCol: 4, length: 3, solution: 'SPA' },
-            { number: 3, direction: 'down', startRow: 0, startCol: 6, length: 4, solution: 'TONE' },
-            { number: 7, direction: 'across', startRow: 2, startCol: 0, length: 5, solution: 'ASHTA' },
-            { number: 10, direction: 'down', startRow: 2, startCol: 3, length: 5, solution: 'TRACK' },
-            { number: 15, direction: 'across', startRow: 4, startCol: 0, length: 6, solution: 'SQUATS' },
-            { number: 21, direction: 'across', startRow: 6, startCol: 3, length: 4, solution: 'KETO' }
-          ];
+          // Find the first cell that has an incomplete answer, starting from top-left
+          let foundNextCell = null;
           
-          // Find the first clue with any incomplete cells
-          for (const clue of allClues) {
-            let hasIncompleteCell = false;
-            
-            // Check if this clue has any incomplete cells
-            for (let i = 0; i < clue.length; i++) {
-              const checkRow = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
-              const checkCol = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
-              const checkCell = cells.find(c => c.row === checkRow && c.col === checkCol);
-              
-              if (checkCell && (!checkCell.value || checkCell.value.toUpperCase() !== checkCell.answer.toUpperCase())) {
-                hasIncompleteCell = true;
-                break;
+          // Search row by row, column by column for the first incomplete cell
+          for (let row = 0; row < rows && !foundNextCell; row++) {
+            for (let col = 0; col < cols && !foundNextCell; col++) {
+              const candidateCell = cells.find(c => c.row === row && c.col === col && !c.isBlocked);
+              if (candidateCell && (!candidateCell.value || candidateCell.value.toUpperCase() !== candidateCell.answer.toUpperCase())) {
+                foundNextCell = candidateCell;
               }
             }
-            
-            // If this clue has incomplete cells, jump to its start
-            if (hasIncompleteCell) {
-              const startCell = cells.find(c => c.row === clue.startRow && c.col === clue.startCol);
-              if (startCell) {
-                onCellSelect(startCell.id);
-                return;
-              }
-            }
+          }
+          
+          if (foundNextCell) {
+            onCellSelect(foundNextCell.id);
           }
         }
       }
