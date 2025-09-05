@@ -389,11 +389,12 @@ const Day8: React.FC = () => {
                 {currentClue.number}{currentClue.direction === 'across' ? 'A' : 'D'}
               </span>
               <div className="flex-1 min-w-0 max-w-[calc(100%-6rem)]">
-                <p className="text-foreground font-medium leading-snug break-words hyphens-auto" 
+                <p className="text-foreground font-medium leading-snug break-words" 
                    style={{ 
                      wordWrap: 'break-word',
                      overflowWrap: 'break-word',
-                     lineHeight: '1.3'
+                     lineHeight: '1.3',
+                     hyphens: 'none'
                    }}>
                   {currentClue.text}
                 </p>
