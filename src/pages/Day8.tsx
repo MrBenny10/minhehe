@@ -380,7 +380,7 @@ const Day8: React.FC = () => {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-br from-background via-background to-muted overflow-hidden">
+    <div className="h-[100dvh] bg-gradient-to-br from-background via-background to-muted overflow-hidden">
       {gameStarted && currentClue && (
         <div className="fixed top-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border h-[4rem] overflow-hidden">
           <div className="px-2 py-2 md:px-4 md:py-3 pr-24 md:pr-28 h-full flex items-center">
@@ -415,12 +415,12 @@ const Day8: React.FC = () => {
       </div>
 
       <div className="flex flex-col h-full">
-        {/* Main game area with more space - moved higher on mobile for Day 8 */}
+        {/* Main game area - made scrollable to handle virtual keyboard */}
         <div className={cn(
-          "flex-1 flex flex-col items-center px-1 py-1 md:px-2 md:py-2 min-h-0",
+          "flex-1 flex flex-col items-center px-1 py-1 md:px-2 md:py-2 min-h-0 overflow-y-auto",
           gameStarted && currentClue ? "pt-[4.5rem] justify-start md:pt-[5rem] md:justify-center" : "pt-1 justify-start md:pt-4 md:justify-center"
         )}>
-          <div className="w-full max-w-full flex-1 flex items-center justify-center">
+          <div className="w-full max-w-full flex-1 flex items-center justify-center pb-20 md:pb-0">
             <CrosswordGrid
               cells={cells}
               selectedCell={selectedCell}
