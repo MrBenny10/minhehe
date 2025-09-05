@@ -30,7 +30,7 @@ export const CluesPanel: React.FC<CluesPanelProps> = ({ clues }) => {
                 <span className="text-primary font-bold text-sm min-w-[1.5rem]">
                   {clue.number}.
                 </span>
-                <span className="text-foreground text-sm leading-relaxed">
+                <span className="text-foreground text-sm leading-relaxed break-words">
                   {clue.text}
                 </span>
               </div>
@@ -53,7 +53,7 @@ export const CluesPanel: React.FC<CluesPanelProps> = ({ clues }) => {
                 <span className="text-accent font-bold text-sm min-w-[1.5rem]">
                   {clue.number}.
                 </span>
-                <span className="text-foreground text-sm leading-relaxed">
+                <span className="text-foreground text-sm leading-relaxed break-words">
                   {clue.text}
                 </span>
               </div>
