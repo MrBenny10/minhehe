@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+//import React, { useState, useCallback, useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import { CrosswordGrid } from '@/components/CrosswordGrid';
 import { CluesPanel } from '@/components/CluesPanel';
@@ -12,74 +12,76 @@ import { cn } from '@/lib/utils';
 import minHeheLogoSrc from '@/assets/minhehe-logo.png';
 import type { Clue, Cell, Puzzle } from '@/components/CrosswordGame';
 
+// === SOURCE OF TRUTH: clues define the grid ===
 const socialMediaPuzzle: Puzzle = {
   size: 7,
   clues: [
     // Across
     {
       number: 5,
-      text: "Gesture to show you approve of a post on social platforms.",
+      text: 'Gesture to show you approve of a post on social platforms.',
       direction: 'across',
-      startRow: 1,
-      startCol: 2,
+      startRow: 0,
+      startCol: 0,
       length: 4,
-      solution: "LIKE"
+      solution: 'LIKE',
     },
     {
       number: 7,
-      text: "Quick touch action on mobile screens.",
+      text: 'Quick touch action on mobile screens.',
       direction: 'across',
-      startRow: 2,
-      startCol: 0,
+      startRow: 1,
+      startCol: 1,
       length: 4,
-      solution: "TAPS"
+      solution: 'TAPS',
     },
     {
       number: 12,
-      text: "Real-time conversation feature on most social platforms.",
+      text: 'Real-time conversation feature on most social platforms.',
       direction: 'across',
-      startRow: 4,
+      startRow: 3,
       startCol: 0,
       length: 4,
-      solution: "CHAT"
+      solution: 'CHAT',
     },
     {
       number: 14,
       text: "Action of sharing someone else's content on your timeline.",
       direction: 'across',
-      startRow: 5,
-      startCol: 1,
+      startRow: 6,
+      startCol: 2,
       length: 4,
-      solution: "POST"
+      solution: 'POST',
     },
+
     // Down
     {
       number: 1,
-      text: "Quick gesture on mobile to navigate through content.",
+      text: 'Quick gesture on mobile to navigate through content.',
       direction: 'down',
-      startRow: 0,
-      startCol: 2,
+      startRow: 1,
+      startCol: 4,
       length: 5,
-      solution: "SWIPE"
+      solution: 'SWIPE',
     },
     {
       number: 2,
-      text: "Feature that lets you directly message someone privately.",
-      direction: 'down',
-      startRow: 0,
-      startCol: 4,
-      length: 6,
-      solution: "DIRECT"
-    },
-    {
-      number: 3,
-      text: "Content you share on social media platforms.",
+      text: 'Feature that lets you directly message someone privately.',
       direction: 'down',
       startRow: 1,
       startCol: 5,
+      length: 6,
+      solution: 'DIRECT',
+    },
+    {
+      number: 3,
+      text: 'Content you share on social media platforms.',
+      direction: 'down',
+      startRow: 2,
+      startCol: 1,
       length: 5,
-      solution: "SHARE"
-    }
+      solution: 'SHARE',
+    },
   ],
 };
 
@@ -96,13 +98,12 @@ const Day9: React.FC = () => {
   const [currentClue, setCurrentClue] = useState<Clue | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  // Initialize grid
+  // Build the grid directly from the clues
   const initializeGrid = useCallback(() => {
-    console.log('Initializing Day 9 grid...');
+    const gridSize = socialMediaPuzzle.size;
     const newCells: Cell[] = [];
-    const gridSize = 7;
-    
-    // Initialize all cells as blocked first
+
+    // Start with everything blocked
     for (let row = 0; row < gridSize; row++) {
       for (let col = 0; col < gridSize; col++) {
         newCells.push({
@@ -116,150 +117,112 @@ const Day9: React.FC = () => {
       }
     }
 
-    // Define the specific active cells based on social media crossword pattern
-    // Grid pattern:
-    // . . S . D . .
-    // . . W L I R S
-    // T A I K E E H
-    // . . P . C . A
-    // C H A T . . R
-    // . P O S T . E
-    // . . . . . . .
-    
-    const activeCells = new Set<string>();
-    
-    // SWIPE (1D down): col 2, rows 0-4
-    activeCells.add(`0-2`); // S
-    activeCells.add(`1-2`); // W
-    activeCells.add(`2-2`); // I
-    activeCells.add(`3-2`); // P
-    activeCells.add(`4-2`); // E
-    
-    // DIRECT (2D down): col 4, rows 0-5 
-    activeCells.add(`0-4`); // D
-    activeCells.add(`1-4`); // I  
-    activeCells.add(`2-4`); // R
-    activeCells.add(`3-4`); // E
-    activeCells.add(`4-4`); // C
-    activeCells.add(`5-4`); // T
-    
-    // SHARE (3D down): col 5, rows 1-5
-    activeCells.add(`1-5`); // S
-    activeCells.add(`2-5`); // H
-    activeCells.add(`3-5`); // A
-    activeCells.add(`4-5`); // R
-    activeCells.add(`5-5`); // E
-    
-    // LIKE (5A across): row 1, cols 2-5
-    activeCells.add(`1-2`); // L (shared with SWIPE)
-    activeCells.add(`1-3`); // I
-    activeCells.add(`1-4`); // K (shared with DIRECT)
-    activeCells.add(`1-5`); // E (shared with SHARE)
-    
-    // TAPS (7A across): row 2, cols 0-3
-    activeCells.add(`2-0`); // T
-    activeCells.add(`2-1`); // A
-    activeCells.add(`2-2`); // P (shared with SWIPE)
-    activeCells.add(`2-3`); // S
-    
-    // CHAT (12A across): row 4, cols 0-3
-    activeCells.add(`4-0`); // C
-    activeCells.add(`4-1`); // H
-    activeCells.add(`4-2`); // A (shared with SWIPE)
-    activeCells.add(`4-3`); // T
-    
-    // POST (14A across): row 5, cols 1-4
-    activeCells.add(`5-1`); // P
-    activeCells.add(`5-2`); // O
-    activeCells.add(`5-3`); // S
-    activeCells.add(`5-4`); // T (shared with DIRECT)
-
-    console.log('Active cells:', Array.from(activeCells));
-
-    // Mark active cells as unblocked
-    activeCells.forEach((cellId: string) => {
-      const [row, col] = cellId.split('-').map(Number);
-      const idx = row * gridSize + col;
-      if (newCells[idx]) {
-        newCells[idx].isBlocked = false;
-      }
-    });
-
-    // Set answers and numbers for each clue
+    // Unblock and fill answers from clues
     socialMediaPuzzle.clues.forEach((clue) => {
       for (let i = 0; i < clue.length; i++) {
         const r = clue.direction === 'across' ? clue.startRow : clue.startRow + i;
         const c = clue.direction === 'across' ? clue.startCol + i : clue.startCol;
-        const idx = r * gridSize + c;
-        if (newCells[idx] && r < gridSize && c < gridSize && !newCells[idx].isBlocked) {
-          newCells[idx].answer = clue.solution[i];
-          if (i === 0) newCells[idx].number = clue.number;
+
+        if (r >= 0 && r < gridSize && c >= 0 && c < gridSize) {
+          const idx = r * gridSize + c;
+          const cell = newCells[idx];
+
+          // Unblock and assign the expected answer
+          cell.isBlocked = false;
+          cell.answer = clue.solution[i];
+
+          // Put the clue number at the start cell
+          if (i === 0) {
+            cell.number = clue.number;
+          }
         }
       }
     });
 
-    console.log('Cells after initialization:', newCells.filter(c => !c.isBlocked).map(c => ({ id: c.id, answer: c.answer, number: c.number })));
     setCells(newCells);
   }, []);
 
   const isValidAnswer = useCallback((cell: Cell, value: string) => {
-    const cluesForCell = socialMediaPuzzle.clues.filter(clue => {
+    const cluesForCell = socialMediaPuzzle.clues.filter((clue) => {
       if (clue.direction === 'across') {
-        return cell.row === clue.startRow && cell.col >= clue.startCol && cell.col < clue.startCol + clue.length;
+        return (
+          cell.row === clue.startRow &&
+          cell.col >= clue.startCol &&
+          cell.col < clue.startCol + clue.length
+        );
       }
-      return cell.col === clue.startCol && cell.row >= clue.startRow && cell.row < clue.startRow + clue.length;
+      return (
+        cell.col === clue.startCol &&
+        cell.row >= clue.startRow &&
+        cell.row < clue.startRow + clue.length
+      );
     });
 
-    return cluesForCell.some(clue => {
-      const position = clue.direction === 'across' 
-        ? cell.col - clue.startCol 
-        : cell.row - clue.startRow;
-      
+    return cluesForCell.some((clue) => {
+      const position =
+        clue.direction === 'across'
+          ? cell.col - clue.startCol
+          : cell.row - clue.startRow;
+
       const solutions = [clue.solution, ...(clue.alternateSolutions || [])];
-      return solutions.some(solution => solution[position] === value.toUpperCase());
+      return solutions.some((solution) => solution[position] === value.toUpperCase());
     });
   }, []);
 
-  const handleCellUpdate = useCallback((cellId: string, value: string) => {
-    setCells(prev => {
-      const next = prev.map(cell =>
-        cell.id === cellId ? { ...cell, value: value.toUpperCase() } : cell
-      );
-      
-      const complete = next.every(cell => {
-        if (cell.isBlocked) return true;
-        return isValidAnswer(cell, cell.value);
-      });
-      
-      if (complete && !gameCompleted) {
-        setGameCompleted(true);
-        setShowCompletionModal(true);
-        setCompletionTime(timeElapsed);
-        setTimeout(() => {
-          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-        }, 100);
-      }
-      return next;
-    });
-  }, [gameCompleted, timeElapsed, isValidAnswer]);
+  const handleCellUpdate = useCallback(
+    (cellId: string, value: string) => {
+      setCells((prev) => {
+        const next = prev.map((cell) =>
+          cell.id === cellId ? { ...cell, value: value.toUpperCase() } : cell
+        );
 
-  const handleCellSelect = useCallback((cellId: string) => {
-    setSelectedCell(cellId);
-    const [row, col] = cellId.split('-').map(Number);
-    const matches = socialMediaPuzzle.clues.filter(clue => {
-      if (clue.direction === 'across') {
-        return row === clue.startRow && col >= clue.startCol && col < clue.startCol + clue.length;
+        const complete = next.every((cell) => {
+          if (cell.isBlocked) return true;
+          return isValidAnswer(cell, cell.value);
+        });
+
+        if (complete && !gameCompleted) {
+          setGameCompleted(true);
+          setShowCompletionModal(true);
+          setCompletionTime(timeElapsed);
+          setTimeout(() => {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+          }, 100);
+        }
+        return next;
+      });
+    },
+    [gameCompleted, timeElapsed, isValidAnswer]
+  );
+
+  const handleCellSelect = useCallback(
+    (cellId: string) => {
+      setSelectedCell(cellId);
+      const [row, col] = cellId.split('-').map(Number);
+      const matches = socialMediaPuzzle.clues.filter((clue) => {
+        if (clue.direction === 'across') {
+          return (
+            row === clue.startRow &&
+            col >= clue.startCol &&
+            col < clue.startCol + clue.length
+          );
+        }
+        return (
+          col === clue.startCol &&
+          row >= clue.startRow &&
+          row < clue.startRow + clue.length
+        );
+      });
+      if (matches.length > 0) {
+        let chosen = matches[0];
+        if (currentClue && matches.some((c) => c.direction === currentClue.direction)) {
+          chosen = matches.find((c) => c.direction === currentClue.direction) || matches[0];
+        }
+        setCurrentClue(chosen);
       }
-      return col === clue.startCol && row >= clue.startRow && row < clue.startRow + clue.length;
-    });
-    if (matches.length > 0) {
-      let chosen = matches[0];
-      if (currentClue && matches.some(c => c.direction === currentClue.direction)) {
-        chosen = matches.find(c => c.direction === currentClue.direction) || matches[0];
-      }
-      setCurrentClue(chosen);
-    }
-  }, [currentClue]);
+    },
+    [currentClue]
+  );
 
   const handleStart = useCallback(() => {
     initializeGrid();
@@ -269,25 +232,26 @@ const Day9: React.FC = () => {
     setCompletionTime(null);
     setShowingErrors(false);
     setTimeElapsed(0);
-    
-    // Always start at top-left corner (0,0)
+
+    // Start at top-left; with this layout, 0-0 is an active cell (LIKE)
     setSelectedCell('0-0');
-    
-    // Find the clue that starts at or includes position (0,0)
-    const topLeftClue = socialMediaPuzzle.clues.find(clue => {
-      if (clue.direction === 'across') {
-        return clue.startRow === 0 && clue.startCol <= 0 && clue.startCol + clue.length > 0;
-      } else {
-        return clue.startCol === 0 && clue.startRow <= 0 && clue.startRow + clue.length > 0;
-      }
-    }) || socialMediaPuzzle.clues[0]; // Fallback to first clue if none found
-    
+
+    // Pick the clue that includes (0,0) or fallback to first
+    const topLeftClue =
+      socialMediaPuzzle.clues.find((clue) => {
+        if (clue.direction === 'across') {
+          return clue.startRow === 0 && clue.startCol <= 0 && clue.startCol + clue.length > 0;
+        } else {
+          return clue.startCol === 0 && clue.startRow <= 0 && clue.startRow + clue.length > 0;
+        }
+      }) || socialMediaPuzzle.clues[0];
+
     setCurrentClue(topLeftClue);
   }, [initializeGrid]);
 
   const handleCheck = useCallback(() => {
     setShowingErrors(true);
-    const isComplete = cells.every(cell => {
+    const isComplete = cells.every((cell) => {
       if (cell.isBlocked) return true;
       return isValidAnswer(cell, cell.value);
     });
@@ -299,7 +263,7 @@ const Day9: React.FC = () => {
     }
   }, [cells, timeElapsed, isValidAnswer]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const t = setTimeout(() => {
       setShowLoadingScreen(false);
       handleStart();
@@ -315,15 +279,14 @@ const Day9: React.FC = () => {
           scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]'),
           scrollAreaRef.current.querySelector('.scrollArea'),
           scrollAreaRef.current.querySelector('[data-orientation="horizontal"]'),
-          scrollAreaRef.current.firstElementChild
+          scrollAreaRef.current.firstElementChild,
         ].filter(Boolean) as HTMLElement[];
 
-        viewports.forEach(viewport => {
-          if (viewport && viewport.scrollTo) {
+        viewports.forEach((viewport) => {
+          if (viewport && (viewport as any).scrollTo) {
             const maxScroll = viewport.scrollWidth - viewport.clientWidth;
-            console.log('Scrolling viewport to:', maxScroll, 'scrollWidth:', viewport.scrollWidth, 'clientWidth:', viewport.clientWidth);
             viewport.scrollLeft = maxScroll;
-            viewport.scrollTo({ left: maxScroll, behavior: 'smooth' });
+            (viewport as any).scrollTo({ left: maxScroll, behavior: 'smooth' });
           }
         });
       }
@@ -335,10 +298,10 @@ const Day9: React.FC = () => {
       setTimeout(scrollToDay9, 300),
       setTimeout(scrollToDay9, 500),
       setTimeout(scrollToDay9, 1000),
-      setTimeout(scrollToDay9, 2000)
+      setTimeout(scrollToDay9, 2000),
     ];
 
-    return () => timers.forEach(timer => clearTimeout(timer));
+    return () => timers.forEach((timer) => clearTimeout(timer));
   }, []);
 
   if (showLoadingScreen) {
@@ -352,7 +315,7 @@ const Day9: React.FC = () => {
           <p className="text-xl text-muted-foreground animate-fade-in">Social Media Edition - Day 9</p>
           <p className="text-sm text-muted-foreground mt-2 animate-fade-in">Loading your social puzzle...</p>
         </div>
-        
+
         <div className="mt-16 text-center animate-fade-in">
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <span>Made by Benny in Sweden</span>
@@ -383,16 +346,19 @@ const Day9: React.FC = () => {
           <div className="px-2 py-2 md:px-4 md:py-3 pr-24 md:pr-28 h-full flex items-center">
             <div className="flex items-start gap-2 text-xs md:text-sm w-full">
               <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded shrink-0 mt-0.5">
-                {currentClue.number}{currentClue.direction === 'across' ? 'A' : 'D'}
+                {currentClue.number}
+                {currentClue.direction === 'across' ? 'A' : 'D'}
               </span>
               <div className="flex-1 min-w-0 max-w-[calc(100%-6rem)]">
-                <p className="text-foreground font-medium leading-snug break-words" 
-                   style={{ 
-                     wordWrap: 'break-word',
-                     overflowWrap: 'break-word',
-                     lineHeight: '1.3',
-                     hyphens: 'none'
-                   }}>
+                <p
+                  className="text-foreground font-medium leading-snug break-words"
+                  style={{
+                    wordWrap: 'break-word',
+                    overflowWrap: 'break-word',
+                    lineHeight: '1.3',
+                    hyphens: 'none',
+                  }}
+                >
                   {currentClue.text}
                 </p>
               </div>
@@ -413,10 +379,14 @@ const Day9: React.FC = () => {
 
       <div className="flex flex-col h-full">
         {/* Main game area */}
-        <div className={cn(
-          "flex-1 flex flex-col items-center px-1 py-1 md:px-2 md:py-2 min-h-0 overflow-y-auto",
-          gameStarted && currentClue ? "pt-[4.5rem] justify-start md:pt-[5rem] md:justify-center" : "pt-1 justify-start md:pt-4 md:justify-center"
-        )}>
+        <div
+          className={cn(
+            'flex-1 flex flex-col items-center px-1 py-1 md:px-2 md:py-2 min-h-0 overflow-y-auto',
+            gameStarted && currentClue
+              ? 'pt-[4.5rem] justify-start md:pt-[5rem] md:justify-center'
+              : 'pt-1 justify-start md:pt-4 md:justify-center'
+          )}
+        >
           <div className="w-full max-w-full flex-1 flex items-center justify-center pb-20 md:pb-0">
             <CrosswordGrid
               cells={cells}
@@ -426,7 +396,7 @@ const Day9: React.FC = () => {
               showingErrors={showingErrors}
               gameStarted={gameStarted}
               currentClue={currentClue}
-              gridSize={7}
+              gridSize={socialMediaPuzzle.size}
               fontSize="lg"
             />
           </div>
@@ -445,34 +415,50 @@ const Day9: React.FC = () => {
           <CluesPanel clues={socialMediaPuzzle.clues} />
         </div>
       </div>
-      
+
       {/* Navigation */}
       <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
         <ScrollArea ref={scrollAreaRef} className="w-full whitespace-nowrap rounded-md bg-background/80 backdrop-blur-sm border p-1">
           <div className="flex gap-2">
             <Link to="/">
-              <Button variant="outline" size="sm" className="shrink-0">Day 1</Button>
+              <Button variant="outline" size="sm" className="shrink-0">
+                Day 1
+              </Button>
             </Link>
             <Link to="/day2">
-              <Button variant="outline" size="sm" className="shrink-0">Day 2</Button>
+              <Button variant="outline" size="sm" className="shrink-0">
+                Day 2
+              </Button>
             </Link>
             <Link to="/day3">
-              <Button variant="outline" size="sm" className="shrink-0">Day 3</Button>
+              <Button variant="outline" size="sm" className="shrink-0">
+                Day 3
+              </Button>
             </Link>
             <Link to="/day4">
-              <Button variant="outline" size="sm" className="shrink-0">Day 4</Button>
+              <Button variant="outline" size="sm" className="shrink-0">
+                Day 4
+              </Button>
             </Link>
             <Link to="/day5">
-              <Button variant="outline" size="sm" className="shrink-0">Day 5</Button>
+              <Button variant="outline" size="sm" className="shrink-0">
+                Day 5
+              </Button>
             </Link>
             <Link to="/day6">
-              <Button variant="outline" size="sm" className="shrink-0">Day 6</Button>
+              <Button variant="outline" size="sm" className="shrink-0">
+                Day 6
+              </Button>
             </Link>
             <Link to="/day7">
-              <Button variant="outline" size="sm" className="shrink-0">Day 7</Button>
+              <Button variant="outline" size="sm" className="shrink-0">
+                Day 7
+              </Button>
             </Link>
             <Link to="/day8">
-              <Button variant="outline" size="sm" className="shrink-0">Day 8</Button>
+              <Button variant="outline" size="sm" className="shrink-0">
+                Day 8
+              </Button>
             </Link>
             <Button variant="outline" size="sm" className="shrink-0 bg-primary/20 border-primary/40" disabled>
               Day 9
