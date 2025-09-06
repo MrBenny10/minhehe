@@ -73,12 +73,12 @@ const socialMediaPuzzle: Puzzle = {
     },
     {
       number: 10,
-      text: "What you create when you share content on social media.",
+      text: "Content you share on social media platforms.",
       direction: 'down',
-      startRow: 4,
+      startRow: 2,
       startCol: 4,
-      length: 3,
-      solution: "POST"
+      length: 5,
+      solution: "SHARE"
     }
   ],
 };
@@ -121,9 +121,9 @@ const Day9: React.FC = () => {
     // S . . . C . T
     // W . . . H . A  
     // I L I K E S P
-    // P . . . T . S
-    // E D I R E C T
-    // . . . . S . .
+    // P . . . A . S
+    // E D I R R E T
+    // . . . . E . .
     // . . . P O S T
     
     const activeCells = new Set<string>();
@@ -147,34 +147,33 @@ const Day9: React.FC = () => {
     activeCells.add(`2-6`); // P
     activeCells.add(`3-6`); // S
     
-    // LIKES (7A across): row 2, cols 0-5
+    // LIKES (7A across): row 2, cols 0-4
     activeCells.add(`2-0`); // L (shared with SWIPE)
     activeCells.add(`2-1`); // I
     activeCells.add(`2-2`); // K
     activeCells.add(`2-3`); // E
     activeCells.add(`2-4`); // S (shared with CHAT)
-    activeCells.add(`2-5`); // . (empty space)
+    
+    // SHARE (10D down): col 4, rows 2-6
+    activeCells.add(`2-4`); // S (shared with LIKES and CHAT)
+    activeCells.add(`3-4`); // H
+    activeCells.add(`4-4`); // A
+    activeCells.add(`5-4`); // R
+    activeCells.add(`6-4`); // E
     
     // DIRECT (15A across): row 4, cols 1-6
     activeCells.add(`4-1`); // D
     activeCells.add(`4-2`); // I
     activeCells.add(`4-3`); // R
-    activeCells.add(`4-4`); // E (shared with CHAT)
+    activeCells.add(`4-4`); // E (shared with SHARE)
     activeCells.add(`4-5`); // C
     activeCells.add(`4-6`); // T
     
-    // POSTS (10D down): col 4, rows 4-6 (starts after CHAT ends)
-    activeCells.add(`4-4`); // P (shared with DIRECT)
-    activeCells.add(`5-4`); // O
-    activeCells.add(`6-4`); // S
-    activeCells.add(`6-5`); // T (shared with POST)
-    activeCells.add(`6-6`); // S (shared with POST)
-    
     // POST (21A across): row 6, cols 3-6
     activeCells.add(`6-3`); // P
-    activeCells.add(`6-4`); // O (shared with POSTS)
-    activeCells.add(`6-5`); // S (shared with POSTS)
-    activeCells.add(`6-6`); // T (shared with POSTS)
+    activeCells.add(`6-4`); // O
+    activeCells.add(`6-5`); // S
+    activeCells.add(`6-6`); // T
 
     console.log('Active cells:', Array.from(activeCells));
 
