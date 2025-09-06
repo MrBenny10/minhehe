@@ -17,29 +17,38 @@ const socialMediaPuzzle: Puzzle = {
   clues: [
     // Across
     {
-      number: 7,
+      number: 5,
       text: "Gesture to show you approve of a post on social platforms.",
+      direction: 'across',
+      startRow: 1,
+      startCol: 2,
+      length: 4,
+      solution: "LIKE"
+    },
+    {
+      number: 7,
+      text: "Quick touch action on mobile screens.",
       direction: 'across',
       startRow: 2,
       startCol: 0,
-      length: 5,
-      solution: "LIKES"
+      length: 4,
+      solution: "TAPS"
     },
     {
-      number: 15,
-      text: "Feature that lets you directly message someone privately.",
+      number: 12,
+      text: "Real-time conversation feature on most social platforms.",
       direction: 'across',
       startRow: 4,
-      startCol: 1,
-      length: 6,
-      solution: "DIRECT"
+      startCol: 0,
+      length: 4,
+      solution: "CHAT"
     },
     {
-      number: 21,
+      number: 14,
       text: "Action of sharing someone else's content on your timeline.",
       direction: 'across',
-      startRow: 6,
-      startCol: 3,
+      startRow: 5,
+      startCol: 1,
       length: 4,
       solution: "POST"
     },
@@ -49,34 +58,25 @@ const socialMediaPuzzle: Puzzle = {
       text: "Quick gesture on mobile to navigate through content.",
       direction: 'down',
       startRow: 0,
-      startCol: 0,
+      startCol: 2,
       length: 5,
       solution: "SWIPE"
     },
     {
       number: 2,
-      text: "Real-time conversation feature on most social platforms.",
+      text: "Feature that lets you directly message someone privately.",
       direction: 'down',
       startRow: 0,
       startCol: 4,
-      length: 4,
-      solution: "CHAT"
+      length: 6,
+      solution: "DIRECT"
     },
     {
       number: 3,
-      text: "Quick touch action on mobile screens.",
-      direction: 'down',
-      startRow: 0,
-      startCol: 6,
-      length: 4,
-      solution: "TAPS"
-    },
-    {
-      number: 10,
       text: "Content you share on social media platforms.",
       direction: 'down',
-      startRow: 2,
-      startCol: 4,
+      startRow: 1,
+      startCol: 5,
       length: 5,
       solution: "SHARE"
     }
@@ -118,62 +118,61 @@ const Day9: React.FC = () => {
 
     // Define the specific active cells based on social media crossword pattern
     // Grid pattern:
-    // S . . . C . T
-    // W . . . H . A  
-    // I L I K E S P
-    // P . . . A . S
-    // E D I R R E T
-    // . . . . E . .
-    // . . . P O S T
+    // . . S . D . .
+    // . . W L I R S
+    // T A I K E E H
+    // . . P . C . A
+    // C H A T . . R
+    // . P O S T . E
+    // . . . . . . .
     
     const activeCells = new Set<string>();
     
-    // SWIPE (1D down): col 0, rows 0-4
-    activeCells.add(`0-0`); // S
-    activeCells.add(`1-0`); // W
-    activeCells.add(`2-0`); // I
-    activeCells.add(`3-0`); // P
-    activeCells.add(`4-0`); // E
+    // SWIPE (1D down): col 2, rows 0-4
+    activeCells.add(`0-2`); // S
+    activeCells.add(`1-2`); // W
+    activeCells.add(`2-2`); // I
+    activeCells.add(`3-2`); // P
+    activeCells.add(`4-2`); // E
     
-    // CHAT (2D down): col 4, rows 0-3 
-    activeCells.add(`0-4`); // C
-    activeCells.add(`1-4`); // H  
-    activeCells.add(`2-4`); // A (intersects with LIKES)
-    activeCells.add(`3-4`); // T
+    // DIRECT (2D down): col 4, rows 0-5 
+    activeCells.add(`0-4`); // D
+    activeCells.add(`1-4`); // I  
+    activeCells.add(`2-4`); // R
+    activeCells.add(`3-4`); // E
+    activeCells.add(`4-4`); // C
+    activeCells.add(`5-4`); // T
     
-    // TAPS (3D down): starts at top right corner (0,6), then continues down
-    activeCells.add(`0-6`); // T
-    activeCells.add(`1-6`); // A
-    activeCells.add(`2-6`); // P
-    activeCells.add(`3-6`); // S
+    // SHARE (3D down): col 5, rows 1-5
+    activeCells.add(`1-5`); // S
+    activeCells.add(`2-5`); // H
+    activeCells.add(`3-5`); // A
+    activeCells.add(`4-5`); // R
+    activeCells.add(`5-5`); // E
     
-    // LIKES (7A across): row 2, cols 0-4
-    activeCells.add(`2-0`); // L (shared with SWIPE)
-    activeCells.add(`2-1`); // I
-    activeCells.add(`2-2`); // K
-    activeCells.add(`2-3`); // E
-    activeCells.add(`2-4`); // S (shared with CHAT)
+    // LIKE (5A across): row 1, cols 2-5
+    activeCells.add(`1-2`); // L (shared with SWIPE)
+    activeCells.add(`1-3`); // I
+    activeCells.add(`1-4`); // K (shared with DIRECT)
+    activeCells.add(`1-5`); // E (shared with SHARE)
     
-    // SHARE (10D down): col 4, rows 2-6
-    activeCells.add(`2-4`); // S (shared with LIKES and CHAT)
-    activeCells.add(`3-4`); // H
-    activeCells.add(`4-4`); // A
-    activeCells.add(`5-4`); // R
-    activeCells.add(`6-4`); // E
+    // TAPS (7A across): row 2, cols 0-3
+    activeCells.add(`2-0`); // T
+    activeCells.add(`2-1`); // A
+    activeCells.add(`2-2`); // P (shared with SWIPE)
+    activeCells.add(`2-3`); // S
     
-    // DIRECT (15A across): row 4, cols 1-6
-    activeCells.add(`4-1`); // D
-    activeCells.add(`4-2`); // I
-    activeCells.add(`4-3`); // R
-    activeCells.add(`4-4`); // E (shared with SHARE)
-    activeCells.add(`4-5`); // C
-    activeCells.add(`4-6`); // T
+    // CHAT (12A across): row 4, cols 0-3
+    activeCells.add(`4-0`); // C
+    activeCells.add(`4-1`); // H
+    activeCells.add(`4-2`); // A (shared with SWIPE)
+    activeCells.add(`4-3`); // T
     
-    // POST (21A across): row 6, cols 3-6
-    activeCells.add(`6-3`); // P
-    activeCells.add(`6-4`); // O
-    activeCells.add(`6-5`); // S
-    activeCells.add(`6-6`); // T
+    // POST (14A across): row 5, cols 1-4
+    activeCells.add(`5-1`); // P
+    activeCells.add(`5-2`); // O
+    activeCells.add(`5-3`); // S
+    activeCells.add(`5-4`); // T (shared with DIRECT)
 
     console.log('Active cells:', Array.from(activeCells));
 
