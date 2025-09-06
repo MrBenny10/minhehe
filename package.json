@@ -3,15 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
- "scripts": {
-  "dev": "vite",
-  "build": "vite build && cp dist/index.html dist/404.html",
-  "build:dev": "vite build --mode development && cp dist/index.html dist/404.html",
-  "lint": "eslint .",
-  "preview": "vite preview",
-  "deploy": "npm run build && mkdir -p docs && rm -rf docs/* && cp -r dist/* docs/ && echo '--- DOCS CONTENT ---' && ls docs && git add docs && git commit -m 'Deploy site' || true && git push"
-
-},
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && cp dist/index.html dist/404.html",
+    "build:dev": "vite build --mode development && cp dist/index.html dist/404.html",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "deploy": "npm run build && mkdir -p docs && rm -rf docs/* && cp -r dist/* docs/ && echo '--- DOCS CONTENT ---' && ls docs && git add docs && git commit -m 'Deploy site' || true && git push"
+  },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",
