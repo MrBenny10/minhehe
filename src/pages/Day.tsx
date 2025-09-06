@@ -3,16 +3,14 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import CrosswordGame from "@/components/CrosswordGame";
 
-// Automatically import all puzzles in /puzzles/day*.ts
-// Import all puzzles (works for both .ts and .tsx)
+// ✅ Automatically import all puzzles in /puzzles (day*.ts or day*.tsx)
 const puzzleModules = import.meta.glob("../puzzles/day*.(ts|tsx)", { eager: true });
-
 
 const puzzles: Record<string, any> = {};
 const availableDays: string[] = [];
 
 for (const path in puzzleModules) {
-  const match = path.match(/day(\d+)\.ts$/);
+  const match = path.match(/day(\d+)\.(ts|tsx)$/);
   if (match) {
     const day = match[1]; // e.g. "8"
     const mod = puzzleModules[path] as { puzzle: any };
@@ -21,7 +19,7 @@ for (const path in puzzleModules) {
   }
 }
 
-// Sort day numbers so nav is always in order
+// ✅ Sort day numbers so nav is always in order
 availableDays.sort((a, b) => Number(a) - Number(b));
 
 const Day = () => {
