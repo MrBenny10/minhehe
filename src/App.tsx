@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Index from "./pages/Index";
 import Day2 from "./pages/Day2";
 import Day3 from "./pages/Day3";
@@ -20,7 +21,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      {/* 👇 Add basename here for GitHub Pages */}
+      <BrowserRouter basename="/minhehe">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/day2" element={<Day2 />} />
@@ -30,7 +32,7 @@ const App = () => (
           <Route path="/day6" element={<Day6 />} />
           <Route path="/day7" element={<Day7 />} />
           <Route path="/day8" element={<Day8 />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
