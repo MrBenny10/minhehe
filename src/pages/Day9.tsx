@@ -30,7 +30,7 @@ const socialMediaPuzzle: Puzzle = {
       text: "Feature that lets you directly message someone privately.",
       direction: 'across',
       startRow: 4,
-      startCol: 0,
+      startCol: 1,
       length: 6,
       solution: "DIRECT"
     },
@@ -50,7 +50,7 @@ const socialMediaPuzzle: Puzzle = {
       direction: 'down',
       startRow: 0,
       startCol: 0,
-      length: 4,
+      length: 5,
       solution: "SWIPE"
     },
     {
@@ -59,7 +59,7 @@ const socialMediaPuzzle: Puzzle = {
       direction: 'down',
       startRow: 0,
       startCol: 4,
-      length: 3,
+      length: 4,
       solution: "CHAT"
     },
     {
@@ -75,10 +75,10 @@ const socialMediaPuzzle: Puzzle = {
       number: 10,
       text: "What you create when you share content on social media.",
       direction: 'down',
-      startRow: 2,
-      startCol: 3,
-      length: 5,
-      solution: "POSTS"
+      startRow: 4,
+      startCol: 4,
+      length: 3,
+      solution: "POST"
     }
   ],
 };
@@ -118,13 +118,13 @@ const Day9: React.FC = () => {
 
     // Define the specific active cells based on social media crossword pattern
     // Grid pattern:
-    // S . C . . . T
-    // W . H . . . A  
+    // S . . . C . T
+    // W . . . H . A  
     // I L I K E S P
-    // P . . O . . S
+    // P . . . T . S
     // E D I R E C T
-    // . . . S . . .
-    // . . P O S T .
+    // . . . . S . .
+    // . . . P O S T
     
     const activeCells = new Set<string>();
     
@@ -147,33 +147,34 @@ const Day9: React.FC = () => {
     activeCells.add(`2-6`); // P
     activeCells.add(`3-6`); // S
     
-    // LIKES (7A across): row 2, cols 0-4
+    // LIKES (7A across): row 2, cols 0-5
     activeCells.add(`2-0`); // L (shared with SWIPE)
     activeCells.add(`2-1`); // I
     activeCells.add(`2-2`); // K
-    activeCells.add(`2-3`); // E (shared with POSTS)  
+    activeCells.add(`2-3`); // E
     activeCells.add(`2-4`); // S (shared with CHAT)
+    activeCells.add(`2-5`); // . (empty space)
     
-    // POSTS (10D down): row 2 col 3, then rows 3-6 col 3
-    activeCells.add(`2-3`); // P (shared with LIKES)
-    activeCells.add(`3-3`); // O
-    activeCells.add(`4-3`); // S (shared with DIRECT)
-    activeCells.add(`5-3`); // T
-    activeCells.add(`6-3`); // S (part of POST too)
+    // DIRECT (15A across): row 4, cols 1-6
+    activeCells.add(`4-1`); // D
+    activeCells.add(`4-2`); // I
+    activeCells.add(`4-3`); // R
+    activeCells.add(`4-4`); // E (shared with CHAT)
+    activeCells.add(`4-5`); // C
+    activeCells.add(`4-6`); // T
     
-    // DIRECT (15A across): row 4, cols 0-5
-    activeCells.add(`4-0`); // D (shared with SWIPE)
-    activeCells.add(`4-1`); // I
-    activeCells.add(`4-2`); // R
-    activeCells.add(`4-3`); // E (shared with POSTS)
-    activeCells.add(`4-4`); // C
-    activeCells.add(`4-5`); // T
+    // POSTS (10D down): col 4, rows 4-6 (starts after CHAT ends)
+    activeCells.add(`4-4`); // P (shared with DIRECT)
+    activeCells.add(`5-4`); // O
+    activeCells.add(`6-4`); // S
+    activeCells.add(`6-5`); // T (shared with POST)
+    activeCells.add(`6-6`); // S (shared with POST)
     
     // POST (21A across): row 6, cols 3-6
-    activeCells.add(`6-3`); // P (shared with POSTS)
-    activeCells.add(`6-4`); // O
-    activeCells.add(`6-5`); // S
-    activeCells.add(`6-6`); // T
+    activeCells.add(`6-3`); // P
+    activeCells.add(`6-4`); // O (shared with POSTS)
+    activeCells.add(`6-5`); // S (shared with POSTS)
+    activeCells.add(`6-6`); // T (shared with POSTS)
 
     console.log('Active cells:', Array.from(activeCells));
 
