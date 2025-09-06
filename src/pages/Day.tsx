@@ -4,7 +4,9 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import CrosswordGame from "@/components/CrosswordGame";
 
 // Automatically import all puzzles in /puzzles/day*.ts
-const puzzleModules = import.meta.glob("../puzzles/day*.ts", { eager: true });
+// Import all puzzles (works for both .ts and .tsx)
+const puzzleModules = import.meta.glob("../puzzles/day*.(ts|tsx)", { eager: true });
+
 
 const puzzles: Record<string, any> = {};
 const availableDays: string[] = [];
