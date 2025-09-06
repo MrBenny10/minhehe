@@ -1,4 +1,4 @@
-import type Puzzle from "@/components/CrosswordGame";
+import type { Puzzle } from "@/components/CrosswordGame";
 
 export const puzzle: Puzzle = {
   size: 7,
