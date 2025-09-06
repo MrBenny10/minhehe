@@ -1,4 +1,4 @@
-//import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import { CrosswordGrid } from '@/components/CrosswordGrid';
 import { CluesPanel } from '@/components/CluesPanel';
