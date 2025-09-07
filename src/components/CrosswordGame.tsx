@@ -274,21 +274,31 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
         </div>
 
         {/* Grid */}
-        <div className="flex flex-col h-full">
-          <div className="flex-1 flex items-center justify-center pb-20 md:pb-0">
-            <CrosswordGrid
-              cells={cells}
-              selectedCell={selectedCell}
-              onCellSelect={handleCellSelect}
-              onCellUpdate={handleCellUpdate}
-              showingErrors={showingErrors}
-              gameStarted={gameStarted}
-              currentClue={currentClue}
-              gridSize={puzzle.size}
-              fontSize="lg"
-            />
-          </div>
-        </div>
+<div className="flex flex-col h-full">
+  <div
+    className={cn(
+      "flex-1 flex items-center px-1 py-1 md:px-2 md:py-2 min-h-0",
+      gameStarted && currentClue
+        ? "pt-[3.5rem] md:pt-[5rem]" // add breathing room below clue bar
+        : "pt-2 md:pt-4"
+    )}
+  >
+    <div className="w-full max-w-full flex-1 flex items-center justify-center pb-20 md:pb-0">
+      <CrosswordGrid
+        cells={cells}
+        selectedCell={selectedCell}
+        onCellSelect={handleCellSelect}
+        onCellUpdate={handleCellUpdate}
+        showingErrors={showingErrors}
+        gameStarted={gameStarted}
+        currentClue={currentClue}
+        gridSize={puzzle.size}
+        fontSize="sm md:lg" // responsive font size
+      />
+    </div>
+  </div>
+</div>
+
 
         {/* Logo (optional per puzzle) */}
         {puzzle.logo && (
