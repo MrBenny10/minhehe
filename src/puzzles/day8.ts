@@ -1,12 +1,14 @@
-import type Puzzle from "@/components/CrosswordGame";
+import type { Puzzle } from "@/components/CrosswordGame";
 
 export const puzzle: Puzzle = {
   size: 7,
+  theme: "Gym",
+  background: undefined,
   clues: [
     // Across
     {
       number: 7,
-      text: "Prefix in yoga practice meaning \"eight,\" as in ____nga.",
+      text: 'Prefix in yoga practice meaning "eight," as in ____nga.',
       direction: "across",
       startRow: 2,
       startCol: 0,
@@ -31,6 +33,7 @@ export const puzzle: Puzzle = {
       length: 4,
       solution: "KETO",
     },
+
     // Down
     {
       number: 1,
@@ -52,7 +55,7 @@ export const puzzle: Puzzle = {
     },
     {
       number: 3,
-      text: "Fitness goal often paired with \"muscle.\"",
+      text: 'Fitness goal often paired with "muscle."',
       direction: "down",
       startRow: 0,
       startCol: 6,

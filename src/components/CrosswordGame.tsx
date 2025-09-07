@@ -5,12 +5,37 @@ import { CluesPanel } from "@/components/CluesPanel";
 import { GameTimer } from "@/components/GameTimer";
 import { GameControls } from "@/components/GameControls";
 import { CompletionModal } from "@/components/CompletionModal";
-import { Button } from "@/components/ui/button";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import minHeheLogoSrc from "@/assets/minhehe-logo.png";
-import type { Clue, Cell, Puzzle } from "@/components/CrosswordGame";
+
+/* ✅ Types */
+export type Clue = {
+  number: number;
+  text: string;
+  direction: "across" | "down";
+  startRow: number;
+  startCol: number;
+  length: number;
+  solution: string;
+};
+
+export type Cell = {
+  id: string;
+  row: number;
+  col: number;
+  value: string;
+  answer: string;
+  isBlocked: boolean;
+  number?: number;
+};
+
+export type Puzzle = {
+  size: number;
+  clues: Clue[];
+  theme?: string;
+  background?: React.ReactNode;
+  logo?: string; // optional logo image
+};
 
 interface CrosswordGameProps {
   day: number;
@@ -35,7 +60,6 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
     const newCells: Cell[] = [];
     const gridSize = puzzle.size;
 
-    // Start all blocked
     for (let row = 0; row < gridSize; row++) {
       for (let col = 0; col < gridSize; col++) {
         newCells.push({
@@ -49,13 +73,10 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
       }
     }
 
-    // Mark active cells and answers from puzzle
     puzzle.clues.forEach((clue) => {
       for (let i = 0; i < clue.length; i++) {
-        const r =
-          clue.direction === "across" ? clue.startRow : clue.startRow + i;
-        const c =
-          clue.direction === "across" ? clue.startCol + i : clue.startCol;
+        const r = clue.direction === "across" ? clue.startRow : clue.startRow + i;
+        const c = clue.direction === "across" ? clue.startCol + i : clue.startCol;
         const idx = r * gridSize + c;
         if (newCells[idx]) {
           newCells[idx].isBlocked = false;
@@ -90,7 +111,6 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
           clue.direction === "across"
             ? cell.col - clue.startCol
             : cell.row - clue.startRow;
-
         return clue.solution[position] === value.toUpperCase();
       });
     },
@@ -101,9 +121,7 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
     (cellId: string, value: string) => {
       setCells((prev) => {
         const next = prev.map((cell) =>
-          cell.id === cellId
-            ? { ...cell, value: value.toUpperCase() }
-            : cell
+          cell.id === cellId ? { ...cell, value: value.toUpperCase() } : cell
         );
 
         const complete = next.every((cell) => {
@@ -145,10 +163,7 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
       });
       if (matches.length > 0) {
         let chosen = matches[0];
-        if (
-          currentClue &&
-          matches.some((c) => c.direction === currentClue.direction)
-        ) {
+        if (currentClue && matches.some((c) => c.direction === currentClue.direction)) {
           chosen =
             matches.find((c) => c.direction === currentClue.direction) ||
             matches[0];
@@ -193,6 +208,7 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
     return () => clearTimeout(t);
   }, [handleStart]);
 
+  // === Loading Screen ===
   if (showLoadingScreen) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex flex-col justify-center items-center px-4">
@@ -206,58 +222,60 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
             minHehe
           </h1>
           <p className="text-xl text-muted-foreground animate-fade-in">
-            Gym Edition – Day {day}
+            {puzzle.theme ? `${puzzle.theme} Edition` : "Gym Edition"} – Day {day}
           </p>
           <p className="text-sm text-muted-foreground mt-2 animate-fade-in">
-            Loading your fitness puzzle...
+            Loading your puzzle...
           </p>
         </div>
       </div>
     );
   }
 
+  // === Main Game ===
   return (
-    <div className="h-[100dvh] bg-gradient-to-br from-background via-background to-muted overflow-hidden">
-      {/* Top bar with current clue */}
-      {gameStarted && currentClue && (
-        <div className="fixed top-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border h-[4rem] overflow-hidden">
-          <div className="px-2 py-2 md:px-4 md:py-3 pr-24 md:pr-28 h-full flex items-center">
-            <div className="flex items-start gap-2 text-xs md:text-sm w-full">
-              <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded shrink-0 mt-0.5">
+    <div
+      className={cn(
+        "h-[100dvh] relative overflow-hidden",
+        puzzle.theme === "Coldplay"
+          ? "bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900"
+          : "bg-gradient-to-br from-background via-background to-muted"
+      )}
+    >
+      {/* Custom background */}
+      {puzzle.background && (
+        <div className="absolute inset-0 z-0">{puzzle.background}</div>
+      )}
+
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Clue bar */}
+        {gameStarted && currentClue && (
+          <div className="fixed top-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
+            <div className="px-2 py-2 md:px-4 md:py-3 flex items-center gap-2 text-xs md:text-sm">
+              <span className="text-xs font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded">
                 {currentClue.number}
                 {currentClue.direction === "across" ? "A" : "D"}
               </span>
-              <div className="flex-1 min-w-0 max-w-[calc(100%-6rem)]">
-                <p className="text-foreground font-medium leading-snug break-words">
-                  {currentClue.text}
-                </p>
-              </div>
+              <p className="text-foreground font-medium leading-snug break-words">
+                {currentClue.text}
+              </p>
             </div>
           </div>
+        )}
+
+        {/* Timer */}
+        <div className="fixed top-1 right-1 z-50">
+          <GameTimer
+            timeElapsed={timeElapsed}
+            setTimeElapsed={setTimeElapsed}
+            isRunning={gameStarted && !gameCompleted}
+            gameCompleted={gameCompleted}
+          />
         </div>
-      )}
 
-      {/* Timer */}
-      <div className="fixed top-1 right-1 z-50 scale-75 md:scale-100 md:top-2 md:right-2">
-        <GameTimer
-          timeElapsed={timeElapsed}
-          setTimeElapsed={setTimeElapsed}
-          isRunning={gameStarted && !gameCompleted}
-          gameCompleted={gameCompleted}
-        />
-      </div>
-
-      {/* Crossword grid */}
-      <div className="flex flex-col h-full">
-        <div
-          className={cn(
-            "flex-1 flex flex-col items-center px-1 py-1 md:px-2 md:py-2 min-h-0 overflow-y-auto",
-            gameStarted && currentClue
-              ? "pt-[4.5rem] justify-start md:pt-[5rem] md:justify-center"
-              : "pt-1 justify-start md:pt-4 md:justify-center"
-          )}
-        >
-          <div className="w-full max-w-full flex-1 flex items-center justify-center pb-20 md:pb-0">
+        {/* Grid */}
+        <div className="flex flex-col h-full">
+          <div className="flex-1 flex items-center justify-center pb-20 md:pb-0">
             <CrosswordGrid
               cells={cells}
               selectedCell={selectedCell}
@@ -272,8 +290,15 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
           </div>
         </div>
 
+        {/* Logo (optional per puzzle) */}
+        {puzzle.logo && (
+          <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 z-20">
+            <img src={puzzle.logo} alt="Puzzle Logo" className="w-32 h-auto" />
+          </div>
+        )}
+
         {/* Controls */}
-        <div className="flex justify-center py-1 px-2 md:py-2 md:px-4">
+        <div className="flex justify-center py-2">
           <GameControls
             gameStarted={gameStarted}
             gameCompleted={gameCompleted}
@@ -282,13 +307,13 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
           />
         </div>
 
-        {/* Desktop clues panel */}
+        {/* Clues Panel (desktop) */}
         <div className="hidden lg:block fixed right-4 top-1/2 transform -translate-y-1/2 w-80">
           <CluesPanel clues={puzzle.clues} />
         </div>
       </div>
 
-      {/* Footer */}
+      {/* Completion Modal */}
       <CompletionModal
         isOpen={showCompletionModal}
         onClose={() => setShowCompletionModal(false)}
