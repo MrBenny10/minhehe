@@ -1,49 +1,44 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-// Auto-import all puzzles
-const puzzleModules = import.meta.glob("../puzzles/day*.ts", { eager: true });
+// ✅ You can import the same dynamic puzzle loader if you want it to be auto-generated
+//    (this way, the homepage always stays in sync with available puzzles)
+const puzzleModules = import.meta.glob("../puzzles/day*.(ts|tsx)", { eager: true });
 
 const availableDays: string[] = [];
 
 for (const path in puzzleModules) {
-  const match = path.match(/day(\d+)\.ts$/);
+  const match = path.match(/day(\d+)\.(ts|tsx)$/);
   if (match) {
-    availableDays.push(match[1]); // e.g. "8"
+    availableDays.push(match[1]);
   }
 }
 
 availableDays.sort((a, b) => Number(a) - Number(b));
 
-const latestDay = availableDays[availableDays.length - 1]; // Last one = newest
-
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-6 text-center">
-      <h1 className="text-4xl font-bold">Welcome to minHehe</h1>
-      <p className="text-lg text-muted-foreground">
-        Play a new mini crossword every day!
+    <div className="h-[100dvh] flex flex-col justify-center items-center">
+      <h1 className="text-4xl font-bold mb-6">Welcome to MinHeHe</h1>
+      <p className="mb-12 text-lg text-muted-foreground">
+        Select a puzzle day below to start playing
       </p>
 
-      {latestDay ? (
-        <Link to={`/day${latestDay}`}>
-          <Button size="lg" className="mt-4">
-            Play Today’s Puzzle (Day {latestDay})
-          </Button>
-        </Link>
-      ) : (
-        <p>No puzzles available yet.</p>
-      )}
-
-      {/* Optional: list all days */}
-      <div className="mt-8 flex flex-wrap justify-center gap-2">
-        {availableDays.map((day) => (
-          <Link key={day} to={`/day${day}`}>
-            <Button variant="outline" size="sm">
-              Day {day}
-            </Button>
-          </Link>
-        ))}
+      {/* ✅ Dynamic navigation just like Day.tsx */}
+      <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4">
+        <ScrollArea className="w-full whitespace-nowrap rounded-md bg-background/80 backdrop-blur-sm border p-1">
+          <div className="flex gap-2">
+            {availableDays.map((day) => (
+              <Link key={day} to={`/day/${day}`}>
+                <Button variant="outline" size="sm" className="shrink-0">
+                  Day {day}
+                </Button>
+              </Link>
+            ))}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
     </div>
   );

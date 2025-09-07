@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import CrosswordGame from "@/components/CrosswordGame";
 
-// ✅ Automatically import all puzzles in /puzzles
+// ✅ Explicitly include both .ts and .tsx files
 const puzzleModules = import.meta.glob(
   ["../puzzles/day*.ts", "../puzzles/day*.tsx"],
   { eager: true }
