@@ -208,6 +208,16 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
     return () => clearTimeout(t);
   }, [handleStart]);
 
+  // === Responsive font sizing for grid ===
+  let gridFontSize: "sm" | "md" | "lg" | "xl" = "md";
+  if (puzzle.size >= 15) {
+    gridFontSize = "xl";
+  } else if (puzzle.size >= 10) {
+    gridFontSize = "lg";
+  } else {
+    gridFontSize = "sm"; // smaller boards use smaller fonts
+  }
+
   // === Loading Screen ===
   if (showLoadingScreen) {
     return (
@@ -274,31 +284,30 @@ const CrosswordGame: React.FC<CrosswordGameProps> = ({ day, puzzle }) => {
         </div>
 
         {/* Grid */}
-<div className="flex flex-col h-full">
-  <div
-    className={cn(
-      "flex-1 flex items-center px-1 py-1 md:px-2 md:py-2 min-h-0",
-      gameStarted && currentClue
-        ? "pt-[3.5rem] md:pt-[5rem]" // add breathing room below clue bar
-        : "pt-2 md:pt-4"
-    )}
-  >
-    <div className="w-full max-w-full flex-1 flex items-center justify-center pb-20 md:pb-0">
-      <CrosswordGrid
-        cells={cells}
-        selectedCell={selectedCell}
-        onCellSelect={handleCellSelect}
-        onCellUpdate={handleCellUpdate}
-        showingErrors={showingErrors}
-        gameStarted={gameStarted}
-        currentClue={currentClue}
-        gridSize={puzzle.size}
-        fontSize="sm md:lg" // responsive font size
-      />
-    </div>
-  </div>
-</div>
-
+        <div className="flex flex-col h-full">
+          <div
+            className={cn(
+              "flex-1 flex flex-col items-center px-1 py-1 md:px-2 md:py-2 min-h-0",
+              gameStarted && currentClue
+                ? "pt-[3.5rem] md:pt-[5rem]" // ✅ offset grid from clue bar
+                : "pt-2 md:pt-4"
+            )}
+          >
+            <div className="w-full max-w-full flex-1 flex items-center justify-center pb-20 md:pb-0">
+              <CrosswordGrid
+                cells={cells}
+                selectedCell={selectedCell}
+                onCellSelect={handleCellSelect}
+                onCellUpdate={handleCellUpdate}
+                showingErrors={showingErrors}
+                gameStarted={gameStarted}
+                currentClue={currentClue}
+                gridSize={puzzle.size}
+                fontSize={gridFontSize} // ✅ responsive font size
+              />
+            </div>
+          </div>
+        </div>
 
         {/* Logo (optional per puzzle) */}
         {puzzle.logo && (
