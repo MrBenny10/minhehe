@@ -26,6 +26,8 @@ for (const path in puzzleModules) {
 // ✅ Sort days numerically so navigation is ordered
 availableDays.sort((a, b) => Number(a) - Number(b));
 
+console.log("Available puzzles:", Object.keys(puzzles));
+
 const Day = () => {
   const { dayNumber } = useParams();
   const puzzle = puzzles[dayNumber || ""];
